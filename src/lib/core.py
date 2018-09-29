@@ -1,71 +1,39 @@
 import networkx as nx
+import lib.bounds as bounds
+from lib.bounds import *
+import numpy as np
+import math
 
 class BDDE:
-    def __init__(self, G, samples,
-                 k=2,
-                 delta=0.8,
-                 prob=False,
-                 starting_score=-1,
-                 bound=True):
+    def __init__(self, G, samples, k, parameters):
         self.G = G
         self.k = k
-        self.delta = delta
         self.tree = None
         self.root = None
         self.samples = samples
         self.sample_size = len(self.samples)
-        self.prob = prob
-        if self.prob:
-            qs = {
-                s: {gene: 1 - self.samples[s][gene]
-                    for gene in self.samples[s]}
-                for s in self.samples
-            }
-            self.sorted_qs = {
-                s: sorted(qs[s], key=qs[s].get)
-                for s in qs
-            }
-            self.sort_by_degree = [[t[0], self.how_many_mins(t[0]), t[1]]
-                                   for t in sorted(self.G.degree,
-                                                   key=lambda t: t[1])]
-            self.genes_dict = {
-                a[1]: [
-                    t[0]
-                    for t in self.sort_by_degree
-                    if t[1]==a[1]
-                ]
-                for a in self.sort_by_degree
-                if a[1] != 0
-            }
-            self.scoring_function = lambda subgraph: prob_cover(self.samples,subgraph)
-        else:
-            self.scoring_function = lambda subgraph: score_cover(self.samples,set(subgraph))
-
-        self.best_score = starting_score
-        self.leaves_number = 0
+        self.prob = parameters["prob"]
+        self.bound= parameters["bound"]
+        self.best_score=parameters["best_score"]
         self.best_subgraph = []
-        self.bound = bound
+        self.levels=[0 for i in range(k+1)]
+        self.leaves_number = 0
+        self.str_to_id=parameters["str_to_id"]
+        self.id_to_str = parameters["id_to_str"]
+        self.genes=list(self.G.nodes).copy()
 
-    def fb(self, C):
-        summation = 0.0
-        c_size = len(C)
+        self.pre=getattr(bounds,"pre_"+parameters["method"])
+        self.pre(self)
 
-        for j in self.samples:
-            prod = 1.0
-            for i in C:
-                prod *= (1.0-self.samples[j][i]) if i in self.samples[j] else 1
+        if self.prob and self.bound:
+            self.bound_function = getattr(bounds, parameters["method"])
 
-            length = min(len(self.sorted_qs[j]),(self.k-c_size))
+        if self.prob:
+            self.scoring_function = getattr(bounds, "prob_cover")
+        else:
+            self.scoring_function = getattr(bounds, "score_cover")
 
-            for i in range(length):
-                if not self.sorted_qs[j][i] in C:
-                    prod *= 1.0-self.samples[j][self.sorted_qs[j][i]]
-
-            summation += prod
-
-        return self.sample_size - summation
-
-    def fb_greaterthan_f(self, C):
+    def inspectNode(self, C):
         """
         Returns True if the branch has to be pruned inside the BDDE algorithm.
         Furthermore, it evaluates leaves.
@@ -74,21 +42,16 @@ class BDDE:
         """
 
         if len(C)>self.k:
-            # Prune it if it's too big:
-            # this will never actually happen,
-            # since we prune whenever len(C)==k
-            # (see below)
+            # Prune it if it's too big: this will never actually happen, since we prune whenever len(C)==k
             return True
         elif len(C)<self.k:
-            # Prune it if the bounding function can't reach the current best,
-            # but do it only when using the probability version.
+            # Prune it if the bounding function can't reach the current best, but do it only when using the probability version.
             return self.prob and self.bound and self.fb(C)<self.best_score
         else:
-            # This means we've reached a leaf.
-            # We should evaluate it, as it wasn't previously pruned!
-            score = self.scoring_function(C)
+            # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
+            score = self.scoring_function(self,C)
             self.leaves_number+=1
-            if score>self.best_score:
+            if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
                 print("_________________")
@@ -115,75 +78,32 @@ class BDDE:
             self.DEPTH([],v,[])
             self.G.remove_node(v)
 
-            # Removing whatever we don't use anymore
-            del self.tree
-            del self.root
-
         print("Numero foglie: ")
         print(self.leaves_number)
 
-    def prob_nobound_enumeration_algorithm(self):
-        sorted_vertices = [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
-        print("probabilistic (no bounds) BDDE starts now:")
-        for v in sorted_vertices:
+    def printInitialMessage(self):
+        if(self.prob):
+            if(self.bound):
+                print("Probabilistic con bound "+self.bound_function.__name__+" BDDE starts now:")
+            else:
+                print("Probabilistic (without bound) " + " BDDE starts now:")
+        else:
+            print("Deterministic (without bound) " + " BDDE starts now:")
+
+    def enumeration_algorithm(self):
+        self.printInitialMessage()
+
+        for v in self.sorted_vertices:
             self.root=v
             self.tree=nx.DiGraph()
             self.DEPTH([],v,[])
             self.G.remove_node(v)
 
             # Removing whatever we don't use anymore
-            del self.tree
-            del self.root
+            #del self.tree
+            #del self.root
 
         print("Numero foglie: ")
-        print(self.leaves_number)
-
-    def prob_enumeration_algorithm(self):
-        # vertex : #(minimums)
-        v_howmany = {t[0]: t[1] for t in self.sort_by_degree}
-        self.leaves_number=0
-        print("probabilistic BDDE starts now:")
-        while len(self.genes_dict)>0:
-            i = max(self.genes_dict)
-
-            v = self.genes_dict[i][0]
-            self.root=v
-            self.tree=nx.DiGraph()
-            # Actual BDDE call:
-            self.DEPTH([],v,[])
-
-            # Removing whatever we don't use anymore
-            self.G.remove_node(v)
-            del self.tree
-            del self.root
-
-            self.genes_dict[i].remove(v)
-            if len(self.genes_dict[i])==0:
-                del self.genes_dict[i]
-
-            for s in self.sorted_qs:
-                try:
-                    self.sorted_qs[s].remove(v)
-                except ValueError:
-                    pass
-
-                if len(self.sorted_qs[s])>0:
-                    new_min = self.sorted_qs[s][0]
-                    old_counter = v_howmany[new_min]
-                    new_counter = old_counter+1
-                    try:
-                        self.genes_dict[old_counter].remove(new_min)
-                    except KeyError:
-                        pass
-
-                    self.genes_dict.setdefault(new_counter, [])
-                    self.genes_dict[new_counter].append(new_min)
-                    v_howmany[new_min] = new_counter
-
-                    if old_counter>0 and len(self.genes_dict[old_counter])==0:
-                        del self.genes_dict[old_counter]
-
-        print("Quante foglie?")
         print(self.leaves_number)
 
     def BREADTH(self, S,n,U):
@@ -192,7 +112,7 @@ class BDDE:
             return None
 
         S1=S+[vn]
-        if self.fb_greaterthan_f(S1):
+        if self.inspectNode(S1):
             return None
 
         n1=n
@@ -200,14 +120,11 @@ class BDDE:
             n2=self.BREADTH(S1,nxx,U)
             if n2 is not None:
                 self.tree.add_edge(n1,n2)
-                del n2
-
-        del S1
         return n1
 
     def DEPTH(self, S,v,beta):
         S1=S+[v]
-        if self.fb_greaterthan_f(S1):
+        if self.inspectNode(S1):
             return None
 
         n=Nodo(v)
@@ -226,11 +143,6 @@ class BDDE:
             if n1 is not None:
                 self.tree.add_edge(n,n1)
                 beta1.append(n1)
-                del n1
-        del xn
-        del beta1
-        del beta
-        del S1
         return n
 
     def getNodesFromBranch(self, n):
@@ -239,7 +151,6 @@ class BDDE:
         for v in neighbors:
             if self.tree.has_edge(n,v):
                 W.append(v)
-        del neighbors
         return W
 
     def getxn(self, S,v):
@@ -264,37 +175,10 @@ class Nodo(object):
         return str(self)
 
 
-def delta_removal(G, delta):
-    """
-    DEPRECATED. We're not even using this version of the problem.
-    :param G: input graph
-    :param delta: threshold
-    :return: the graph G_I obtained from G by removing any edge with weight < delta
-    """
-
-    removes = []
-
-    for (v, u) in G.edges():
-        if G[v][u]['weight'] < delta:
-            removes.append((v, u))
-
-    G.remove_edges_from(removes)
-
-    return G
 
 
-def prob_cover(patients, l_v):
-    som=0.0
 
-    for j in patients:
-        prod=1.0
 
-        for i in l_v:
-            if i in patients[j]:
-                prod*=1.0-patients[j][i]
-        som+=prod
-
-    return len(patients) - som
 
 
 def combinatorial_algorithm(G, k, patients, delta=0.8):
@@ -337,7 +221,6 @@ def combinatorial_algorithm(G, k, patients, delta=0.8):
 
     return C, P_C
 
-
 def prob_combinatorial_algorithm(G, k, patients, delta=0.8):
     G = delta_removal(G, delta)
 
@@ -378,17 +261,21 @@ def prob_combinatorial_algorithm(G, k, patients, delta=0.8):
 
     return C, P_C
 
+def delta_removal(G, delta):
+    """
+    DEPRECATED. We're not even using this version of the problem.
+    :param G: input graph
+    :param delta: threshold
+    :return: the graph G_I obtained from G by removing any edge with weight < delta
+    """
 
-def score_cover(patients, l_v):
-    return len([
-        p for p in patients
-        if len(l_v & patients[p])>0
-    ])
+    removes = []
 
+    for (v, u) in G.edges():
+        if G[v][u]['weight'] < delta:
+            removes.append((v, u))
 
-def set_cover(patients, l_v):
-    return set([
-        p for p in patients
-        if len(l_v & patients[p])>0
-    ])
+    G.remove_edges_from(removes)
+
+    return G
 
