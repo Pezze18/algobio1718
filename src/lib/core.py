@@ -231,7 +231,7 @@ class Combinatorial:
 
             p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
 
-            while len(C_v) < k:
+            while len(C_v) < self.k:
                 maximum = -1
                 l_v_max = set()
 
