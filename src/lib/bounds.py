@@ -41,6 +41,198 @@ def ordinamentoVertici_bound_order(self):
     """
 
 
+###################################
+########### BOUND_FAST #############
+###################################
+
+def pre_bound_fast(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+
+    self.orderedMatrix={}#[1 for i in range(10000)]# tengo traccia degli elementi != 1
+    self.counters={}# #di elementi !=1 per ogni nodo
+    sum=0
+    for g in self.genes:
+        lista=which_diff(self.matrix[g])
+        lista.sort()
+        self.orderedMatrix[g]=lista
+        self.counters[g]=[1 for i in range(self.k)]
+        self.counters[g][0]=len(lista)
+        sum+=len(lista)
+    #print(self.contatore)
+    #print(sorted(self.contatore.items(),key=lambda x:x[1], reverse=True))
+    #print("Sum: "+str(sum))
+
+    print("Inizio Ordinamento")
+
+    #print(self.counters.items())
+    sorted_vertices=sorted(self.counters.items(), key=lambda x: x[1][0], reverse=True)
+
+    self.sorted_vertices=[ x[0] for x in sorted_vertices]
+    cumsum=np.cumsum(self.sorted_vertices)
+    #print(cumsum[len(cumsum) - 1])
+    cumsum=cumsum/cumsum[len(cumsum)-1]
+    #print(cumsum)
+
+    #tresholds=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    #contatori=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    tresholds=[0.0]
+    contatori=[0]
+    len_cont=len(contatori)
+
+    j=0
+    for i in range(len(cumsum)):
+        if cumsum[i]>tresholds[j]:
+            contatori[j]=i
+            j=j+1
+            if(j==len_cont):
+                break
+    self.contatori=contatori
+    self.index=0
+
+    print("Valore contatore: " + str(contatori))
+    list_current={}
+    M=self.G.copy()
+    best_vectors={}
+    cont=0
+
+    for i in range(len(contatori)):
+        index=contatori[i]
+        if(i>0):
+            prev_index = contatori[i-1]
+            removes=self.sorted_vertices[prev_index:index]
+            self.G.remove_nodes_from(removes)
+            for k in range(1,self.k):
+                list_current[v][k] = [x for x in list_current[v][k] if x not in removes]
+        if(i==0):
+            for v in self.G:
+                lista = []
+                neighbors = self.G.neighbors(v)
+                max_count = 0
+                for u in neighbors:
+                    #print(type(lista))
+                    #print(type(self.orderedMatrix[u]))
+                    #print()
+                    lista = list(lista) + list(self.orderedMatrix[u])
+                    if max_count < self.counters[u][0]:
+                        max_count = self.counters[u][0]
+                lista.sort()
+                list_current.setdefault(v,{})
+                list_current[v][1]=lista
+
+                max_count = min(max_count, len(self.samples))
+                self.counters[v][1] = max_count
+                lista = lista[0:max_count]
+
+                best_vector = np.asarray(lista)
+                best_vectors.setdefault(i, {})
+                best_vectors[i].setdefault(v,{})
+                best_vectors[i][v][1] = best_vector
+            for k in range(2,self.k):
+                for v in self.G:
+                        lista = []
+                        neighbors = self.G.neighbors(v)
+                        max_count = 0
+                        for u in neighbors:
+                            lista = lista + list(best_vectors[i][u][k - 1])
+                            if max_count < self.counters[u][k - 1]:
+                                max_count = self.counters[u][k - 1]
+                        lista.sort()
+                        list_current[v][k] = lista
+                        lista = np.asarray(lista[0:max_count])
+
+                        best_vec_pre = best_vectors[i][v][1]
+                        length = min(len(lista), len(best_vec_pre))  # self.counters[v][k-1]==len(self.best_vectors[v][k-1])
+                        # len(lista)==max_count
+                        self.counters[v][k] = max(max_count, len(best_vec_pre))
+                        if len(lista) > len(best_vec_pre):
+                            best_vector = np.asarray(
+                                list(np.multiply(lista[0:length], best_vec_pre)) + list(lista)[length:len(lista)])
+                        if len(lista) < len(best_vec_pre):
+                            best_vector = np.asarray(list(np.multiply(lista, best_vec_pre[0:length])) + list(best_vec_pre)[
+                                                                                                        length:len(
+                                                                                                            best_vec_pre)])
+                        if len(lista) == len(best_vec_pre):
+                            best_vector = np.multiply(lista, best_vec_pre)
+                        best_vectors[i][v][k] = best_vector
+        if (i > 0):
+            for v in self.G:
+                neighbors = self.G.neighbors(v)
+                max_count = 0
+                for u in neighbors:
+                    if max_count < self.counters[u][0]:
+                        max_count = self.counters[u][0]
+                self.counters[v][1] = max_count
+                lista = list_current[v][1][0:max_count]
+                best_vector = np.asarray(lista)
+                best_vectors.setdefault(v, {})
+                best_vectors.setdefault(i, {})
+                best_vectors[i].setdefault(v, {})
+                best_vectors[i][v][1] = best_vector
+
+            for k in range(2,self.k):
+                for v in self.G :
+                    neighbors = self.G.neighbors(v)
+                    max_count = 0
+                    for u in neighbors:
+                        if max_count < self.counters[u][k - 1]:
+                            max_count = self.counters[u][k - 1]
+                    lista = np.asarray(list_current[v][k][0:max_count])
+
+                    best_vec_pre = best_vectors[i][v][1]
+                    length = min(len(lista), len(best_vec_pre))  # self.counters[v][k-1]==len(self.best_vectors[v][k-1])
+                    # len(lista)==max_count
+                    self.counters[v][k] = max(max_count, len(best_vec_pre))
+                    if len(lista) > len(best_vec_pre):
+                        best_vector = np.asarray(
+                            list(np.multiply(lista[0:length], best_vec_pre)) + list(lista)[length:len(lista)])
+                    if len(lista) < len(best_vec_pre):
+                        best_vector = np.asarray(list(np.multiply(lista, best_vec_pre[0:length])) + list(best_vec_pre)[
+                                                                                                    length:len(
+                                                                                                        best_vec_pre)])
+                    if len(lista) == len(best_vec_pre):
+                        best_vector = np.multiply(lista, best_vec_pre)
+                    best_vectors.setdefault(v, {})
+                    best_vectors[i][v][k] = best_vector
+    self.best_vectors=best_vectors
+    self.G=M
+
+    for g in self.orderedMatrix:
+        self.orderedMatrix[g]=np.asarray(self.orderedMatrix[g])
+    print("Fine Ordinamento")
+
+def ordinamentoVertici_bound_fast(self):
+    return self.sorted_vertices
+
+def bound_fast(self,C,vecC):
+    dist=self.k-len(C)
+    lista=how_many_diff(vecC)
+    dec=np.asarray(lista)
+    for v in C:
+        best_vector=self.best_vectors[self.index][v][dist]
+        if((len(dec)+len(best_vector) >len(self.samples))):
+            #print("Attenzione ! Serve intersezione !")
+            lista.sort(reverse=True)
+            dec = np.asarray(lista)
+
+            if(len(best_vector)>len(dec)):
+                inters=len(dec)- ( len(self.samples)-len(best_vector) )
+            else:
+                inters = len(best_vector) - (len(self.samples) - len(dec))
+            dec_reduce=dec[0:len(dec)-inters]
+            best_vector_reduce=best_vector[inters:len(best_vector)]
+            bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
+        else:
+            bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+        if(bestS>self.best_score):
+            return True
+    return False
+
+def update_bound_fast(self):
+    for i in range(len(self.contatori)):
+        if(self.cont>=self.contatori[i]):
+            self.index=i
+
 ################################################
 ####### BOUND_MIN MIGLIORATO_ITERATIONS ########
 ################################################
