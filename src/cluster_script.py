@@ -18,16 +18,12 @@ from lib.inout import *
 
     (2)     Per evitare inutili disagi, eseguire questo script sempre da dentro la cartella src/.
 """
-proteins_input= "../../data/hint+hi2012_index_file.txt"
-samples_input = "../../data/matriceProb.csv"
-genes_input = "../../data/hint+hi2012_edge_file.txt"
-filter_input = '../../data/mutated_expressed_genes.txt'
 
 #ho importato i parametri di default da inout.py
-parameters['proteins_input'] = proteins_input
-parameters['samples_input'] = samples_input
-parameters['genes_input'] = genes_input
-parameters['filter_input'] = filter_input
+parameters['proteins_input']="../"+parameters['proteins_input']
+parameters['samples_input']="../"+parameters['samples_input']
+parameters['genes_input']="../"+parameters['genes_input']
+parameters['filter_input']="../"+parameters['filter_input']
 
 server = "login.dei.unipd.it"
 

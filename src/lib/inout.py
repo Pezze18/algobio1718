@@ -5,11 +5,13 @@ import time
 import datetime
 import networkx as nx
 
-# Parameters of default per il computer locale
+# Parameters of default
+matriceProb="matriceProb.csv"
+matriceBinaria="matriceBinaria.csv"
 parameters = {
     'k': 3,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
-    'samples_input': "../data/matriceProb.csv",
+    'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
     'filter_input': '../data/mutated_expressed_genes.txt',
     'delta': 0.8,
@@ -19,8 +21,12 @@ parameters = {
     'bound': False,
     'method': "nobound",
     # options: det, nobound, bound_min, bound_fast, bound_last, bound_major, bound_log, bound_prod, bund_kantorovich
-    'scoring_function': "prob_cover"  # options: prob_cover, set_cover
 }
+if parameters['prob']:
+    parameters['samples_input']+=matriceProb
+else:
+    parameters['samples_input']+=matriceBinaria
+#check_parameters(parameters)#controllo che i dati siano idonei/validi <-- spostare in main e aggiungere il parametro per local o cluster_script
 
 def parse_command_line():
     """
@@ -115,11 +121,6 @@ def check_parameters(parameters):
         raise ValueError("you cannot execute prob mode using method det")
     if (parameters["bound"] and parameters['method'] == "nobound"):
         raise Exception("You cant use bound option when you execute nobound")
-
-    if parameters['scoring_function'] == "prob_cover" and parameters["prob"] == False:
-        raise Exception("You cant use prob_cover function if you are not probabilistic mode")
-    if parameters['scoring_function'] == "set_cover" and parameters["prob"]:
-        raise Exception("You cant use set_cover function in deterministic mode")
 
     ##Check files path##
     if not os.path.isfile(parameters['filter_input']):

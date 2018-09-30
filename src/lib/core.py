@@ -17,7 +17,6 @@ class BDDE:
         self.best_score=parameters["best_score"]
         self.best_subgraph = []
         self.levels=[0 for i in range(k+1)]
-        self.leaves_number = 0
         self.str_to_id=parameters["str_to_id"]
         self.id_to_str = parameters["id_to_str"]
         self.genes=list(self.G.nodes).copy()
@@ -32,25 +31,32 @@ class BDDE:
             self.scoring_function = getattr(bounds, "prob_cover")
         else:
             self.scoring_function = getattr(bounds, "score_cover")
+            self.best_score=0
+
 
     def inspectNode(self, C):
-        """
-        Returns True if the branch has to be pruned inside the BDDE algorithm.
-        Furthermore, it evaluates leaves.
-        :param C: The current vertexes set to be evalued
-        :return: True if pruned, False otherwise
-        """
-
-        if len(C)>self.k:
+        size=len(C)
+        if size>self.k:
             # Prune it if it's too big: this will never actually happen, since we prune whenever len(C)==k
             return True
-        elif len(C)<self.k:
+        elif size<self.k:
+            self.levels[size] += 1
             # Prune it if the bounding function can't reach the current best, but do it only when using the probability version.
-            return self.prob and self.bound and self.fb(C)<self.best_score
+            return self.prob and self.bound and self.bound_function(self,C)
         else:
+            self.levels[size] += 1
+            """
+            Debegging generico
+            print()
+            print(C)
+            print("ActualScore: " + str(score))
+            #Calcolo bestS
+            #print("Optimal Score: "+str(bestS))
+            print("BestScore: " + str( self.best_score))
+            print()
+            """
             # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
             score = self.scoring_function(self,C)
-            self.leaves_number+=1
             if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
@@ -62,24 +68,12 @@ class BDDE:
             # No need to go further.
             return True
 
-    def how_many_mins(self, v):
+    def how_many_mins(self,sorted_qs, v):
         count=0
-        for s in self.sorted_qs:
-            if self.sorted_qs[s][0] == v:
+        for s in sorted_qs:
+            if sorted_qs[s][0] == v:
                 count+=1
         return count
-
-    def det_enumeration_algorithm(self):
-        sorted_vertices = [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
-        print("deterministic (no bounds) BDDE starts now:")
-        for v in sorted_vertices:
-            self.root=v
-            self.tree=nx.DiGraph()
-            self.DEPTH([],v,[])
-            self.G.remove_node(v)
-
-        print("Numero foglie: ")
-        print(self.leaves_number)
 
     def printInitialMessage(self):
         if(self.prob):
@@ -92,19 +86,26 @@ class BDDE:
 
     def enumeration_algorithm(self):
         self.printInitialMessage()
+        self.cont=0
 
         for v in self.sorted_vertices:
+            #print("v: "+str(v))
             self.root=v
             self.tree=nx.DiGraph()
             self.DEPTH([],v,[])
             self.G.remove_node(v)
 
             # Removing whatever we don't use anymore
-            #del self.tree
-            #del self.root
+            del self.tree
+            del self.root
+            self.cont+=1
 
         print("Numero foglie: ")
-        print(self.leaves_number)
+        print(self.levels[self.k])
+        print("Numero nodi interni visitati in totale: ")
+        print(sum(self.levels)-self.levels[self.k])
+        print("Numero nodi interni visitati per livello: ")
+        print(self.levels)
 
     def BREADTH(self, S,n,U):
         vn=n.data

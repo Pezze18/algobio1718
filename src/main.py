@@ -21,6 +21,8 @@ def main():
     else:
         patients = read_patients(parameters['samples_input'], str_to_id, filter=filter)
 
+    print("Samples size: " + str(len(patients)))
+
     if strategy == 'combinatorial':
         if parameters['prob']:
             C, score_C = prob_combinatorial_algorithm(G,k,patients)
