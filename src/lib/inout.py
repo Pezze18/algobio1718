@@ -5,6 +5,36 @@ import time
 import datetime
 import networkx as nx
 
+def check_parameters(parameters):
+    #Important check
+    if (parameters['prob'] == False and parameters['bound']):
+        raise ValueError("you cannot execute bound option without abilitate prob option")
+    if (parameters['prob'] and parameters['method']=="det"):
+        raise ValueError("you cannot execute prob mode using method det")
+    if (parameters["bound"] and parameters['method'] == "nobound"):
+        raise Exception("You cant use bound option when you execute nobound")
+
+    ##Check files path##
+    if not os.path.isfile(parameters['filter_input']):
+        raise FileNotFoundError("Can't find the 'proteins' file; filename given: " + parameters['filter_input'])
+
+    if not os.path.isfile(parameters['proteins_input']):
+        raise FileNotFoundError("Can't find the 'proteins' file; filename given: " + parameters['proteins_input'])
+
+    if not os.path.isfile(parameters['samples_input']):
+        raise FileNotFoundError("Can't find the 'samples' file; filename given: " + parameters['samples_input'])
+
+    if not os.path.isfile(parameters['genes_input']):
+        raise FileNotFoundError("Can't find the 'genes' file; filename given: " + parameters['genes_input'])
+
+    #Other checks
+    if not (0 < parameters['delta'] <= 1):
+        raise ValueError("The given 'delta' is not a valid  value (i.e. in ]0,1]). Given: " + str(parameters['delta']))
+
+    k=parameters['k']
+    if not (k >= 1) or type(k) != int:
+        raise ValueError("The given 'k' is not a valid value (i.e. integer greater than 1). Given: " + str(k))
+
 # Parameters of default
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
@@ -112,38 +142,6 @@ def update_parameters(args,parameters):
         parameters['scoring_function'] = args.scoring_function
 
     return parameters
-
-def check_parameters(parameters):
-    #Important check
-    if (parameters['prob'] == False and parameters['bound']):
-        raise ValueError("you cannot execute bound option without abilitate prob option")
-    if (parameters['prob'] and parameters['method']=="det"):
-        raise ValueError("you cannot execute prob mode using method det")
-    if (parameters["bound"] and parameters['method'] == "nobound"):
-        raise Exception("You cant use bound option when you execute nobound")
-
-    ##Check files path##
-    if not os.path.isfile(parameters['filter_input']):
-        raise FileNotFoundError("Can't find the 'proteins' file; filename given: " + parameters['filter_input'])
-
-    if not os.path.isfile(parameters['proteins_input']):
-        raise FileNotFoundError("Can't find the 'proteins' file; filename given: " + parameters['proteins_input'])
-
-    if not os.path.isfile(parameters['samples_input']):
-        raise FileNotFoundError("Can't find the 'samples' file; filename given: " + parameters['samples_input'])
-
-    if not os.path.isfile(parameters['genes_input']):
-        raise FileNotFoundError("Can't find the 'genes' file; filename given: " + parameters['genes_input'])
-
-    #Other checks
-    if not (0 < parameters['delta'] <= 1):
-        raise ValueError("The given 'delta' is not a valid  value (i.e. in ]0,1]). Given: " + str(parameters['delta']))
-
-    k=parameters['k']
-    if not (k >= 1) or type(k) != int:
-        raise ValueError("The given 'k' is not a valid value (i.e. integer greater than 1). Given: " + str(k))
-
-
 
 def read_patients_prob(filename, genes_map, filter=set()):
     frame = pd.read_csv(filename,sep="\t")
