@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from lib.core import *
 import numpy as np
-import bottleneck as bottle
+#import bottleneck as bottle
 import math
 #import tensorflow as tf
 
@@ -52,37 +52,28 @@ def pre_bound_min_migliorato(self):
     #best_vectors[v][k] dove k indica la dist e 10000 è l'indice massimo per un nodo
 
     for v in self.G:
-        lista_pazienti = [[] for x in range(len(self.samples))]#a ogni sample associo una lista
-        for g in self.G.neighbors(v):
-            vec = self.matrix[g]
-            for j in range(len((lista_pazienti))):
-                if (vec[j] != 1):
-                    lista_pazienti[j].append(vec[j])
-        for j in range(len((lista_pazienti))):
-            lista_pazienti[j].sort()
-        for j in range(len((lista_pazienti))):
-            if (len(lista_pazienti[j]) == 0):
-                lista_pazienti[j] = 1
-            else:
-                lista_pazienti[j] = lista_pazienti[j][0]
-        best_vectors[v] = [x for x in range(self.k )]#0...k-1
-        best_vectors[v][1] = np.asarray(lista_pazienti)
-
-    for k in range(2, self.k):
+        best_vectors[v] = [x for x in range(self.k)]  # 0...k-1
+    for k in range(1, self.k):
         for v in self.G:
-            lista_pazienti = [[] for x in range(len(self.samples))]
+            lista_pazienti = [[] for x in range(len(self.samples))]#a ogni sample associo una lista
             for g in self.G.neighbors(v):
-                vec = best_vectors[g][k - 1]
+                if k==1:
+                    vec = self.matrix[g]
+                else:
+                    vec = best_vectors[g][k - 1]
                 for j in range(len((lista_pazienti))):
                     if (vec[j] != 1):
                         lista_pazienti[j].append(vec[j])
-            for j in range(len((lista_pazienti))):
-                lista_pazienti[j].sort()
+            for j in range(len(lista_pazienti)):
                 if (len(lista_pazienti[j]) == 0):
                     lista_pazienti[j] = 1
                 else:
-                    lista_pazienti[j] = lista_pazienti[j][0]
-            best_vectors[v][k] = np.multiply(best_vectors[v][1], np.asarray(lista_pazienti))
+                    lista_pazienti[j]=np.asarray(lista_pazienti[j])
+                    lista_pazienti[j]=np.min(lista_pazienti[j])# return min_value
+            if(k==1):
+                best_vectors[v][k] = np.asarray(lista_pazienti)
+            else:
+                best_vectors[v][k] = np.multiply(best_vectors[v][1], np.asarray(lista_pazienti))
     self.best_vectors = best_vectors
     print("Fine Ordinamento")
 
@@ -168,11 +159,12 @@ def pre_bound_min_migliorato(self):
 
 def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
     dist = self.k - len(C)
-    bests = []
+    minBestS=10000
     for g in C:
         bestS = np.sum(
             np.multiply(self.best_vectors[g][dist], vecC))  # self.best_vectors[g][dist]
-        bests.append(bestS)
+        if minBestS > bestS:
+            minBestS = bestS
         """
         Debugging part
         print(self.best_vectors[g][dist])
@@ -183,10 +175,10 @@ def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
         print("bestS: "+str(bestS))
         print("BestScore: "+str(self.best_score))
         """
-    bestS =np.min(bests)
-    if bestS > self.best_score:  # and abs(bestS-self.best_score)>0.00001
+    if minBestS > self.best_score:
         return True
     return False
+
 
 ###################################
 ########### BOUND_MIN #############

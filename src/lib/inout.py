@@ -39,7 +39,7 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k': 3,
+    'k': 4,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
@@ -197,7 +197,6 @@ def make_maps(filename):
     return id_to_str, str_to_id
 
 def load_network(filename):
-
     with open(filename, "r") as file:
         G=nx.Graph()
         lines=file.readlines()
