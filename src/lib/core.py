@@ -28,10 +28,11 @@ class BDDE:
             self.bound_function = getattr(bounds, parameters["method"])
 
         if self.prob:
-            self.scoring_function = getattr(bounds, "prob_cover")
+            self.levels = [0 for i in range(k + 1)]
+            self.scoring_function = getattr(bounds, "prob_cover_vec")
         else:
             self.scoring_function = getattr(bounds, "score_cover")
-            self.best_score=0
+            self.best_score=0#Ricordati di cambiare < con > !
 
 
     def inspectNode(self, C):
@@ -41,8 +42,13 @@ class BDDE:
             return True
         elif size<self.k:
             self.levels[size] += 1
+            if (size == 1):
+                self.levelsVec[1] = self.matrix[C[0]]
+            else:
+                self.levelsVec[size] = np.multiply(self.levelsVec[size - 1],
+                                                   self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
             # Prune it if the bounding function can't reach the current best, but do it only when using the probability version.
-            return self.prob and self.bound and self.bound_function(self,C)
+            return self.prob and self.bound and self.bound_function(self,C,self.levelsVec[size])
         else:
             self.levels[size] += 1
             """
@@ -55,8 +61,13 @@ class BDDE:
             print("BestScore: " + str( self.best_score))
             print()
             """
+            if (size == 1):
+                self.levelsVec[1] = self.matrix[C[0]]
+            else:
+                self.levelsVec[size] = np.multiply(self.levelsVec[size - 1],
+                                                   self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
             # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
-            score = self.scoring_function(self,C)
+            score = self.scoring_function(self,self.levelsVec[size])
             if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
@@ -280,3 +291,70 @@ def delta_removal(G, delta):
 
     return G
 
+
+
+####################################
+######### AUXILIAR FUNCTIONS #######
+####################################
+
+def BFS(self):
+    L=[ [1 for v in range(self.k)] for i in range(len(self.G))]
+    visit = [[False for v in range(len(self.G))] for i in range(len(self.G))]
+    pred = [[None for v in range(len(self.G))] for i in range(len(self.G))]
+    shortestVec = [[None for v in range(len(self.G))] for i in range(len(self.G))]
+    for v in self.G:
+        L[v][0]=v
+        for g in L[v][0]:
+            lista= self.G.neighbors(g)
+            for u in lista:
+                if visit[v][u]==False:
+                    visit[v][u] = True
+                    L[v][1].append(u)
+                    pred[v][u]=g
+                    shortestVec[v][u]=np.multiply(shortestVec[v][u], self.matrix[v])
+    for k in range(2,self.k):
+        for v in self.G:
+            for g in L[v][k-1]:
+                lista= self.G.neighbors(g)
+                for u in lista:
+                    if visit[u][v]==False:
+                        visit[u][v]=True
+                        L[v][k].append(u)
+                        pred[u][v]=g
+
+
+
+
+def BFS(self, s):#metodo ausiliario usabili in diversi bound come major o kantorovich
+    #print("Inizio BFS")
+    G=self.G
+    visit=self.visit
+    for i in range(0,len(visit)):
+        visit[i]=False
+    L=[]
+    L.append([])
+    L[0].append(s)
+    visit[s]=True
+    i=0
+
+    while(len(L[i])!=0 and i<self.k-1):#L[k-1] livello è presente, nonchè l'ultimo
+        L.append([])
+        for v in L[i]:
+            for u in G.neighbors(v):
+                if visit[u]==False:
+                    L[i+1].append(u)
+                    visit[u] = True
+        i=i+1
+    #print(len(L))
+    #print(L)
+    return L
+
+def how_many_diff(L):
+    L=np.asarray(L)
+    return L[L==1]
+def how_many_diff_old(L):# metodo ausiliario di bound_min(deprecated)
+    lista = []
+    for n in L:
+        if (n != 1):
+            lista.append(n)
+    return lista

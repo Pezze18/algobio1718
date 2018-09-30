@@ -178,17 +178,29 @@ def bound_min_migliorato(self, C):  # DA COMPLETARE
     return False
 
 
-def ordinamentoVertici_bound_last(self):
-    sorted_vertices = [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
-    return sorted_vertices
+def ordinamentoVertici_bound_min_migliorato(self):
+    cont = []
+    sorted_vertices = []
+    for g in self.genes:
+        cont.append((g, len(how_many_diff(self.matrix[g]))))  # IdNodo:max_count
+        sorted(cont, key=lambda x: x[1])
+    print(cont)  # guarda distribuzione max_count
+    for i in range(len(cont)):
+        if cont[i][1] != 0:
+            sorted_vertices.append(cont[i][0])
 
-
-def update_bound_last(self):
-    return False
-
-
-
-
+    # Debegging, guardo freq cumulata
+    freq = [c[1] for c in cont]
+    freq = np.asarray(freq)
+    freq = freq / np.sum(freq)
+    cum = 0
+    threshold = [i * 0.1 for i in range(10)]
+    j = 0
+    for i in range(len(freq)):
+        cum += freq[i]
+        if cum > threshold[j]:
+            print("Threshold :" + str(threshold[j]) + "at node: " + str(i))
+            j += 1
 
 ###################################
 ########### BOUND_MIN #############
@@ -288,11 +300,83 @@ def pre_bound_min(self):
     print("Fine Ordinamento")
 
 def bound_min(self,C):
-    return False
     dist=self.k-len(C)
     bestS=np.dot(self.best_vectors[self.cont][dist],vectorization_solution(self,C))
     if(bestS>self.best_score):
         return True #prune
+
+def ordinamentoVertici_bound_min(self):
+    # Preparazione delle strutture necessarie
+    self.matrix = toMatrix(self, self.G.nodes)
+    qs = {
+        s: {gene: 1 - self.samples[s][gene]
+            for gene in self.samples[s]}
+        for s in self.samples
+    }
+    sorted_qs = {
+        s: sorted(qs[s], key=qs[s].get)
+        for s in qs
+    }
+
+    sort_by_degree = [[t[0], self.how_many_mins(sorted_qs, t[0]), t[1]]
+                      for t in sorted(self.G.degree,
+                                      key=lambda t: t[1])]
+
+    genes_dict = {
+        a[1]: [
+            t[0]
+            for t in sort_by_degree
+            if t[1] == a[1]
+        ]
+        for a in sort_by_degree
+        if a[1] != 0
+    }
+
+    v_howmany = {t[0]: t[1] for t in sort_by_degree}
+
+    self.sorted_vertices = []
+    # Itero su tutti i nodi
+    cont = 0
+    print("Inizio Ordinamento")
+    best_vectors = [[np.ones(len(self.samples)) for i in range(0, self.k)] for cont in range(len(self.G.nodes))]
+    for cont in range(len(self.G.nodes)):
+        # Seleziono nodo
+        max_num_min = max(genes_dict)
+        i = max_num_min
+        # print("i:"+str(i))
+        v = genes_dict[i][0]
+        self.sorted_vertices.append(v)
+
+        # Aggiornamento delle strutture dopo aver eliminato il nodo
+        i = max_num_min
+        genes_dict[i].remove(v)
+        if len(genes_dict[i]) == 0:
+            del genes_dict[i]
+
+        for s in sorted_qs:
+            try:
+                sorted_qs[s].remove(v)
+            except ValueError:
+                pass
+
+            if len(sorted_qs[s]) > 0:
+                new_min = sorted_qs[s][0]
+                old_counter = v_howmany[new_min]
+                new_counter = old_counter + 1
+                try:
+                    genes_dict[old_counter].remove(new_min)
+                except KeyError:
+                    pass
+
+                genes_dict.setdefault(new_counter, [])
+                genes_dict[new_counter].append(new_min)
+                v_howmany[new_min] = new_counter
+
+                if old_counter > 0 and len(genes_dict[old_counter]) == 0:
+                    del genes_dict[old_counter]
+        if len(genes_dict) == 0:
+            break  # non è più necessario proseguire
+    print("Fine Ordinamento")
 
 ###################################
 ########### NO_BOUND #############
@@ -301,6 +385,18 @@ def pre_nobound(self):
     self.matrix = toMatrix(self, self.G.nodes)
     #Ordinamento Vertici
     self.sorted_vertices= [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
+    #self.sorted_vertices= ordinamentoVertici_bound_min(self)  #permette di essere pù veloce perchè salta 40% dei geni
+    # self.sorted_vertices= ordinamentoVertici_nobound_migliorato(self)  #permette di essere pù veloce perchè salta 40% dei geni
+
+def ordinamentoVertici_nobound_migliorato(self):
+ #unica differenza da ordinamentoVertici_bound_min_migliorato è che non ordino per max_count
+    cont=[]
+    sorted_vertices=[]
+    for g in self.genes:
+        cont.append( (g, len(how_many_diff(self.matrix[g]))) ) #IdNodo:max_count
+    for i in range(len(cont)):
+        if cont[i][1]!=0:
+            sorted_vertices.append(cont[i][0])
 
 ###################################
 ########### DET #############
@@ -351,6 +447,10 @@ def prob_cover(self,C):#numpy #min version
     som = np.sum(v)
     return som
 
+def prob_cover_vec(self,vecC):#numpy #min version
+    som = np.sum(vecC)
+    return som
+
 def prob_cover_old(self,C):#version min
     som=0.0
     samples=self.samples
@@ -377,69 +477,3 @@ def set_cover(self,C):
     ])
 
 
-
-####################################
-######### AUXILIAR FUNCTIONS #######
-####################################
-
-def BFS(self):
-    L=[ [1 for v in range(self.k)] for i in range(len(self.G))]
-    visit = [[False for v in range(len(self.G))] for i in range(len(self.G))]
-    pred = [[None for v in range(len(self.G))] for i in range(len(self.G))]
-    shortestVec = [[None for v in range(len(self.G))] for i in range(len(self.G))]
-    for v in self.G:
-        L[v][0]=v
-        for g in L[v][0]:
-            lista= self.G.neighbors(g)
-            for u in lista:
-                if visit[v][u]==False:
-                    visit[v][u] = True
-                    L[v][1].append(u)
-                    pred[v][u]=g
-                    shortestVec[v][u]=np.multiply(shortestVec[v][u], self.matrix[v])
-    for k in range(2,self.k):
-        for v in self.G:
-            for g in L[v][k-1]:
-                lista= self.G.neighbors(g)
-                for u in lista:
-                    if visit[u][v]==False:
-                        visit[u][v]=True
-                        L[v][k].append(u)
-                        pred[u][v]=g
-
-
-
-
-def BFS(self, s):#metodo ausiliario usabili in diversi bound come major o kantorovich
-    #print("Inizio BFS")
-    G=self.G
-    visit=self.visit
-    for i in range(0,len(visit)):
-        visit[i]=False
-    L=[]
-    L.append([])
-    L[0].append(s)
-    visit[s]=True
-    i=0
-
-    while(len(L[i])!=0 and i<self.k-1):#L[k-1] livello è presente, nonchè l'ultimo
-        L.append([])
-        for v in L[i]:
-            for u in G.neighbors(v):
-                if visit[u]==False:
-                    L[i+1].append(u)
-                    visit[u] = True
-        i=i+1
-    #print(len(L))
-    #print(L)
-    return L
-
-def how_many_diff(L):
-    L=np.asarray(L)
-    return L[L==1]
-def how_many_diff_old(L):# metodo ausiliario di bound_min(deprecated)
-    lista = []
-    for n in L:
-        if (n != 1):
-            lista.append(n)
-    return lista
