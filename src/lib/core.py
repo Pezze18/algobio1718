@@ -26,6 +26,7 @@ class BDDE:
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
+            self.update_function = getattr(bounds, "update_" + parameters["method"])
 
         if self.prob:
             self.levelsVec = [1 for i in range(k+1)] # 0...k
@@ -110,6 +111,9 @@ class BDDE:
             del self.tree
             del self.root
             self.cont+=1
+
+            if(self.prob and self.bound):
+                self.update_function(self)
 
         print("Numero foglie: ")
         print(self.levels[self.k])

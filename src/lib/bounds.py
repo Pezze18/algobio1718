@@ -48,33 +48,47 @@ def pre_bound_min_migliorato(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_min(self)#Creo ordinamento(Stesso di bound_min)
     print("Inizio Ordinamento")
-    best_vectors = [[np.ones(len(self.samples)) for i in range(0, self.k)] for cont in range(10000)]
+
     #best_vectors[v][k] dove k indica la dist e 10000 è l'indice massimo per un nodo
 
-    for v in self.G:
-        best_vectors[v] = [x for x in range(self.k)]  # 0...k-1
-    for k in range(1, self.k):
-        for v in self.G:
-            lista_pazienti = [[] for x in range(len(self.samples))]#a ogni sample associo una lista
-            for g in self.G.neighbors(v):
-                if k==1:
-                    vec = self.matrix[g]
+    iterations=5
+    step=int(len(self.sorted_vertices)/iterations)
+    M = self.G.copy()
+
+    best_vectors = [ [ [np.ones(len(self.samples)) for i in range(0, self.k)] for cont in range(10000)] for i in range(iterations)]
+
+    #tresholds=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    tresholds=[i*(1/iterations) for i in range(iterations)]
+    self.contatori=[i*step for i in range(iterations)]
+    print(self.contatori)
+
+    for i in range(iterations):
+        if(i>0):
+            self.G.remove_nodes_from(self.sorted_vertices[self.contatori[i-1]:self.contatori[i]])
+        for k in range(1, self.k):
+            for v in self.G:
+                lista_pazienti = [[] for x in range(len(self.samples))]#a ogni sample associo una lista
+                for g in self.G.neighbors(v):
+                    if k==1:
+                        vec = self.matrix[g]
+                    else:
+                        vec = best_vectors[i][g][k - 1]
+                    for j in range(len((lista_pazienti))):
+                        if (vec[j] != 1):
+                            lista_pazienti[j].append(vec[j])
+                for j in range(len(lista_pazienti)):
+                    if (len(lista_pazienti[j]) == 0):
+                        lista_pazienti[j] = 1
+                    else:
+                        lista_pazienti[j]=np.asarray(lista_pazienti[j])
+                        lista_pazienti[j]=np.min(lista_pazienti[j])# return min_value
+                if(k==1):
+                    best_vectors[i][v][k] = np.asarray(lista_pazienti)
                 else:
-                    vec = best_vectors[g][k - 1]
-                for j in range(len((lista_pazienti))):
-                    if (vec[j] != 1):
-                        lista_pazienti[j].append(vec[j])
-            for j in range(len(lista_pazienti)):
-                if (len(lista_pazienti[j]) == 0):
-                    lista_pazienti[j] = 1
-                else:
-                    lista_pazienti[j]=np.asarray(lista_pazienti[j])
-                    lista_pazienti[j]=np.min(lista_pazienti[j])# return min_value
-            if(k==1):
-                best_vectors[v][k] = np.asarray(lista_pazienti)
-            else:
-                best_vectors[v][k] = np.multiply(best_vectors[v][1], np.asarray(lista_pazienti))
-    self.best_vectors = best_vectors
+                    best_vectors[i][v][k] = np.multiply(best_vectors[i][v][1], np.asarray(lista_pazienti))
+        self.best_vectors = best_vectors
+    self.G = M
+    self.index=0
     print("Fine Ordinamento")
 
     """
@@ -162,9 +176,9 @@ def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
     minBestS=10000
     for g in C:
         bestS = np.sum(
-            np.multiply(self.best_vectors[g][dist], vecC))  # self.best_vectors[g][dist]
-        if minBestS > bestS:
-            minBestS = bestS
+            np.multiply(self.best_vectors[self.index][g][dist], vecC))  # self.best_vectors[g][dist]
+        if bestS < self.best_score:
+            return False
         """
         Debugging part
         print(self.best_vectors[g][dist])
@@ -175,10 +189,12 @@ def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
         print("bestS: "+str(bestS))
         print("BestScore: "+str(self.best_score))
         """
-    if minBestS > self.best_score:
-        return True
-    return False
+    return True
 
+def update_bound_min_migliorato(self):
+    for i in range(len(self.contatori)):
+        if(self.cont>=self.contatori[i]):
+            self.index=i
 
 ###################################
 ########### BOUND_MIN #############
@@ -283,6 +299,9 @@ def bound_min(self,C):
     bestS=np.dot(self.best_vectors[self.cont][dist],vectorization_solution(self,C))
     if(bestS>self.best_score):
         return True #prune
+
+def update_bound_min(self):
+    return True
 
 def ordinamentoVertici_bound_min(self):
     # Preparazione delle strutture necessarie
