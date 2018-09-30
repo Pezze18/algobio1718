@@ -24,11 +24,12 @@ def main():
     print("Samples size: " + str(len(patients)))
 
     if strategy == 'combinatorial':
-        if parameters['prob']:
-            C, score_C = prob_combinatorial_algorithm(G,k,patients)
-        else:
-            C, P_C = combinatorial_algorithm(G,k,patients)
-            score_C = len(P_C)
+        combinatorial_obj = Combinatorial(G, patients, k, parameters)
+        combinatorial_obj.combinatorial_algorithm()
+
+        C = combinatorial_obj.best_subgraph
+        score_C = combinatorial_obj.best_score
+
     elif strategy == 'enumerate':
         BDDE_obj = BDDE(G, patients, k, parameters)
         BDDE_obj.enumeration_algorithm()

@@ -586,6 +586,11 @@ def prob_cover(self,C):#numpy #min version
     som = np.sum(v)
     return som
 
+def prob_cover_max_version(self,C):#numpy #min version
+    v=vectorization_solution(self,C)
+    som = np.sum(v)
+    return len(self.samples)-som
+
 def prob_cover_vec(self,vecC):#numpy #min version
     som = np.sum(vecC)
     return som

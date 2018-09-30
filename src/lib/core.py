@@ -195,105 +195,131 @@ class Nodo(object):
 
 
 
+class Combinatorial:
+    def __init__(self, G, samples, k, parameters):
+        self.G = G
+        self.k = k
+        self.samples = samples
+        self.sample_size = len(self.samples)
+        self.prob = parameters["prob"]
+        self.bound= parameters["bound"]
+        self.best_score=0
+        self.best_subgraph = []
+        self.delta=parameters["delta"]
 
+        if(self.prob):
+            self.matrix = toMatrix(self, self.G.nodes)
 
-def combinatorial_algorithm(G, k, patients, delta=0.8):
-    G = delta_removal(G, delta)
+    def combinatorial_algorithm(self):
+        if(self.prob):
+            self.combinatorial_algorithm_prob()
+        else:
+            self.combinatorial_algorithm_det()
 
-    C = {}
-    P_C = set()
+    def combinatorial_algorithm_det(self):
+        G=self.G
+        delta=self.delta
 
-    for v in G.nodes():
-        C_v = {v}
-        P_C_v = set_cover(patients, C_v)  # no need to compute this \foreach u
+        #G = delta_removal(G, delta)
 
-        p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
+        C = {}
+        P_C = set()
 
-        while len(C_v) < k:
-            maximum = -1
-            l_v_max = set()
+        for v in G.nodes():
+            C_v = {v}
+            P_C_v = set_cover(self, C_v)  # no need to compute this \foreach u
 
-            for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
-                l_v = p_v[u]
+            p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
 
-                if len(l_v | C_v) <= k:  # "|" is an overloaded operator, it means 'union'
-                    P_v = set_cover(patients, l_v)
+            while len(C_v) < k:
+                maximum = -1
+                l_v_max = set()
 
-                    s = len(P_v - P_C_v)/ len(l_v - C_v)
-                    if maximum < s:
-                        maximum = s
-                        l_v_max = l_v
-            C_v = C_v | l_v_max
-            P_C_v = set_cover(patients, C_v)
+                for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
+                    l_v = p_v[u]
 
-        if len(P_C_v) > len(P_C):  # if we've found a better solution, update it and let us know
-            C = C_v
-            P_C = P_C_v
-            print("_________________")
-            print()
-            print("Best solution updated!")
-            print("Current C (ids): ", C)
-            print("Current P_C (cardinality):", len(P_C))
+                    if len(l_v | C_v) <= self.k:  # "|" is an overloaded operator, it means 'union'
+                        P_v = set_cover(self, l_v)
 
-    return C, P_C
+                        s = len(P_v - P_C_v)/ len(l_v - C_v)
+                        if maximum < s:
+                            maximum = s
+                            l_v_max = l_v
+                C_v = C_v | l_v_max
+                P_C_v = set_cover(self, C_v)
 
-def prob_combinatorial_algorithm(G, k, patients, delta=0.8):
-    G = delta_removal(G, delta)
+            if len(P_C_v) > len(P_C):  # if we've found a better solution, update it and let us know
+                C = C_v
+                P_C = P_C_v
+                print("_________________")
+                print()
+                print("Best solution updated!")
+                print("Current C (ids): ", C)
+                self.best_score=len(P_C)
+                self.best_subgraph=C
+                print("Current P_C (cardinality):", len(P_C))
+        return C, P_C
 
-    C = {}
-    P_C = -1
+    def combinatorial_algorithm_prob(self):
+        G=self.G
+        delta = self.delta
+        #G = delta_removal(G, delta)
 
-    for v in G.nodes():
-        C_v = {v}
-        P_C_v = prob_cover(patients, C_v)  # no need to compute this \foreach u
+        C = {}
+        P_C = -1
 
-        p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
+        for v in G.nodes():
+            C_v = {v}
+            P_C_v = prob_cover_max_version(self, list(C_v))  # no need to compute this \foreach u
 
-        while len(C_v) < k:
-            maximum = -1
-            l_v_max = set()
+            p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
 
-            for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
-                l_v = p_v[u]
+            while len(C_v) < self.k:
+                maximum = -1
+                l_v_max = set()
 
-                if len(l_v | C_v) <= k:  # "|" is an overloaded operator, it means 'union'
-                    P_v = prob_cover(patients, l_v | C_v)
+                for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
+                    l_v = p_v[u]
 
-                    s = (P_v - P_C_v)/ len(l_v - C_v)
-                    if maximum < s:
-                        maximum = s
-                        l_v_max = l_v
-            C_v = C_v | l_v_max
-            P_C_v = prob_cover(patients, C_v)
+                    if len(l_v | C_v) <= self.k:  # "|" is an overloaded operator, it means 'union'
+                        P_v = prob_cover_max_version(self, list(l_v | C_v))
 
-        if P_C_v > P_C:  # if we've found a better solution, update it and let us know
-            C = C_v
-            P_C = P_C_v
-            print("_________________")
-            print()
-            print("Best solution updated!")
-            print("Current C (ids): ", C)
-            print("Current P_C (cardinality):", P_C)
+                        s = (P_v - P_C_v)/ len(l_v - C_v)
+                        if maximum < s:
+                            maximum = s
+                            l_v_max = l_v
+                C_v = C_v | l_v_max
+                P_C_v = prob_cover_max_version(self, list(C_v))
 
-    return C, P_C
+            if P_C_v > P_C:  # if we've found a better solution, update it and let us know
+                C = C_v
+                P_C = P_C_v
+                print("_________________")
+                print()
+                print("Best solution updated!")
+                print("Current C (ids): ", C)
+                self.best_score=P_C
+                self.best_subgraph=C
+                print("Current P_C (cardinality):", P_C)
+        return C, P_C
 
-def delta_removal(G, delta):
-    """
-    DEPRECATED. We're not even using this version of the problem.
-    :param G: input graph
-    :param delta: threshold
-    :return: the graph G_I obtained from G by removing any edge with weight < delta
-    """
+    def delta_removal(G, delta):
+        """
+        DEPRECATED. We're not even using this version of the problem.
+        :param G: input graph
+        :param delta: threshold
+        :return: the graph G_I obtained from G by removing any edge with weight < delta
+        """
 
-    removes = []
+        removes = []
 
-    for (v, u) in G.edges():
-        if G[v][u]['weight'] < delta:
-            removes.append((v, u))
+        for (v, u) in G.edges():
+            if G[v][u]['weight'] < delta:
+                removes.append((v, u))
 
-    G.remove_edges_from(removes)
+        G.remove_edges_from(removes)
 
-    return G
+        return G
 
 
 
