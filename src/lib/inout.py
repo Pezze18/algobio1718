@@ -39,7 +39,7 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k': 4,
+    'k': 3,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
@@ -48,8 +48,8 @@ parameters = {
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000,  # maximum for a single gene
-    'bound': False,
-    'method': "nobound",
+    'bound': True,
+    'method': "bound_min_migliorato",
     # options: det, nobound, bound_min, bound_fast, bound_last, bound_major, bound_log, bound_prod, bund_kantorovich
 }
 if parameters['prob']:

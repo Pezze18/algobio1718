@@ -2,20 +2,57 @@ import numpy as np
 import networkx as nx
 from lib.core import *
 import numpy as np
+import bottleneck as bottle
 import math
 #import tensorflow as tf
+
+###################################
+####### BOUND_ORDER ########
+###################################
+def ordinamentoVertici_bound_order(self):
+    cont = []
+    sorted_vertices = []
+    for g in self.genes:
+        cont.append((g, how_many_diff(self.matrix[g])))  # IdNodo:max_count
+    cont=[c for c in cont if c[1]!=0]
+    cont=sorted(cont, key=lambda x: x[1],reverse=True)
+    #print(cont)  # guarda distribuzione max_count
+    for i in range(len(cont)):
+        if cont[i][1] != 0:
+            sorted_vertices.append(cont[i][0])
+    #print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
+    # Debegging, guardo freq cumulata
+    freq = [c[1] for c in cont]
+    unique, counts = np.unique(freq, return_counts=True)
+    #print(np.asarray((unique, counts)).T)
+
+    """
+    Analisi
+    freq = np.asarray(freq)
+    freq = freq / np.sum(freq)
+    cum = 0
+    threshold = [i * 0.1 for i in range(11)]
+    j = 0
+    for i in range(len(freq)):
+        cum += freq[i]
+        if cum > threshold[j]:
+            print("Threshold :" + str(threshold[j]) + "at node: " + str(i))
+            j += 1
+    """
 
 
 ###################################
 ####### BOUND_MIN MIGLIORATO ########
 ###################################
 def pre_bound_min_migliorato(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_min(self)#Creo ordinamento(Stesso di bound_min)
     print("Inizio Ordinamento")
-    self.matrix = toMatrix(self.samples, self.G.nodes)
-    best_vectors = {}
+    best_vectors = [[np.ones(len(self.samples)) for i in range(0, self.k)] for cont in range(10000)]
+    #best_vectors[v][k] dove k indica la dist e 10000 è l'indice massimo per un nodo
 
     for v in self.G:
-        lista_pazienti = [[] for x in range(len(self.samples))]
+        lista_pazienti = [[] for x in range(len(self.samples))]#a ogni sample associo una lista
         for g in self.G.neighbors(v):
             vec = self.matrix[g]
             for j in range(len((lista_pazienti))):
@@ -28,7 +65,7 @@ def pre_bound_min_migliorato(self):
                 lista_pazienti[j] = 1
             else:
                 lista_pazienti[j] = lista_pazienti[j][0]
-        best_vectors[v] = [x for x in range(self.k + 1)]
+        best_vectors[v] = [x for x in range(self.k )]#0...k-1
         best_vectors[v][1] = np.asarray(lista_pazienti)
 
     for k in range(2, self.k):
@@ -48,32 +85,6 @@ def pre_bound_min_migliorato(self):
             best_vectors[v][k] = np.multiply(best_vectors[v][1], np.asarray(lista_pazienti))
     self.best_vectors = best_vectors
     print("Fine Ordinamento")
-
-    """
-    #Debugging part (not more necessary)
-    RB = self.str_to_id['RB1CC1']
-    TP53 = self.str_to_id['TP53']
-    PTEN=self.str_to_id['PTEN']
-    S = [RB, TP53]
-    C = [RB, TP53, PTEN]
-    bestS = np.sum(np.multiply(self.best_vectors[RB][1], vectorization_solution(self, S)))
-    score=prob_cover(self,C)
-    print()
-    print(C)
-    print("ActualScore1: " + str(score))
-    print("OptimalScore1: " + str(bestS))
-    bestS2 = np.sum(np.multiply(self.best_vectors[TP53][1], vectorization_solution(self, S)))
-    print("OptimalScore2: " + str(bestS2))
-    print()
-
-    #divide=np.divide(vectorization_solution(self, C), vectorization_solution(self, S))
-    divide=vectorization_solution(self, [PTEN])
-    #print(divide)
-    #print(self.best_vectors[RB][1])
-    for j in range(len(self.samples)):
-        if(self.best_vectors[RB][1][j]>divide[j]):
-            print("Posizione: "+str(j)+" value_min: "+str(self.best_vectors[RB][1][j])+ "  real: "+str(divide[j]))
-    """
 
     """
     Idem ma con BFS
@@ -155,12 +166,12 @@ def pre_bound_min_migliorato(self):
     print("Fine Ordinamento")
     """
 
-def bound_min_migliorato(self, C):  # DA COMPLETARE
+def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
     dist = self.k - len(C)
     bests = []
     for g in C:
         bestS = np.sum(
-            np.multiply(self.best_vectors[g][dist], vectorization_solution(self, C)))  # self.best_vectors[g][dist]
+            np.multiply(self.best_vectors[g][dist], vecC))  # self.best_vectors[g][dist]
         bests.append(bestS)
         """
         Debugging part
@@ -172,35 +183,10 @@ def bound_min_migliorato(self, C):  # DA COMPLETARE
         print("bestS: "+str(bestS))
         print("BestScore: "+str(self.best_score))
         """
-    bestS = min(bests)
+    bestS =np.min(bests)
     if bestS > self.best_score:  # and abs(bestS-self.best_score)>0.00001
         return True
     return False
-
-
-def ordinamentoVertici_bound_min_migliorato(self):
-    cont = []
-    sorted_vertices = []
-    for g in self.genes:
-        cont.append((g, len(how_many_diff(self.matrix[g]))))  # IdNodo:max_count
-        sorted(cont, key=lambda x: x[1])
-    print(cont)  # guarda distribuzione max_count
-    for i in range(len(cont)):
-        if cont[i][1] != 0:
-            sorted_vertices.append(cont[i][0])
-
-    # Debegging, guardo freq cumulata
-    freq = [c[1] for c in cont]
-    freq = np.asarray(freq)
-    freq = freq / np.sum(freq)
-    cum = 0
-    threshold = [i * 0.1 for i in range(10)]
-    j = 0
-    for i in range(len(freq)):
-        cum += freq[i]
-        if cum > threshold[j]:
-            print("Threshold :" + str(threshold[j]) + "at node: " + str(i))
-            j += 1
 
 ###################################
 ########### BOUND_MIN #############
@@ -247,6 +233,7 @@ def pre_bound_min(self):
     cont=0
     print("Inizio Ordinamento")
     best_vectors=[[ np.ones(len(self.samples)) for i in range(0,self.k)] for cont in range(len(self.G.nodes))]
+    #best_vectors[cont][k] dove k indica la dist
     for cont in range(len(self.G.nodes)):
         #Seleziono nodo
         max_num_min = max(genes_dict)
@@ -476,4 +463,73 @@ def set_cover(self,C):
         if len(samples[p].intersection(C)) > 0
     ])
 
+
+
+####################################
+######### AUXILIAR FUNCTIONS #######
+####################################
+
+def BFS_complete(self):
+    L=[ [1 for v in range(self.k)] for i in range(len(self.G))]
+    visit = [[False for v in range(len(self.G))] for i in range(len(self.G))]
+    pred = [[None for v in range(len(self.G))] for i in range(len(self.G))]
+    shortestVec = [[None for v in range(len(self.G))] for i in range(len(self.G))]
+    for v in self.G:
+        L[v][0]=v
+        for g in L[v][0]:
+            lista= self.G.neighbors(g)
+            for u in lista:
+                if visit[v][u]==False:
+                    visit[v][u] = True
+                    L[v][1].append(u)
+                    pred[v][u]=g
+                    shortestVec[v][u]=np.multiply(shortestVec[v][u], self.matrix[v])
+    for k in range(2,self.k):
+        for v in self.G:
+            for g in L[v][k-1]:
+                lista= self.G.neighbors(g)
+                for u in lista:
+                    if visit[u][v]==False:
+                        visit[u][v]=True
+                        L[v][k].append(u)
+                        pred[u][v]=g
+
+def BFS(self, s):#metodo ausiliario usabili in diversi bound come major o kantorovich
+    #print("Inizio BFS")
+    G=self.G
+    visit=self.visit
+    for i in range(0,len(visit)):
+        visit[i]=False
+    L=[]
+    L.append([])
+    L[0].append(s)
+    visit[s]=True
+    i=0
+
+    while(len(L[i])!=0 and i<self.k-1):#L[k-1] livello è presente, nonchè l'ultimo
+        L.append([])
+        for v in L[i]:
+            for u in G.neighbors(v):
+                if visit[u]==False:
+                    L[i+1].append(u)
+                    visit[u] = True
+        i=i+1
+    #print(len(L))
+    #print(L)
+    return L
+
+def how_many_diff(L):
+    L=np.asarray(L)
+    return np.count_nonzero(L != 1)
+
+def which_diff(L):
+    L=np.asarray(L)
+    return L[L!=1]
+
+def how_many_diff_old(L):# metodo ausiliario di bound_min(deprecated)
+    lista = []
+    for n in L:
+        if (n != 1):
+            lista.append(n)
+    return lista
 
