@@ -23,9 +23,10 @@ class BDDE:
         self.id_to_str = parameters["id_to_str"]
         self.genes=list(self.G.nodes).copy()
         self.levels = [0 for i in range(k + 1)] # 0...k
+        self.k_create=2
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
-        self.k_create=2
+
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
