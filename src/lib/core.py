@@ -138,7 +138,15 @@ class BDDE:
                 lista=np.asarray(self.lista_current[v])
             else:
                 lista = bottle.partition(self.lista_current[v],self.max_counts[v][2])
-            self.best_vectors[v][2]=np.asarray(lista)
+            remains = np.sort(lista)
+            self.best_vectors[v][2]=remains
+
+        import pickle
+        fileObject=open("bestVectors2",'wb')
+        pickle.dump(self.best_vectors, fileObject)
+        pickle.dump(self.max_counts, fileObject)
+        fileObject.close()
+
 
     def BREADTH(self, S,n,U):
         vn=n.data
