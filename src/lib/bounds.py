@@ -13,35 +13,13 @@ def pre_bound_order(self):
 
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order(self)
-    best_vectors=[[0 for i in range(self.k)] for v in range(10000)]
-    for v in self.genes:
-        neighbors=list(self.G.neighbors(v))
-        #print(list(neighbors))
-        lista=[self.max_counts[u][0] for u in neighbors]
-        max_count=np.max(lista)
-        self.max_counts[v][1]=max_count
-        lista=[]
-        for u in neighbors:
-            lista=lista+self.orderedMatrix[u]
-            #print(self.orderedMatrix[u])
-        #print()
-        #print(max_count)
-        #print(lista)
-
-        #max_count=min(max_count,len(lista))#if(len(lista)<max_count) <--- secondo me ci va
-        # e invece no perchè per forza di cose max(max_count)<somma(max_count)=somma(len(lista)),
-        #questo perchè ogni lista ha esattamente max_count elementi diversi(almeno per dist=1)
-        if(len(lista)==max_count):
-            remains=np.asarray(lista)
-        else:
-            b=bottle.partition(lista, max_count)
-            remains=b[0:max_count]
-
-        remains=np.sort(remains)
-        #print(remains)
-        best_vectors[v][1]=remains
-
-    self.best_vectors = best_vectors
+    import pickle
+    fileObject=open("bestVectors2","rb")
+    print("bestVectors2 loading")
+    self.best_vectors=pickle.load(fileObject)
+    self.max_counts=pickle.load(fileObject)
+    fileObject.close()
+    print("Fine loading bestVectors2")
 
 
 
@@ -50,7 +28,7 @@ def bound_order(self,C,vecC):
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1):
+    if(dist==1 or dist==2):
         for v in C:
             best_vector=self.best_vectors[v][dist]#già ordinato in ordine crescente
             if((len(dec)+len(best_vector) >len(self.samples))):
@@ -61,9 +39,12 @@ def bound_order(self,C,vecC):
                     inters=len(dec)- ( len(self.samples)-len(best_vector) )
                 else:
                     inters = len(best_vector) - (len(self.samples) - len(dec))
-                dec_reduce=dec[0:len(dec)-inters]
-                best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
-                bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
+                #print(len(best_vector))
+                bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
+                bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
+                #dec_reduce=dec[0:len(dec)-inters]
+                #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
+                #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
             else:
                 bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
             bests.append(bestS)
