@@ -17,8 +17,9 @@ def pre_bound_order(self):
     for v in self.genes:
         neighbors=list(self.G.neighbors(v))
         #print(list(neighbors))
-        lista=[self.max_counts[u] for u in neighbors]
+        lista=[self.max_counts[u][0] for u in neighbors]
         max_count=np.max(lista)
+        self.max_counts[v][1]=max_count
         lista=[]
         for u in neighbors:
             lista=lista+self.orderedMatrix[u]
@@ -28,6 +29,8 @@ def pre_bound_order(self):
         #print(lista)
 
         #max_count=min(max_count,len(lista))#if(len(lista)<max_count) <--- secondo me ci va
+        # e invece no perchè per forza di cose max(max_count)<somma(max_count)=somma(len(lista)),
+        #questo perchè ogni lista ha esattamente max_count elementi diversi(almeno per dist=1)
         if(len(lista)==max_count):
             remains=np.asarray(lista)
         else:
@@ -83,10 +86,10 @@ def ordinamentoVertici_bound_order(self):
     cont=[c for c in cont if c[1]!=0]
 
     #Mi salvo per ogni nodo il proprio max_count(a livello 0 quindi)
-    self.max_counts=[0 for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
+    self.max_counts=[[0 for i in range(self.k)] for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
                                             #ovvero hanno 0 numeri diversi da 1
     for c in cont:
-        self.max_counts[c[0]]=c[1]
+        self.max_counts[c[0]][0]=c[1]
 
     cont=sorted(cont, key=lambda x: x[1],reverse=True)
     #print(cont)  # guarda distribuzione max_count
