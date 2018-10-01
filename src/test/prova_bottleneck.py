@@ -8,7 +8,7 @@ a=np.random.rand(100000000)*10
 #print(a)
 print()
 t_start = time.time()
-b=bottle.partition(a, 1)[:1]
+b=bottle.partition(a, 10)[:10]
 b=np.sort(b)
 t_end = time.time()
 print("Elapsed time: ", time.strftime("%H:%M:%S", time.gmtime(t_end - t_start)))

@@ -2,43 +2,131 @@ import numpy as np
 import networkx as nx
 from lib.core import *
 import numpy as np
-#import bottleneck as bottle
+import bottleneck as bottle
 import math
 #import tensorflow as tf
 
 ###################################
 ####### BOUND_ORDER ########
 ###################################
+def pre_bound_order(self):
+
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order(self)
+    best_vectors=[[0 for i in range(self.k)] for v in range(10000)]
+    for v in self.genes:
+        neighbors=list(self.G.neighbors(v))
+        #print(list(neighbors))
+        lista=[self.max_counts[u] for u in neighbors]
+        max_count=np.max(lista)
+        lista=[]
+        for u in neighbors:
+            lista=lista+self.orderedMatrix[u]
+            #print(self.orderedMatrix[u])
+        #print()
+        #print(max_count)
+        #print(lista)
+
+        #max_count=min(max_count,len(lista))#if(len(lista)<max_count) <--- secondo me ci va
+        if(len(lista)==max_count):
+            remains=np.asarray(lista)
+        else:
+            b=bottle.partition(lista, max_count)
+            remains=b[0:max_count]
+
+        remains=np.sort(remains)
+        #print(remains)
+        best_vectors[v][1]=remains
+
+    self.best_vectors = best_vectors
+
+
+
+def bound_order(self,C,vecC):
+    dist=self.k-len(C)
+    lista=which_diff(vecC)
+    dec=np.asarray(lista)
+    bests=[]
+    if(dist==1):
+        for v in C:
+            best_vector=self.best_vectors[v][dist]#già ordinato in ordine crescente
+            if((len(dec)+len(best_vector) >len(self.samples))):
+                #print("Attenzione ! Serve intersezione !")
+                dec=np.sort(dec)
+                dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
+                if(len(best_vector)>len(dec)):
+                    inters=len(dec)- ( len(self.samples)-len(best_vector) )
+                else:
+                    inters = len(best_vector) - (len(self.samples) - len(dec))
+                dec_reduce=dec[0:len(dec)-inters]
+                best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
+                bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
+            else:
+                bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+            bests.append(bestS)
+        bestS=np.min(bests)
+        if(bestS > self.best_score):
+            return True
+    return False
+
+def update_bound_order(self):
+    return True
 def ordinamentoVertici_bound_order(self):
-    cont = []
+    print("Inizio Ordinamento")
+    #ritorna self.sorted_vertices e self.max_counts
+    cont = [(i,0) for i in range(10000)]#mi pare sia corretto
     sorted_vertices = []
+    orderedMatrix=[[] for i in range(10000)]
     for g in self.genes:
-        cont.append((g, how_many_diff(self.matrix[g])))  # IdNodo:max_count
+        orderedMatrix[g]=list(which_diff(self.matrix[g]))
+        cont.append((g, len(orderedMatrix[g])))  # (IdNodo,max_count)
     cont=[c for c in cont if c[1]!=0]
+
+    #Mi salvo per ogni nodo il proprio max_count(a livello 0 quindi)
+    self.max_counts=[0 for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
+                                            #ovvero hanno 0 numeri diversi da 1
+    for c in cont:
+        self.max_counts[c[0]]=c[1]
+
     cont=sorted(cont, key=lambda x: x[1],reverse=True)
     #print(cont)  # guarda distribuzione max_count
     for i in range(len(cont)):
-        if cont[i][1] != 0:
             sorted_vertices.append(cont[i][0])
-    #print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
-    # Debegging, guardo freq cumulata
+    """
+    Per ora in standby
     freq = [c[1] for c in cont]
-    unique, counts = np.unique(freq, return_counts=True)
+    #Debugging part
+    # print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
+    #unique, counts = np.unique(freq, return_counts=True)
     #print(np.asarray((unique, counts)).T)
 
+    cumsum=np.cumsum(freq)
+    #print(cumsum[len(cumsum) - 1])
+    cumsum=cumsum/cumsum[len(cumsum)-1]
+    #print(cumsum)
+    tresholds=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    contatori = [0 for i in range(len(tresholds))]
+    len_cont=len(contatori)
+
+    j=0
+    for i in range(len(cumsum)):
+        # elimino tutti i nodi da 0 a cumsum[i](quindi cumsum[i] risulta non compreso) e ricaclcolo i bounds
+        if cumsum[i]>=tresholds[j]:
+            contatori[j]=i
+            print()
+            j=j+1
+            if(j==len_cont):
+                break
+
+    #print()
+    #print(contatori)
+    #print()
+    self.contatori=contatori
+    self.index=0
     """
-    Analisi
-    freq = np.asarray(freq)
-    freq = freq / np.sum(freq)
-    cum = 0
-    threshold = [i * 0.1 for i in range(11)]
-    j = 0
-    for i in range(len(freq)):
-        cum += freq[i]
-        if cum > threshold[j]:
-            print("Threshold :" + str(threshold[j]) + "at node: " + str(i))
-            j += 1
-    """
+    self.sorted_vertices = sorted_vertices
+    self.orderedMatrix = orderedMatrix
+    print("Fine Ordinamento")
 
 
 ###################################
