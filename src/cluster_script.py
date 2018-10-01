@@ -93,8 +93,12 @@ sftp.mkdir(remote_path + "out/" + current_folder)
 
 with open("commands.job", "w") as fp:
     fp.write("#!/bin/bash \n")
+    fp.write("#$ -q gpu \n")
     # fp.write("pip3 install --user networkx \n")
     # fp.write("pip3 install --user pandas \n")
+    fp.write("source /nfsd/opt/anaconda3/anaconda.sh \n")
+    fp.write("conda activate /nfsd/opt/anaconda3/tensorflow \n")
+
 
     # Formatting/constructing the instruction to be given:
     instruction = "time python3 " + remote_path + "src/main.py"
