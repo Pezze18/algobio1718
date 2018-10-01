@@ -78,7 +78,11 @@ class BDDE:
                 neighbors|=set(self.M.neighbors(c))#devo usare grafo originale dato che alcuni vicini potrebbero essere spariti
             for u in neighbors:
                 self.lista_current[u]+=diff
-                self.max_counts[u][2]=max(self.max_counts[u][2],len(diff))
+                self.max_counts[u][3]=max(self.max_counts[u][3],len(diff))
+                if(self.lista_current[u]>5*len(self.samples)):#cerco di evitare di rifarlo troppo spesso quindi lo imposto a 2*
+                                                            # anche se in verità basterebbe len(self.samples)
+                    self.lista_current[u]=list(bottle.partition(self.lista_current[u],len(self.samples))[0:len(self.samples)])
+
 
             if score<self.best_score:
                 self.best_score = score
@@ -134,15 +138,15 @@ class BDDE:
         print(self.levels)
 
         for v in self.M.nodes:
-            if(len(self.lista_current[v])==self.max_counts[v][2]):
+            if(len(self.lista_current[v])==self.max_counts[v][3]):
                 lista=np.asarray(self.lista_current[v])
             else:
-                lista = bottle.partition(self.lista_current[v],self.max_counts[v][2])[0:self.max_counts[v][2]]
+                lista = bottle.partition(self.lista_current[v],self.max_counts[v][3])[0:self.max_counts[v][3]]
             remains = np.sort(lista)
-            self.best_vectors[v][2]=remains
+            self.best_vectors[v][3]=remains
 
         import pickle
-        fileObject=open("bestVectors2",'wb')
+        fileObject=open("bestVectors3",'wb')
         pickle.dump(self.best_vectors, fileObject)
         pickle.dump(self.max_counts, fileObject)
         fileObject.close()
