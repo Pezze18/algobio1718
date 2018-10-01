@@ -42,6 +42,7 @@ def bound_order(self,C,vecC):
                 #print(len(best_vector))
                 bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
                 bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
+                #le 3 righe sotto sono equivalenti alle 2 di sopra per il calcolo del bestS ma sono più leggibili
                 #dec_reduce=dec[0:len(dec)-inters]
                 #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
                 #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
