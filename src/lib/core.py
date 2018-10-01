@@ -137,7 +137,7 @@ class BDDE:
             if(len(self.lista_current[v])==self.max_counts[v][2]):
                 lista=np.asarray(self.lista_current[v])
             else:
-                lista = bottle.partition(self.lista_current[v],self.max_counts[v][2])
+                lista = bottle.partition(self.lista_current[v],self.max_counts[v][2])[0:self.max_counts[v][2]]
             remains = np.sort(lista)
             self.best_vectors[v][2]=remains
 
