@@ -43,6 +43,16 @@ def pre_bound_order(self):
 
     self.best_vectors = best_vectors
 
+    import pickle
+    fileObject=open("bestVectors1",'wb')
+    pickle.dump(self.best_vectors, fileObject)
+    pickle.dump(self.max_counts, fileObject)
+    fileObject.close()
+    raise ValueError("Finito di produrre bestVectors1")
+
+
+
+
 
 
 def bound_order(self,C,vecC):
