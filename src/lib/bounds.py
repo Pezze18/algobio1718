@@ -15,7 +15,8 @@ def pre_bound_order(self):
     ordinamentoVertici_bound_order(self)
 
     import pickle
-    fileObject=open("bestVectors2","rb")
+    filename="bestVectors"+str(self.k_create-1)
+    fileObject=open(filename,"rb")
     print("bestVectors1 loading")
     self.best_vectors=pickle.load(fileObject)
     self.max_counts=pickle.load(fileObject)
@@ -26,6 +27,7 @@ def pre_bound_order(self):
 
 
 def bound_order(self,C,vecC):
+    return False
     dist=self.k-len(C)
     lista=which_diff(vecC)
     dec=np.asarray(lista)

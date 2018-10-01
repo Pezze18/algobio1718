@@ -25,6 +25,7 @@ class BDDE:
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
+        self.k_create=2
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
@@ -78,8 +79,8 @@ class BDDE:
                 neighbors|=set(self.M.neighbors(c))#devo usare grafo originale dato che alcuni vicini potrebbero essere spariti
             for u in neighbors:
                 self.lista_current[u]+=diff
-                self.max_counts[u][3]=max(self.max_counts[u][3],len(diff))
-                if(self.lista_current[u]>5*len(self.samples)):#cerco di evitare di rifarlo troppo spesso quindi lo imposto a 2*
+                self.max_counts[u][self.k_create]=max(self.max_counts[u][self.k_create],len(diff))
+                if(len(self.lista_current[u])>5*len(self.samples)):#cerco di evitare di rifarlo troppo spesso quindi lo imposto a 2*
                                                             # anche se in verità basterebbe len(self.samples)
                     self.lista_current[u]=list(bottle.partition(self.lista_current[u],len(self.samples))[0:len(self.samples)])
 
@@ -138,15 +139,16 @@ class BDDE:
         print(self.levels)
 
         for v in self.M.nodes:
-            if(len(self.lista_current[v])==self.max_counts[v][3]):
+            if(len(self.lista_current[v])==self.max_counts[v][self.k_create]):
                 lista=np.asarray(self.lista_current[v])
             else:
-                lista = bottle.partition(self.lista_current[v],self.max_counts[v][3])[0:self.max_counts[v][3]]
+                lista = bottle.partition(self.lista_current[v],self.max_counts[v][self.k_create])[0:self.max_counts[v][self.k_create]]
             remains = np.sort(lista)
-            self.best_vectors[v][3]=remains
+            self.best_vectors[v][self.k_create]=remains
 
         import pickle
-        fileObject=open("bestVectors3",'wb')
+        filename="bestVectors"+str(self.k_create)
+        fileObject=open(filename,'wb')
         pickle.dump(self.best_vectors, fileObject)
         pickle.dump(self.max_counts, fileObject)
         fileObject.close()
