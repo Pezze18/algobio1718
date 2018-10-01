@@ -3,10 +3,12 @@ import lib.bounds as bounds
 from lib.bounds import *
 import numpy as np
 import math
+import bottleneck as bottle
 
 class BDDE:
     def __init__(self, G, samples, k, parameters):
         self.G = G
+        self.M=G.copy()
         self.k = k
         self.tree = None
         self.root = None
@@ -69,6 +71,15 @@ class BDDE:
                                                    self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
             # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
             score = self.scoring_function(self,self.levelsVec[size])
+
+            diff=list(which_diff(self.levelsVec[size]))
+            neighbors=set()
+            for c in C:
+                neighbors|=set(self.M.neighbors(c))#devo usare grafo originale dato che alcuni vicini potrebbero essere spariti
+            for u in neighbors:
+                self.lista_current[u]+=diff
+                self.max_count[u][2]=max(self.max_count[u][2],len(diff))
+
             if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
@@ -121,6 +132,13 @@ class BDDE:
         print(sum(self.levels)-self.levels[self.k])
         print("Numero nodi interni visitati per livello: ")
         print(self.levels)
+
+        for v in self.M.nodes:
+            if(len(self.lista_current[v])==self.max_counts[v][2]):
+                lista=np.asarray(self.lista_current[v])
+            else:
+                lista = bottle.partition(self.lista_current[v],self.max_counts[v][2])
+            self.best_vectors[v][2]=np.asarray(lista)
 
     def BREADTH(self, S,n,U):
         vn=n.data

@@ -12,47 +12,12 @@ import math
 def pre_bound_order(self):
 
     self.matrix = toMatrix(self, self.G.nodes)
-    ordinamentoVertici_bound_order(self)
-    best_vectors=[[0 for i in range(self.k)] for v in range(10000)]
-    for v in self.genes:
-        neighbors=list(self.G.neighbors(v))
-        #print(list(neighbors))
-        lista=[self.max_counts[u][0] for u in neighbors]
-        max_count=np.max(lista)
-        self.max_counts[v][1]=max_count
-        lista=[]
-        for u in neighbors:
-            lista=lista+self.orderedMatrix[u]
-            #print(self.orderedMatrix[u])
-        #print()
-        #print(max_count)
-        #print(lista)
-
-        #max_count=min(max_count,len(lista))#if(len(lista)<max_count) <--- secondo me ci va
-        # e invece no perchè per forza di cose max(max_count)<somma(max_count)=somma(len(lista)),
-        #questo perchè ogni lista ha esattamente max_count elementi diversi(almeno per dist=1)
-        if(len(lista)==max_count):
-            remains=np.asarray(lista)
-        else:
-            b=bottle.partition(lista, max_count)
-            remains=b[0:max_count]
-
-        remains=np.sort(remains)
-        #print(remains)
-        best_vectors[v][1]=remains
-
-    self.best_vectors = best_vectors
-
     import pickle
-    fileObject=open("bestVectors1",'wb')
-    pickle.dump(self.best_vectors, fileObject)
-    pickle.dump(self.max_counts, fileObject)
+    fileObject=open("bestVectors1","wb")
+    print("bestVectors1 loading")
+    self.best_vectors=pickle.load(fileObject)
+    self.max_counts=pickle.load(fileObject)
     fileObject.close()
-    raise ValueError("Finito di produrre bestVectors1")
-
-
-
-
 
 
 def bound_order(self,C,vecC):
