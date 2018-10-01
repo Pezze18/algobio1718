@@ -12,12 +12,17 @@ import math
 def pre_bound_order(self):
 
     self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order(self)
+
     import pickle
     fileObject=open("bestVectors1","rb")
     print("bestVectors1 loading")
     self.best_vectors=pickle.load(fileObject)
     self.max_counts=pickle.load(fileObject)
     fileObject.close()
+
+    self.lista_current=[[] for i in range(10000)]
+
 
 
 def bound_order(self,C,vecC):

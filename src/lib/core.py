@@ -78,7 +78,7 @@ class BDDE:
                 neighbors|=set(self.M.neighbors(c))#devo usare grafo originale dato che alcuni vicini potrebbero essere spariti
             for u in neighbors:
                 self.lista_current[u]+=diff
-                self.max_count[u][2]=max(self.max_count[u][2],len(diff))
+                self.max_counts[u][2]=max(self.max_counts[u][2],len(diff))
 
             if score<self.best_score:
                 self.best_score = score
