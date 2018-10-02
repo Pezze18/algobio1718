@@ -7,7 +7,70 @@ import math
 #import tensorflow as tf
 
 ###################################
-####### BOUND_ORDER ########
+####### BOUND_KANTOROVICH ###############
+###################################
+def pre_bound_kantorovich(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    self.normL2=[len(self.samples) for i in range(10000)]
+    for g in self.genes:
+        self.normL2[g]=np.linalg.norm(self.matrix[g])
+    self.mins=[[1 for i in range(self.k)] for i in range(10000)]
+
+    num_zeros=0
+    self.sorted_vertices=[]
+    sorted_vertices_zeros=[]
+    sorted_vertices_diff_ones=[]
+    for g in self.genes:
+        self.mins[g][0] = np.min(self.matrix[g])
+        if self.mins[g][0]==0:
+            num_zeros+=1
+            sorted_vertices_zeros.append(g)
+        elif self.mins[g][0]<1:
+            sorted_vertices_diff_ones.append(g)
+    print("Numero di vettori che hanno minimo a 0: "+str(num_zeros))
+
+    #Creo Ordinamento
+    self.sorted_vertices+=sorted_vertices_zeros
+    self.sorted_vertices +=sorted_vertices_diff_ones
+    #questo ordinamento mi sarà utile quando terrò conto dell'indice
+
+    num_zeros=0
+
+    for g in self.genes:
+        neighbors=self.G.neighbors(g)
+        for u in neighbors:
+            if self.mins[g][1] > self.mins[u][0]:
+                self.mins[g][1]=self.mins[u][0]
+        if self.mins[g][1]==0:
+            num_zeros+=1
+    print("Numero di vettori che hanno vicino minimo a 0: " + str(num_zeros))
+
+    #Nota: il max sarà sempre a 1 quindi non è necessario salavarlo
+    #$x^T \cdot y \geq min(x) \cdot \min(y) \cdot |x| \cdot |y|$
+
+def bound_kantorovich(self,C,vecC):
+    dist=self.k-len(C)
+    minx=np.min(vecC)
+    norm_x=np.linalg.norm(vecC)
+    if(dist==1):
+        miny=1
+        min_norm_y=len(self.samples)
+        for c in C:
+            if miny > self.mins[c][1]:
+                miny=self.mins[c][1]
+            if self.normL2[c] < min_norm_y:
+                min_norm_y = self.normL2[c]
+
+        bestS=minx*miny*norm_x*min_norm_y
+        if bestS>self.best_score:
+            return True
+    return False
+
+def update_bound_kantorovich(self):
+    return True
+
+###################################
+####### BOUND_ORDER ###############
 ###################################
 def pre_bound_order(self):
 
@@ -77,14 +140,15 @@ def ordinamentoVertici_bound_order(self):
     #print(cont)  # guarda distribuzione max_count
     for i in range(len(cont)):
             sorted_vertices.append(cont[i][0])
-    """
-    Per ora in standby
+
+    #Per ora in standby
     freq = [c[1] for c in cont]
     #Debugging part
-    # print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
-    #unique, counts = np.unique(freq, return_counts=True)
-    #print(np.asarray((unique, counts)).T)
+    print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
+    unique, counts = np.unique(freq, return_counts=True)
+    print(np.asarray((unique, counts)).T)
 
+    """
     cumsum=np.cumsum(freq)
     #print(cumsum[len(cumsum) - 1])
     cumsum=cumsum/cumsum[len(cumsum)-1]
@@ -788,19 +852,20 @@ def ordinamentoVertici_bound_min(self):
 def pre_nobound(self):
     self.matrix = toMatrix(self, self.G.nodes)
     #Ordinamento Vertici
-    self.sorted_vertices= [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
+    #self.sorted_vertices= [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
     #self.sorted_vertices= ordinamentoVertici_bound_min(self)  #permette di essere pù veloce perchè salta 40% dei geni
-    # self.sorted_vertices= ordinamentoVertici_nobound_migliorato(self)  #permette di essere pù veloce perchè salta 40% dei geni
+    self.sorted_vertices = ordinamentoVertici_nobound_migliorato(self)  #permette di essere pù veloce perchè salta 40% dei geni
 
 def ordinamentoVertici_nobound_migliorato(self):
  #unica differenza da ordinamentoVertici_bound_min_migliorato è che non ordino per max_count
     cont=[]
     sorted_vertices=[]
     for g in self.genes:
-        cont.append( (g, len(how_many_diff(self.matrix[g]))) ) #IdNodo:max_count
+        cont.append( (g, how_many_diff(self.matrix[g])) ) #IdNodo:max_count
     for i in range(len(cont)):
         if cont[i][1]!=0:
             sorted_vertices.append(cont[i][0])
+    return sorted_vertices
 
 ###################################
 ########### DET #############
