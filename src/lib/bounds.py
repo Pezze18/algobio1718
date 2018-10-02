@@ -963,14 +963,51 @@ def set_cover(self,C):
 ####################################
 ######### AUXILIAR FUNCTIONS #######
 ####################################
+def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True):
+    visit = [False for v in range(10000)]
+    if creaLevels:
+        L=[[] for v in range(self.k)]
+        L[0]=v
+    if creaPredecessori:
+        pred = [0 for v in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
+        pred[v]=v
+    if creaVec:
+        shortestVec = [[] for v in range(10000)]
+        shortestVec[v] = self.matrix[v]
+    if creaEtichetta:
+        labels=[False for v in range(10000)]
 
-def BFS_complete(self):
-    L=[ [1 for v in range(self.k)] for i in range(len(self.G))]
-    visit = [[False for v in range(len(self.G))] for i in range(len(self.G))]
-    pred = [[None for v in range(len(self.G))] for i in range(len(self.G))]
-    shortestVec = [[None for v in range(len(self.G))] for i in range(len(self.G))]
+    for g in L[v][0]:
+        lista = self.G.neighbors(g)
+        for u in lista:
+            if visit[u] == False:
+                visit[u] = True
+                L[1].append(u)
+                pred[u] = g
+                shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+    for k in range(2, self.k):
+        for g in L[v][k - 1]:
+            lista = self.G.neighbors(g)
+            for u in lista:
+                if visit[u][v] == False:
+                    visit[u][v] = True
+                    L[k].append(u)
+                    pred[u] = g
+
+def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True):
+    if creaLevels:
+        L=[ [[] for v in range(self.k)] for i in range(10000)]
+    visit = [[False for v in range(10000)] for i in range(10000)]
+    if creaPredecessori:
+        pred = [[None for v in range(10000)] for i in range(10000)]
+    if creaVec:
+        shortestVec = [[None for v in range(10000)] for i in range(10000)]
+    if creaEtichetta:
+        labels=[[False for v in range(10000)] for i in range(10000)]#100000*100000= 10 000 000 000
     for v in self.G:
         L[v][0]=v
+        pred[v][v]=v
+        shortestVec[v][v]=self.matrix[v]#per il percorso v, il vettore per v(radice) è self.matrix[v]
         for g in L[v][0]:
             lista= self.G.neighbors(g)
             for u in lista:
