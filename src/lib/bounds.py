@@ -5,7 +5,6 @@ import numpy as np
 import bottleneck as bottle
 import math
 #import tensorflow as tf
-
 ###################################
 ####### BOUND_KANTOROVICH ###############
 ###################################
@@ -14,39 +13,45 @@ def pre_bound_kantorovich(self):
     self.normL2=[len(self.samples) for i in range(10000)]
     for g in self.genes:
         self.normL2[g]=np.linalg.norm(self.matrix[g])
-    self.mins=[[1 for i in range(self.k)] for i in range(10000)]
+    self.mins=[ [[1 for i in range(self.k)] for j in range(10000)] for index in range(2)]
 
-    num_zeros=0
-    self.sorted_vertices=[]
-    sorted_vertices_zeros=[]
-    sorted_vertices_diff_ones=[]
-    for g in self.genes:
-        self.mins[g][0] = np.min(self.matrix[g])
-        if self.mins[g][0]==0:
-            num_zeros+=1
-            sorted_vertices_zeros.append(g)
-        elif self.mins[g][0]<1:
-            sorted_vertices_diff_ones.append(g)
-    print("Numero di vettori che hanno minimo a 0: "+str(num_zeros))
+    M=self.G.copy()
+    contatori=[0,156]
+    for index in range(2):
+        if(index>0):
+            self.G.remove_nodes_from(self.sorted_vertices[0:contatori[index]])
+        if(index==0):
+            num_zeros=0
+            self.sorted_vertices=[]
+            sorted_vertices_zeros=[]
+            sorted_vertices_diff_ones=[]
+            for g in self.genes:
+                self.mins[index][g][0] = np.min(self.matrix[g])
+                if self.mins[index][g][0]==0:
+                    num_zeros+=1
+                    sorted_vertices_zeros.append(g)
+                elif self.mins[index][g][0]<1:
+                    sorted_vertices_diff_ones.append(g)
+            print("Numero di vettori che hanno minimo a 0: "+str(num_zeros))
+            #Creo Ordinamento
+            self.sorted_vertices+=sorted_vertices_zeros
+            self.sorted_vertices +=sorted_vertices_diff_ones
+            #questo ordinamento mi sarà utile quando terrò conto dell'indice
 
-    #Creo Ordinamento
-    self.sorted_vertices+=sorted_vertices_zeros
-    self.sorted_vertices +=sorted_vertices_diff_ones
-    #questo ordinamento mi sarà utile quando terrò conto dell'indice
+        num_zeros=0
+        for g in self.G.nodes:
+            neighbors=self.G.neighbors(g)
+            for u in neighbors:
+                if self.mins[index][g][1] > self.mins[0][u][0]:
+                    self.mins[index][g][1]=self.mins[0][u][0]
+            if self.mins[index][g][1]==0:
+                num_zeros+=1
+        print("Numero di vettori che hanno vicino minimo a 0: " + str(num_zeros))
 
-    num_zeros=0
-
-    for g in self.genes:
-        neighbors=self.G.neighbors(g)
-        for u in neighbors:
-            if self.mins[g][1] > self.mins[u][0]:
-                self.mins[g][1]=self.mins[u][0]
-        if self.mins[g][1]==0:
-            num_zeros+=1
-    print("Numero di vettori che hanno vicino minimo a 0: " + str(num_zeros))
-
-    #Nota: il max sarà sempre a 1 quindi non è necessario salavarlo
-    #$x^T \cdot y \geq min(x) \cdot \min(y) \cdot |x| \cdot |y|$
+        #Nota: il max sarà sempre a 1 quindi non è necessario salavarlo
+        #$x^T \cdot y \geq min(x) \cdot \min(y) \cdot |x| \cdot |y|$
+    self.G=M
+    self.index=0
 
 def bound_kantorovich(self,C,vecC):
     dist=self.k-len(C)
@@ -56,17 +61,20 @@ def bound_kantorovich(self,C,vecC):
         miny=1
         min_norm_y=len(self.samples)
         for c in C:
-            if miny > self.mins[c][1]:
-                miny=self.mins[c][1]
+            if miny > self.mins[self.index][c][1]:
+                miny=self.mins[self.index][c][1]
             if self.normL2[c] < min_norm_y:
                 min_norm_y = self.normL2[c]
 
         bestS=minx*miny*norm_x*min_norm_y
+        #print(bestS)
         if bestS>self.best_score:
             return True
     return False
 
 def update_bound_kantorovich(self):
+    if(self.cont>=157):
+        self.index=1
     return True
 
 ###################################
