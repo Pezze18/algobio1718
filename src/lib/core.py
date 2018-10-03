@@ -266,41 +266,56 @@ class Combinatorial:
         #G = delta_removal(G, delta)
 
         C = {}
-        P_C = -1
-
+        score_C = -1
         for v in G.nodes():
-            C_v = {v}
-            P_C_v = prob_cover_max_version(self, list(C_v))  # no need to compute this \foreach u
+            C_v = set()
+            C_v.add(v)
+            vecC_v = self.matrix[v]
+            score_C_v=np.sum(vecC_v)
 
-            p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
+            BFS_complete_node(self, v, creaLevels=False, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=True)
+            #essendoci 10000 nodi ci sono 10000 operazioni vettoriali
+            depths_separate=[]
+            for k in range(1,self.k):
+                for i in range(10000):
+                    if self.depths[i]==k:
+                        depths_separate.append(i)
 
             while len(C_v) < self.k:
-                maximum = -1
-                l_v_max = set()
+                maximum_rapport = -1
+                max_set = set()
+                score_max=-1
+                vec_max=[]
 
-                for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
-                    l_v = p_v[u]
+                for s in depths_separate[self.k-len(C_v)]:#ho già la lista pronta(considerando che faccio poche iterazioni forse non conviene)
+                    newC, father=findAncestor(self,v,s)#gestire meglio perchè father se v è inutile fare il calcolo ogni volta
 
-                    if len(l_v | C_v) <= self.k:  # "|" is an overloaded operator, it means 'union'
-                        P_v = prob_cover_max_version(self, list(l_v | C_v))
+                    #serve opzione che se father==v non fai niente e nel codice radice la setti a tutti 1 con np.ones
+                    #se v ha 0 allora è un problema (soluzioni con tecniche di smoothing)
+                    vec_intersection=np.divide(self.shortestVec[s],self.matrix[father])
+                    vec_New=np.multiply(vecC_v,vec_intersection)
+                    score_new=len(self.samples)-np.sum(vec_max)
 
-                        s = (P_v - P_C_v)/ len(l_v - C_v)
-                        if maximum < s:
-                            maximum = s
-                            l_v_max = l_v
-                C_v = C_v | l_v_max
-                P_C_v = prob_cover_max_version(self, list(C_v))
+                    rapporto = ( score_C_v -score_new)/ len(newC)
+                    if maximum < rapporto:
+                        maximum = rapporto
+                        max_set = newC
+                        score_max = score_new
+                        vec_max = vec_New
+                C_v|=max_set# C_v = C_v U max_set
+                score_C_v = score_max
+                vecC_v=vec_max
 
-            if P_C_v > P_C:  # if we've found a better solution, update it and let us know
+            if score_C_v > score_C:  # if we've found a better solution, update it and let us know
                 C = C_v
-                P_C = P_C_v
+                score_C = score_C_v
                 print("_________________")
                 print()
                 print("Best solution updated!")
                 print("Current C (ids): ", C)
                 self.best_score=P_C
                 self.best_subgraph=C
-                print("Current P_C (cardinality):", P_C)
+                print("Current P_C (cardinality):", score_C)
         return C, P_C
 
     def delta_removal(G, delta):

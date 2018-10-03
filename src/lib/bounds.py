@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from lib.core import *
 import numpy as np
-import bottleneck as bottle
+#import bottleneck as bottle
 import math
 #import tensorflow as tf
 ###################################
@@ -10,6 +10,8 @@ import math
 ###################################
 def pre_bound_kantorovich(self):
     self.matrix = toMatrix(self, self.G.nodes)
+    for g in self.genes:
+        self.matrix[g]=100*self.matrix[g]
     self.normL2=[len(self.samples) for i in range(10000)]
     for g in self.genes:
         self.normL2[g]=np.linalg.norm(self.matrix[g])
@@ -30,7 +32,7 @@ def pre_bound_kantorovich(self):
                 if self.mins[index][g][0]==0:
                     num_zeros+=1
                     sorted_vertices_zeros.append(g)
-                elif self.mins[index][g][0]<1:
+                elif self.mins[index][g][0]!=100:
                     sorted_vertices_diff_ones.append(g)
             print("Numero di vettori che hanno minimo a 0: "+str(num_zeros))
             #Creo Ordinamento
@@ -52,10 +54,12 @@ def pre_bound_kantorovich(self):
         #$x^T \cdot y \geq min(x) \cdot \min(y) \cdot |x| \cdot |y|$
     self.G=M
     self.index=0
+    print("Len sorted vertices: "+str(len(self.sorted_vertices)))
 
 def bound_kantorovich(self,C,vecC):
     dist=self.k-len(C)
     minx=np.min(vecC)
+    maxx=np.max(vecC)
     norm_x=np.linalg.norm(vecC)
     if(dist==1):
         miny=1
@@ -66,7 +70,9 @@ def bound_kantorovich(self,C,vecC):
             if self.normL2[c] < min_norm_y:
                 min_norm_y = self.normL2[c]
 
-        bestS=minx*miny*norm_x*min_norm_y
+        rapy=miny/100
+        rapx=minx/maxx
+        bestS=rapx*rapy*norm_x*min_norm_y
         #print(bestS)
         if bestS>self.best_score:
             return True
@@ -963,38 +969,75 @@ def set_cover(self,C):
 ####################################
 ######### AUXILIAR FUNCTIONS #######
 ####################################
-def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True):
+def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
     visit = [False for v in range(10000)]
     if creaLevels:
         L=[[] for v in range(self.k)]
         L[0]=v
+        self.L=L
     if creaPredecessori:
         pred = [0 for v in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
         pred[v]=v
+        self.pred= pred
     if creaVec:
         shortestVec = [[] for v in range(10000)]
         shortestVec[v] = self.matrix[v]
+        self.shortestVec=shortestVec
     if creaEtichetta:
         labels=[False for v in range(10000)]
+        labels[v]=True# v viene sicuramente scelta in C_v
+        self.labels=labels
+    if creaDepths:
+        depths=[-1 for v in range(10000)]
+        depths[v]=0
+        self.depths=depths
+
 
     for g in L[v][0]:
         lista = self.G.neighbors(g)
         for u in lista:
             if visit[u] == False:
                 visit[u] = True
-                L[1].append(u)
-                pred[u] = g
-                shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
-    for k in range(2, self.k):
+                if creaDepths:
+                    depths[u]=1
+                if creaLevels:
+                    L[1].append(u)#questo implica che radice è a depth 0
+                if creaPredecessori:
+                    pred[u] = g
+                if creaVec:
+                    shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+    for k in range(2, self.k):#ultimo è k-1 come giusto che sia
         for g in L[v][k - 1]:
             lista = self.G.neighbors(g)
             for u in lista:
                 if visit[u][v] == False:
                     visit[u][v] = True
-                    L[k].append(u)
-                    pred[u] = g
+                    if creaDepths:
+                        depths[u] = k
+                    if creaLevels:
+                        L[k].append(u)
+                    if creaPredecessori:
+                        pred[u] = g
+                    if creaVec:
+                        shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
 
-def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True):
+def findAncestor(self,v,s):
+    newC=[s]
+    while True:
+        father=pred[s]
+        if father==v:
+            return newC,v
+        if self.labels[father]:#allora è già stato selezionato
+            return newC,father
+        s=father#
+        newC.append(s)
+    return newC,father#nota:newC deve essere maggiore di 0
+
+
+
+
+
+def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichette=True,creaDepths=True):
     if creaLevels:
         L=[ [[] for v in range(self.k)] for i in range(10000)]
     visit = [[False for v in range(10000)] for i in range(10000)]
@@ -1002,8 +1045,9 @@ def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEti
         pred = [[None for v in range(10000)] for i in range(10000)]
     if creaVec:
         shortestVec = [[None for v in range(10000)] for i in range(10000)]
-    if creaEtichetta:
+    if creaEtichette:
         labels=[[False for v in range(10000)] for i in range(10000)]#100000*100000= 10 000 000 000
+
     for v in self.G:
         L[v][0]=v
         pred[v][v]=v

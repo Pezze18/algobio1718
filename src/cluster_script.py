@@ -128,7 +128,7 @@ os.remove("commands.job")
 ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command("export SGE_ROOT=/usr/share/gridengine \n" +  # necessary
                                                      "cd {0}out/{1} \n".format(remote_path,
                                                                                current_folder) +  # also necessary
-                                                     "qsub -cwd commands.job")
+                                                     "qsub -q Q@runner-15 -cwd commands.job")
 # dev'essere "tutto assieme"  o si dimentica dell'export.
 # una singola chiamata di exec_command fa dimenticare tutto quello che è stato fatto prima
 # qsub -cwd == "current working directory". DEVE ESSERE MESSO PRIMA!!!

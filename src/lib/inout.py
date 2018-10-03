@@ -47,7 +47,7 @@ parameters = {
     'delta': 0.8,
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
-    'best_score': 10000,  # maximum for a single gene
+    'best_score': 100000000000000,  # maximum for a single gene
     'bound': True,
     'method': "bound_kantorovich",
     # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
