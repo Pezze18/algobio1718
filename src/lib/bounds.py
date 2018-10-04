@@ -972,8 +972,8 @@ def set_cover(self,C):
 def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
     visit = [False for v in range(10000)]
     if creaLevels:
-        L=[[] for v in range(self.k)]
-        L[0]=v
+        L=[[] for v in range(self.k+1)]#0,1,...k
+        L[1]=[v]
         self.L=L
     if creaPredecessori:
         pred = [0 for v in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
@@ -993,7 +993,7 @@ def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,
         self.depths=depths
 
 
-    for g in L[v][0]:
+    for g in L[0]:
         lista = self.G.neighbors(g)
         for u in lista:
             if visit[u] == False:

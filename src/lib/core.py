@@ -273,7 +273,10 @@ class Combinatorial:
             vecC_v = self.matrix[v]
             score_C_v=np.sum(vecC_v)
 
-            BFS_complete_node(self, v, creaLevels=False, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=True)
+            BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=True)
+            for lista in self.L:
+                print(len(lista))
+            print()
             #essendoci 10000 nodi ci sono 10000 operazioni vettoriali
             depths_separate=[]
             for k in range(1,self.k):

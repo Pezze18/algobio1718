@@ -46,10 +46,10 @@ parameters = {
     'filter_input': '../data/mutated_expressed_genes.txt',
     'delta': 0.8,
     'prob': True,
-    'strategy': 'enumerate',  # options: enumerate,combinatorial
-    'best_score': 100000000000000,  # maximum for a single gene
-    'bound': True,
-    'method': "bound_kantorovich",
+    'strategy': 'combinatorial',  # options: enumerate,combinatorial
+    'best_score': 10000000,  # maximum for a single gene
+    'bound': False,
+    'method': "nobound",
     # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
     # bound_fast, bound_last, bound_major, bound_log, bound_prod, bund_kantorovich
 }
