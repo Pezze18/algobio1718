@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from lib.core import *
 import numpy as np
-#import bottleneck as bottle
+import bottleneck as bottle
 import math
 #import tensorflow as tf
 ###################################

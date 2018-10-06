@@ -14,3 +14,5 @@ _linux
 codestyles
 inspection
 databaseDrivers.xml
+password.txt
+src/password.txt

@@ -34,7 +34,9 @@ ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 # Per evitare di scrivere il proprio username, se la macchina dalla quale lo sia avvia è "nota"
 if getpass.getuser() == 'DavideDP':
-    pwd = str(getpass.getpass(prompt="Password: "))
+    #pwd = str(getpass.getpass(prompt="Password: "))
+    file=open("password.txt","r")
+    pwd=file.readline()
     username = "dallepez"
 elif getpass.getuser() == 'iltuonomesultuoPC':
     pwd = str(getpass.getpass(prompt="Password: "))
@@ -91,11 +93,10 @@ except IOError:
 # Dato che la cartella corrente è un timestamp, siamo sicuri di poterla creare sempre (in remoto)
 sftp.mkdir(remote_path + "out/" + current_folder)
 
-with open("commands.job", "w") as fp:
+with open("commands.job", "w", newline='\n') as fp:
     fp.write("#!/bin/bash \n")
-    # fp.write("pip3 install --user networkx \n")
+    #fp.write("pip3 install --user bottleneck \n")
     # fp.write("pip3 install --user pandas \n")
-
     # Formatting/constructing the instruction to be given:
     instruction = "time python3 " + remote_path + "src/main.py"
     # Options to be added:
@@ -124,14 +125,18 @@ print(local_path + 'src/commands.job' ' >>> ' + remote_path + 'out/' + current_f
 sftp.put(local_path + 'src/commands.job', remote_path + 'out/' + current_folder + '/commands.job')
 os.remove("commands.job")
 
-# Give this job to the cluster
-ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command("export SGE_ROOT=/usr/share/gridengine \n" +  # necessary
-                                                     "cd {0}out/{1} \n".format(remote_path,
-                                                                               current_folder) +  # also necessary
-                                                     "qsub -q Q@runner-15 -cwd commands.job")
-# dev'essere "tutto assieme"  o si dimentica dell'export.
-# una singola chiamata di exec_command fa dimenticare tutto quello che è stato fatto prima
-# qsub -cwd == "current working directory". DEVE ESSERE MESSO PRIMA!!!
+instruction=""
+with open("exec", "w", newline='\n') as exec:
+    instruction+="export SGE_ROOT=/usr/share/gridengine \n"
+    instruction+="cd {0}out/{1} \n".format(remote_path,current_folder)
+    instruction+="qsub -q Q@runner-15 -cwd commands.job"
+    exec.write(instruction)
+    exec.close()
+    with open("exec", "r", newline='\n') as exec:
+        # Give this job to the cluster
+        ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(exec.read())
+if os.path.exists("exec"):
+    os.remove("exec")
 
 # Print output and errors
 print(ssh_stdout.read().decode('utf-8'))
@@ -141,3 +146,5 @@ time.sleep(5 - .250)
 
 sftp.close()
 ssh.close()
+
+#return current_folder
