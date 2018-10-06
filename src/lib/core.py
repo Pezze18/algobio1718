@@ -65,13 +65,16 @@ class BDDE:
             print("BestScore: " + str( self.best_score))
             print()
             """
-            if (size == 1):
-                self.levelsVec[1] = self.matrix[C[0]]
+            if(self.levelsVecUse):
+                if (size == 1):
+                    self.levelsVec[1] = self.matrix[C[0]]
+                else:
+                    self.levelsVec[size] = np.multiply(self.levelsVec[size - 1],
+                                                       self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
+                # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
+                score = self.scoring_function(self,self.levelsVec[size])
             else:
-                self.levelsVec[size] = np.multiply(self.levelsVec[size - 1],
-                                                   self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
-            # This means we've reached a leaf.We should evaluate it, as it wasn't previously pruned!
-            score = self.scoring_function(self,self.levelsVec[size])
+                score= self.scoring_function(self, C)#scoring_function per prob_cover senza levelsVec
             if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
