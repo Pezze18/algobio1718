@@ -865,9 +865,10 @@ def ordinamentoVertici_bound_min(self):
 ###################################
 def pre_nobound(self):
     self.matrix = toMatrix(self, self.G.nodes)
-    #Ordinamento Vertici
-    #self.sorted_vertices= [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
-    #self.sorted_vertices= ordinamentoVertici_bound_min(self)  #permette di essere pù veloce perchè salta 40% dei geni
+    self.sorted_vertices= [t[0] for t in sorted(self.G.degree, key=lambda t: t[1])]
+
+def pre_nobound_migliorato(self):
+    self.matrix = toMatrix(self, self.G.nodes)
     self.sorted_vertices = ordinamentoVertici_nobound_migliorato(self)  #permette di essere pù veloce perchè salta 40% dei geni
 
 def ordinamentoVertici_nobound_migliorato(self):

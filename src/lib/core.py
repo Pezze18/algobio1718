@@ -24,7 +24,7 @@ class BDDE:
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
         self.parameters=parameters
-        self.levelsVecUse=True
+        self.levelsVecUse=True#parameters["levelsVec"]
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])

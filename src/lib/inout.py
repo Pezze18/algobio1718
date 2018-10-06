@@ -102,6 +102,7 @@ def handleParser():
 
     parser.add_argument('--scoring_function', type=str, help='Scoring function to use inside BDDE ')
     parser.add_argument('--bestVectors', type=str, help='bestVectors path for bound_order ')
+    parser.add_argument('--levelsVec', action="store_true", help='Type --levelsVec if you want to use levelsVec')
     return parser.parse_args()
 
 
