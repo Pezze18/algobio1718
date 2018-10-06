@@ -127,15 +127,15 @@ with open("commands.job", "w") as fp:
 print(local_path + 'src/commands.job' ' >>> ' + remote_path + 'out/' + current_folder + '/commands.job')
 sftp.put(local_path + 'src/commands.job', remote_path + 'out/' + current_folder + '/commands.job')
 os.remove("commands.job")
+ssh_stdin, ssh_stdout, ssh_stderr =ssh.exec_command("dos2unix "+remote_path + 'out/' + current_folder + '/commands.job')
+print(ssh_stdout.read().decode('utf-8'))
+print(ssh_stderr.read().decode('utf-8'))
 
 # Give this job to the cluster
 ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command("export SGE_ROOT=/usr/share/gridengine \n" +  # necessary
                                                      "cd {0}out/{1} \n".format(remote_path,
                                                                                current_folder) +  # also necessary
                                                      "qsub -cwd commands.job")
-# dev'essere "tutto assieme"  o si dimentica dell'export.
-# una singola chiamata di exec_command fa dimenticare tutto quello che è stato fatto prima
-# qsub -cwd == "current working directory". DEVE ESSERE MESSO PRIMA!!!
 
 # Print output and errors
 print(ssh_stdout.read().decode('utf-8'))
