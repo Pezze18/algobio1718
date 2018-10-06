@@ -50,9 +50,10 @@ parameters = {
     'best_score': 10000000,  # maximum for a single gene
     'bound': False,
     'method': "nobound",
-    # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
-    # bound_fast, bound_last, bound_major, bound_log, bound_prod, bund_kantorovich
+    'bestVectors':"../data/bestVectors2"
 }
+# options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
+# bound_fast, bound_last, bound_major, bound_log, bound_prod, bund_kantorovich
 if parameters['prob']:
     parameters['samples_input']+=matriceProb
 else:
@@ -98,7 +99,9 @@ def handleParser():
     bound_f=ord+", bound_function(only if bound parameter is present)"
     update=bound_f+", update(update function to use)"
     parser.add_argument('--method', type=str, help=update )
+
     parser.add_argument('--scoring_function', type=str, help='Scoring function to use inside BDDE ')
+    parser.add_argument('--bestVectors', type=str, help='bestVectors path for bound_order ')
     return parser.parse_args()
 
 

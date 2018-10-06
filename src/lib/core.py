@@ -23,13 +23,16 @@ class BDDE:
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
+        self.parameters=parameters
+        self.levelsVecUse=True
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
             self.update_function = getattr(bounds, "update_" + parameters["method"])
 
         if self.prob:
-            self.levelsVec = [1 for i in range(k+1)] # 0...k
+            if self.levelsVecUse:
+                self.levelsVec = [1 for i in range(k+1)] # 0...k
             self.scoring_function = getattr(bounds, "prob_cover_vec")
         else:
             self.scoring_function = getattr(bounds, "score_cover")
@@ -43,11 +46,11 @@ class BDDE:
             return True
         elif size<self.k:
             self.levels[size] += 1
-            if (size == 1):
-                self.levelsVec[1] = self.matrix[C[0]]
-            else:
-                self.levelsVec[size] = np.multiply(self.levelsVec[size - 1],
-                                                   self.matrix[C[size - 1]])  # aggiorno vettore per il livello size
+            if self.levelsVecUse:
+                if (size == 1):
+                    self.levelsVec[1] = self.matrix[C[0]]
+                else:
+                    self.levelsVec[size] = np.multiply(self.levelsVec[size - 1], self.matrix[C[size - 1]])
             # Prune it if the bounding function can't reach the current best, but do it only when using the probability version.
             return self.prob and self.bound and self.bound_function(self,C,self.levelsVec[size])
         else:

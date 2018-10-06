@@ -24,6 +24,7 @@ parameters['proteins_input']="../"+parameters['proteins_input']
 parameters['samples_input']="../"+parameters['samples_input']
 parameters['genes_input']="../"+parameters['genes_input']
 parameters['filter_input']="../"+parameters['filter_input']
+parameters['bestVectors']="../"+parameters['bestVectors']
 
 server = "login.dei.unipd.it"
 

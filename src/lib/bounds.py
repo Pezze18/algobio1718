@@ -91,12 +91,12 @@ def pre_bound_order(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order(self)
     import pickle
-    fileObject=open("bestVectors2","rb")
-    print("bestVectors2 loading")
+    fileObject=open(self.parameters["bestVectors"],"rb")
+    print("bestVectors loading")
     self.best_vectors=pickle.load(fileObject)
     self.max_counts=pickle.load(fileObject)
     fileObject.close()
-    print("Fine loading bestVectors2")
+    print("Fine loading bestVectors")
 
 
 
