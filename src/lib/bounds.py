@@ -7,6 +7,110 @@ import math
 #import tensorflow as tf
 
 
+
+##############################################
+####### BOUND_MEANS_ITERATIONS ###############
+##############################################
+def pre_bound_means_iterations(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+
+    best_vectors = [ [ [np.ones(len(self.samples)) for i in range(0, self.k)] for cont in range(10000)] for i in range(11)]
+
+    # Distanza 0
+    for v in self.G.nodes:
+        best_vectors[0][v][0] = np.prod(self.matrix[v])
+
+    sorted_vertices=[(v,best_vectors[0][v][0]) for v in self.G.nodes if best_vectors[0][v][0] !=1]#elimino tutti i nodi inutili che hanno tutte le celle a 1
+    sorted_vertices=sorted(sorted_vertices, key= lambda x:x[1])
+
+    sorted_prod=[ x[1] for x in sorted_vertices]
+    print(sorted_prod)
+    cumsum=np.cumsum(sorted_prod)
+    cumsum = cumsum / cumsum[len(cumsum) - 1]
+
+    tresholds = [0,0.000001,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+    contatori=[0 for i in range(len(tresholds))]
+    len_cont = len(contatori)
+
+    j=0
+    for i in range(len(cumsum)):
+        if cumsum[i]>tresholds[j]:
+            contatori[j]=i
+            j=j+1
+            if(j==len_cont):
+                break
+    print(contatori)
+
+    M = self.G.copy()
+    self.index=0
+    self.contatori=contatori
+    self.sorted_vertices=[ s[0] for s in sorted_vertices]
+
+
+    for index in range(len(contatori)):
+        if index>0:
+            self.G.remove_nodes_from(self.sorted_vertices[self.contatori[index - 1]:self.contatori[index]])
+        best_vectors[index]=generate_best_vectors(self, self.G)
+
+    self.best_vectors=best_vectors
+    self.G=M
+
+
+def bound_means_iterations(self, C, vecC):
+    dist = self.k - len(C)
+    length=len(self.samples)
+
+    bestProd=1
+    for g in C:
+        bestProd*=self.best_vectors[0][g][0]
+
+    minProd=1
+    for g in C:
+        if minProd > self.best_vectors[self.index][g][dist] :
+            minProd=self.best_vectors[self.index][g][dist]
+
+    bestProd*=minProd
+    bestProd=math.pow(bestProd, 1.0/length)
+    bestProd*=length
+
+    if bestProd > self.best_score:
+        return True
+    return False
+
+def update_bound_means_iterations(self):
+    for i in range(len(self.contatori)):
+        if(self.cont>=self.contatori[i]):
+            self.index=i
+
+
+
+def generate_best_vectors(self,G):
+    #Distanza 0
+    best_vectors=[[1 for k in range(self.k)] for v in range(10000)]
+    for v in G.nodes:
+        best_vectors[v][0]=np.prod(self.matrix[v])
+
+    #Distanza 1
+    for v in G.nodes:
+        min_prod=1
+        for u in G.neighbors(v):
+            if min_prod>best_vectors[u][1]:
+                min_prod=best_vectors[u][1]
+        best_vectors[v][1]=min_prod
+
+    #Distanza da 2 a k-1
+    for k in range(2,self.k):
+        for v in G.nodes:
+            min_prod=1
+            for u in G.neighbors(v):
+                best_prod_u=best_vectors[u][k-1]*best_vectors[u][0]#best product a dist=1 per se stesso
+                if min_prod>best_prod_u:
+                    min_prod=best_prod_u
+            best_vectors[v][k]=min_prod
+    return best_vectors
+
+
+
 ###################################
 ####### BOUND_MEANS ###############
 ###################################
