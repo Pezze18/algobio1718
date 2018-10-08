@@ -5,6 +5,58 @@ import numpy as np
 import bottleneck as bottle
 import math
 #import tensorflow as tf
+
+
+###################################
+####### BOUND_MEANS ###############
+###################################
+def pre_bound_means(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    self.sorted_vertices = ordinamentoVertici_nobound_migliorato(self)
+    best_vectors=[[1 for k in range(self.k)] for v in range(10000)]
+    for v in self.G.nodes:
+        best_vectors[v][0]=np.prod(self.matrix[v])
+    for v in self.G.nodes:
+        min_prod=1
+        for u in self.G.neighbors(v):
+            if min_prod>best_vectors[u][1]:
+                min_prod=best_vectors[u][1]
+        best_vectors[v][1]=min_prod
+    #distanza 2
+    for v in self.G.nodes:
+        min_prod=1
+        for u in self.G.neighbors(v):
+            best_prod_u=best_vectors[u][1]*best_vectors[u][0]#best product a dist=1 per se stesso
+            if min_prod>best_prod_u:
+                min_prod=best_prod_u
+        best_vectors[v][2]=min_prod
+    self.best_vectors=best_vectors
+
+def bound_means(self, C, vecC):
+    dist = self.k - len(C)
+    length=len(self.samples)
+    if(dist==1 or dist==2):
+        bestProd=1
+        for g in C:
+            bestProd*=self.best_vectors[g][0]
+
+        minProd=1
+        for g in C:
+            if minProd > self.best_vectors[g][dist] :
+                minProd=self.best_vectors[g][dist]
+
+
+        bestProd*=minProd
+        bestProd=math.pow(bestProd, 1.0/length)
+        bestProd*=length
+
+        if bestProd > self.best_score:
+            return True
+    return False
+
+def update_bound_means(self):
+    return True
+
 ###################################
 ####### BOUND_KANTOROVICH ###############
 ###################################
