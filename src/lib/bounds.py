@@ -778,9 +778,9 @@ def pre_bound_min(self):
     self.best_vectors=best_vectors
     print("Fine Ordinamento")
 
-def bound_min(self,C):
+def bound_min(self,C,vecC):
     dist=self.k-len(C)
-    bestS=np.dot(self.best_vectors[self.cont][dist],vectorization_solution(self,C))
+    bestS=np.dot(self.best_vectors[self.cont][dist],vecC)
     if(bestS>self.best_score):
         return True #prune
 
