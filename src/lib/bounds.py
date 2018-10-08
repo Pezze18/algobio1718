@@ -11,7 +11,7 @@ import math
 def pre_bound_kantorovich(self):
     self.matrix = toMatrix(self, self.G.nodes)
     for g in self.genes:
-        self.matrix[g]=100*self.matrix[g]
+        self.matrix[g]=self.matrix[g]
     self.normL2=[len(self.samples) for i in range(10000)]
     for g in self.genes:
         self.normL2[g]=np.linalg.norm(self.matrix[g])
@@ -32,12 +32,16 @@ def pre_bound_kantorovich(self):
                 if self.mins[index][g][0]==0:
                     num_zeros+=1
                     sorted_vertices_zeros.append(g)
-                elif self.mins[index][g][0]!=100:
+                elif self.mins[index][g][0]!=1:
                     sorted_vertices_diff_ones.append(g)
             print("Numero di vettori che hanno minimo a 0: "+str(num_zeros))
             #Creo Ordinamento
             self.sorted_vertices+=sorted_vertices_zeros
             self.sorted_vertices +=sorted_vertices_diff_ones
+
+            strs=[self.id_to_str[s] for s in sorted_vertices_zeros]
+            print(strs)
+            print()
             #questo ordinamento mi sarà utile quando terrò conto dell'indice
 
         num_zeros=0
@@ -70,7 +74,7 @@ def bound_kantorovich(self,C,vecC):
             if self.normL2[c] < min_norm_y:
                 min_norm_y = self.normL2[c]
 
-        rapy=miny/100
+        rapy=miny/1
         rapx=minx/maxx
         bestS=rapx*rapy*norm_x*min_norm_y
         #print(bestS)
