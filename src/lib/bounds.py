@@ -127,8 +127,8 @@ def pre_bound_means(self):
     for v in self.G.nodes:
         min_prod=1
         for u in self.G.neighbors(v):
-            if min_prod>best_vectors[u][1]:
-                min_prod=best_vectors[u][1]
+            if min_prod>best_vectors[u][0]:
+                min_prod=best_vectors[u][0]
         best_vectors[v][1]=min_prod
 
     #Distanza da 2 a k-1
