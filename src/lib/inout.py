@@ -48,8 +48,8 @@ parameters = {
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
-    'bound': True,
-    'method': "bound_means_iterations",
+    'bound': False,
+    'method': "nobound_migliorato",
     'bestVectors':"../data/bestVectors2"
 }
 # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations

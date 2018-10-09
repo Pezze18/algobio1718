@@ -33,7 +33,9 @@ class BDDE:
         if self.prob:
             if self.levelsVecUse:
                 self.levelsVec = [1 for i in range(k+1)] # 0...k
-            self.scoring_function = getattr(bounds, "prob_cover_vec")
+                self.scoring_function = getattr(bounds, "prob_cover_vec")
+            else:
+                self.scoring_function = getattr(bounds, "prob_cover")
         else:
             self.scoring_function = getattr(bounds, "score_cover")
             self.best_score=0#Ricordati di cambiare < con > !
