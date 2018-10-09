@@ -130,7 +130,7 @@ instruction=""
 with open("exec", "w", newline='\n') as exec:
     instruction+="export SGE_ROOT=/usr/share/gridengine \n"
     instruction+="cd {0}out/{1} \n".format(remote_path,current_folder)
-    instruction+="qsub -q Q@runner-15 -cwd commands.job"
+    instruction+="qsub -q Q@runner-04 -cwd commands.job"
     exec.write(instruction)
     exec.close()
     with open("exec", "r", newline='\n') as exec:
@@ -148,4 +148,3 @@ time.sleep(5 - .250)
 sftp.close()
 ssh.close()
 
-#return current_folder
