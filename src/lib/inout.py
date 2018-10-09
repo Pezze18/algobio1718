@@ -39,7 +39,7 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k': 4 ,
+    'k': 3 ,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
@@ -48,8 +48,8 @@ parameters = {
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
-    'bound': False,
-    'method': "nobound_migliorato",
+    'bound': True,
+    'method': "bound_order",
     'bestVectors':"../data/bestVectors2"
 }
 # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
@@ -146,6 +146,8 @@ def update_parameters(args,parameters):
     if args.scoring_function:
         parameters['scoring_function'] = args.scoring_function
 
+    if args.bestVectors:
+        parameters['bestVectors']=args.bestVectors
     return parameters
 
 def read_patients_prob(filename, genes_map, filter=set()):
