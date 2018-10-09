@@ -1139,17 +1139,19 @@ def set_cover(self,C):
 ####################################
 def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
     visit = [False for v in range(10000)]
-    if creaLevels:
-        L=[[] for v in range(self.k+1)]#0,1,...k
-        L[1]=[v]
-        self.L=L
+
+    #if creaLevels:
+    L=[[] for v in range(self.k+1)]#0,1,...k
+    L[1]=[v]#al livello 1 c'è la radice e k è l'ultimo livello
+    self.L=L
+
     if creaPredecessori:
         pred = [0 for v in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
         pred[v]=v
         self.pred= pred
     if creaVec:
-        shortestVec = [[] for v in range(10000)]
-        shortestVec[v] = self.matrix[v]
+        shortestVec = [0 for v in range(10000)]
+        shortestVec[v] = np.ones(len(self.samples))
         self.shortestVec=shortestVec
     if creaEtichetta:
         labels=[False for v in range(10000)]
@@ -1160,49 +1162,35 @@ def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,
         depths[v]=0
         self.depths=depths
 
-
-    for g in L[0]:
-        lista = self.G.neighbors(g)
-        for u in lista:
-            if visit[u] == False:
-                visit[u] = True
+    for k in range(2,self.k+1):
+        for g in L[k-1]:
+            neighbors=self.G.neighbors(g)
+            for u in neighbors:
+                if visit[u] == False:
+                    visit[u] = True
                 if creaDepths:
-                    depths[u]=1
+                    depths[u] = k
                 if creaLevels:
-                    L[1].append(u)#questo implica che radice è a depth 0
+                    L[k].append(u)
                 if creaPredecessori:
                     pred[u] = g
                 if creaVec:
                     shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
-    for k in range(2, self.k):#ultimo è k-1 come giusto che sia
-        for g in L[v][k - 1]:
-            lista = self.G.neighbors(g)
-            for u in lista:
-                if visit[u][v] == False:
-                    visit[u][v] = True
-                    if creaDepths:
-                        depths[u] = k
-                    if creaLevels:
-                        L[k].append(u)
-                    if creaPredecessori:
-                        pred[u] = g
-                    if creaVec:
-                        shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+        if creaLevels==False:
+            L[k-1]=0
+    if creaLevels == False:
+        del self.L
 
-def findAncestor(self,v,s):
+def findAncestor(self,v,s):#newC è l'insieme complemento e father è l'ancestor comune(nel caso peggiore == radice)
     newC=[s]
     while True:
-        father=pred[s]
-        if father==v:
-            return newC,v
+        father=self.pred[s]
+        #if father==v:
+        #    return newC,v
         if self.labels[father]:#allora è già stato selezionato
-            return newC,father
-        s=father#
+            return newC,father#Nel caso peggiore ritorna la radice(primo nodo selezionato)
+        s=father
         newC.append(s)
-    return newC,father#nota:newC deve essere maggiore di 0
-
-
-
 
 
 def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichette=True,creaDepths=True):

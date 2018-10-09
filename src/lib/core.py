@@ -273,47 +273,37 @@ class Combinatorial:
         delta = self.delta
         #G = delta_removal(G, delta)
 
-        C = {}
+        C = []
         score_C = -1
         for v in G.nodes():
-            C_v = set()
-            C_v.add(v)
+            C_v = [v]
             vecC_v = self.matrix[v]
             score_C_v=np.sum(vecC_v)
 
-            BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=True)
-            for lista in self.L:
-                print(len(lista))
-            print()
-            #essendoci 10000 nodi ci sono 10000 operazioni vettoriali
-            depths_separate=[]
-            for k in range(1,self.k):
-                for i in range(10000):
-                    if self.depths[i]==k:
-                        depths_separate.append(i)
+            BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=False)
 
             while len(C_v) < self.k:
-                maximum_rapport = -1
-                max_set = set()
-                score_max=-1
-                vec_max=[]
+                maximum_rapporto = -1
+                max_set = []#nodi da aggiungere a C_v ovvero l_v(u)\C_v
+                score_max=-1#indica lo score massimo ottenuto da C_v U l_v(u)
+                vec_max=[]#Indica il nuovo vettore ottimo ottenuto da C_v U l_v(u)
+                          #dove l_v(u) è l_v(u) che massimizza il rapporto
 
-                for s in depths_separate[self.k-len(C_v)]:#ho già la lista pronta(considerando che faccio poche iterazioni forse non conviene)
-                    newC, father=findAncestor(self,v,s)#gestire meglio perchè father se v è inutile fare il calcolo ogni volta
+                for k in range(2,self.k+1):
+                    for s in self.L[k]:
+                        newC, father=findAncestor(self,v,s)
 
-                    #serve opzione che se father==v non fai niente e nel codice radice la setti a tutti 1 con np.ones
-                    #se v ha 0 allora è un problema (soluzioni con tecniche di smoothing)
-                    vec_intersection=np.divide(self.shortestVec[s],self.matrix[father])
-                    vec_New=np.multiply(vecC_v,vec_intersection)
-                    score_new=len(self.samples)-np.sum(vec_max)
+                        vec_complementare=np.divide(self.shortestVec[s],self.matrix[father])
+                        vec_union=np.multiply(vecC_v,vec_complementare)
+                        score_union=np.sum(vec_union)
 
-                    rapporto = ( score_C_v -score_new)/ len(newC)
-                    if maximum < rapporto:
-                        maximum = rapporto
-                        max_set = newC
-                        score_max = score_new
-                        vec_max = vec_New
-                C_v|=max_set# C_v = C_v U max_set
+                        rapporto = ( score_C_v - score_union)/ len(newC)
+                        if maximum_rapporto < rapporto:
+                            maximum_rapporto = rapporto
+                            max_set = newC
+                            score_max = score_union
+                            vec_max = vec_union
+                C_v+=max_set
                 score_C_v = score_max
                 vecC_v=vec_max
 
@@ -324,8 +314,8 @@ class Combinatorial:
                 print()
                 print("Best solution updated!")
                 print("Current C (ids): ", C)
-                self.best_score=P_C
-                self.best_subgraph=C
+                self.best_score=score_C_v
+                self.best_subgraph=C_v
                 print("Current P_C (cardinality):", score_C)
         return C, P_C
 
