@@ -11,6 +11,7 @@ class BDDE:
         self.tree = None
         self.root = None
         self.samples = samples
+        self.parameters = parameters
         self.sample_size = len(self.samples)
         self.prob = parameters["prob"]
         self.bound= parameters["bound"]
@@ -23,7 +24,6 @@ class BDDE:
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
-        self.parameters=parameters
         self.levelsVecUse=True#parameters["levelsVec"]
 
         if self.prob and self.bound:
