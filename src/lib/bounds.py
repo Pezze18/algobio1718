@@ -1137,57 +1137,64 @@ def set_cover(self,C):
 ####################################
 ######### AUXILIAR FUNCTIONS #######
 ####################################
-def BFS_complete_node(self,v,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
-    visit = [False for v in range(10000)]
+def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
+    visit = [False for i in range(10000)]
+    visit[radice]=True
 
     #if creaLevels:
-    L=[[] for v in range(self.k+1)]#0,1,...k
-    L[1]=[v]#al livello 1 c'è la radice e k è l'ultimo livello
+    L=[[] for i in range(self.k+1)]#0,1,...k
+    L[1]=[radice]#al livello 1 c'è la radice e k è l'ultimo livello
     self.L=L
 
     if creaPredecessori:
-        pred = [0 for v in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
-        pred[v]=v
+        pred = [0 for i in range(10000)]# se alla fine pred[g] è ancora a 0, allora g non è raggiungibile da v
+        pred[radice]=radice
         self.pred= pred
     if creaVec:
-        shortestVec = [0 for v in range(10000)]
-        shortestVec[v] = np.ones(len(self.samples))
+        shortestVec = [0 for i in range(10000)]
+        shortestVec[radice] = np.ones(len(self.samples))
         self.shortestVec=shortestVec
     if creaEtichetta:
-        labels=[False for v in range(10000)]
-        labels[v]=True# v viene sicuramente scelta in C_v
+        labels=[False for i in range(10000)]
+        labels[radice]=True# v viene sicuramente scelta in C_v
         self.labels=labels
     if creaDepths:
-        depths=[-1 for v in range(10000)]
-        depths[v]=0
+        depths=[-1 for i in range(10000)]
+        depths[radice]=0
         self.depths=depths
 
     for k in range(2,self.k+1):
+        #print("Livello: "+str(k))
         for g in L[k-1]:
             neighbors=self.G.neighbors(g)
             for u in neighbors:
                 if visit[u] == False:
                     visit[u] = True
-                if creaDepths:
-                    depths[u] = k
-                if creaLevels:
-                    L[k].append(u)
-                if creaPredecessori:
-                    pred[u] = g
-                if creaVec:
-                    shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
-        if creaLevels==False:
-            L[k-1]=0
-    if creaLevels == False:
-        del self.L
+                    if creaDepths:
+                        depths[u] = k
+                    if creaLevels:
+                        L[k].append(u)
+                    if creaPredecessori:
+                        self.pred[u] = g
+                    if creaVec:
+                        shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+        #if creaLevels==False:
+        #    L[k-1]=0
+    #if creaLevels == False:
+    #    del self.L
 
 def findAncestor(self,v,s):#newC è l'insieme complemento e father è l'ancestor comune(nel caso peggiore == radice)
     newC=[s]
+    #print("v: "+str(v))
+    #print("s: " + str(s))
+    #print("father: "+str(self.pred[s]))
     while True:
         father=self.pred[s]
+        #print("father: " + str(father))
         #if father==v:
         #    return newC,v
         if self.labels[father]:#allora è già stato selezionato
+            #print("Trovato ancestor")
             return newC,father#Nel caso peggiore ritorna la radice(primo nodo selezionato)
         s=father
         newC.append(s)

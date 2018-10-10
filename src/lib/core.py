@@ -274,8 +274,8 @@ class Combinatorial:
         #G = delta_removal(G, delta)
 
         C = []
-        score_C = -1
-        for v in G.nodes():
+        score_C = 1000
+        for v in [8821]:#G.nodes():
             C_v = [v]
             vecC_v = self.matrix[v]
             score_C_v=np.sum(vecC_v)
@@ -290,24 +290,38 @@ class Combinatorial:
                           #dove l_v(u) è l_v(u) che massimizza il rapporto
 
                 for k in range(2,self.k+1):
+                    #print(k)
                     for s in self.L[k]:
+                        if(self.labels[s]):
+                            continue
+                        #print(s)
                         newC, father=findAncestor(self,v,s)
+                        if len(newC)+len(C_v)<=self.k:
+                            if father!=v:
+                                vec_complementare=np.divide(self.shortestVec[s],self.matrix[father])
+                                vec_complementare[vec_complementare == np.inf]=0
+                            else:
+                                vec_complementare=self.shortestVec[s]
 
-                        vec_complementare=np.divide(self.shortestVec[s],self.matrix[father])
-                        vec_union=np.multiply(vecC_v,vec_complementare)
-                        score_union=np.sum(vec_union)
+                            vec_union=np.multiply(vecC_v,vec_complementare)
+                            score_union=np.sum(vec_union)
 
-                        rapporto = ( score_C_v - score_union)/ len(newC)
-                        if maximum_rapporto < rapporto:
-                            maximum_rapporto = rapporto
-                            max_set = newC
-                            score_max = score_union
-                            vec_max = vec_union
+                            rapporto = ( score_C_v - score_union)/ len(newC)
+
+                            if maximum_rapporto < rapporto:
+                                maximum_rapporto = rapporto
+                                max_set = newC
+                                score_max = score_union
+                                vec_max = vec_union
+
+                #print("Aggiorno C_v: "+str(C_v)+" con: "+str(max_set))
                 C_v+=max_set
                 score_C_v = score_max
+                for c in max_set:
+                    self.labels[c]=True
                 vecC_v=vec_max
 
-            if score_C_v > score_C:  # if we've found a better solution, update it and let us know
+            if score_C_v < score_C:  # if we've found a better solution, update it and let us know
                 C = C_v
                 score_C = score_C_v
                 print("_________________")
@@ -316,8 +330,10 @@ class Combinatorial:
                 print("Current C (ids): ", C)
                 self.best_score=score_C_v
                 self.best_subgraph=C_v
-                print("Current P_C (cardinality):", score_C)
-        return C, P_C
+                print("Current score(min_version):",  score_C)
+
+
+        return self.best_subgraph, self.best_score
 
     def delta_removal(G, delta):
         """
