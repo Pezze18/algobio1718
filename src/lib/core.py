@@ -275,7 +275,7 @@ class Combinatorial:
 
         C = []
         score_C = 1000
-        for v in [8821]:#G.nodes():
+        for v in G.nodes():#[8821]:#
             C_v = [v]
             vecC_v = self.matrix[v]
             score_C_v=np.sum(vecC_v)
@@ -297,12 +297,17 @@ class Combinatorial:
                         #print(s)
                         newC, father=findAncestor(self,v,s)
                         if len(newC)+len(C_v)<=self.k:
+                            """
                             if father!=v:
                                 vec_complementare=np.divide(self.shortestVec[s],self.matrix[father])
                                 vec_complementare[vec_complementare == np.inf]=0
                             else:
                                 vec_complementare=self.shortestVec[s]
 
+                            vec_union=np.multiply(vecC_v,vec_complementare)
+                            score_union=np.sum(vec_union)
+                            """
+                            vec_complementare=vectorization_solution(self,newC)
                             vec_union=np.multiply(vecC_v,vec_complementare)
                             score_union=np.sum(vec_union)
 
