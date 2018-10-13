@@ -65,8 +65,9 @@ def bound_means_iterations(self, C, vecC):
         bestProd*=self.best_vectors[0][g][0]
 
     minProd=1
-    last=C[len(C)-1]
-    minProd=self.best_vectors[self.index][g][dist]
+    for g in C:
+        if minProd > self.best_vectors[self.index][g][dist] :
+            minProd=self.best_vectors[self.index][g][dist]
 
     bestProd*=minProd
     bestProd=math.pow(bestProd, 1.0/length)
@@ -80,6 +81,8 @@ def update_bound_means_iterations(self):
     for i in range(len(self.contatori)):
         if(self.cont>=self.contatori[i]):
             self.index=i
+
+
 
 def generate_best_vectors(self,G):
     #Distanza 0
@@ -148,8 +151,10 @@ def bound_means(self, C, vecC):
     for g in C:
         bestProd*=self.best_vectors[g][0]
 
-    last=C[len(C)-1]
-    minProd=self.best_vectors[last][dist]
+    minProd=1
+    for g in C:
+        if minProd > self.best_vectors[g][dist] :
+            minProd=self.best_vectors[g][dist]
 
 
     bestProd*=minProd
@@ -268,25 +273,27 @@ def bound_order(self,C,vecC):
     dec=np.asarray(lista)
     bests=[]
     if(dist==1 or dist==2):
-        v=C[len(C)-1]
-        best_vector=self.best_vectors[v][dist]#già ordinato in ordine crescente
-        if((len(dec)+len(best_vector) >len(self.samples))):
-            #print("Attenzione ! Serve intersezione !")
-            dec=np.sort(dec)
-            dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
-            if(len(best_vector)>len(dec)):
-                inters=len(dec)- ( len(self.samples)-len(best_vector) )
+        for v in C:
+            best_vector=self.best_vectors[v][dist]#già ordinato in ordine crescente
+            if((len(dec)+len(best_vector) >len(self.samples))):
+                #print("Attenzione ! Serve intersezione !")
+                dec=np.sort(dec)
+                dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
+                if(len(best_vector)>len(dec)):
+                    inters=len(dec)- ( len(self.samples)-len(best_vector) )
+                else:
+                    inters = len(best_vector) - (len(self.samples) - len(dec))
+                #print(len(best_vector))
+                bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
+                bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
+                #le 3 righe sotto sono equivalenti alle 2 di sopra per il calcolo del bestS ma sono più leggibili
+                #dec_reduce=dec[0:len(dec)-inters]
+                #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
+                #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
             else:
-                inters = len(best_vector) - (len(self.samples) - len(dec))
-            #print(len(best_vector))
-            bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
-            bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
-            #le 3 righe sotto sono equivalenti alle 2 di sopra per il calcolo del bestS ma sono più leggibili
-            #dec_reduce=dec[0:len(dec)-inters]
-            #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
-            #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
-        else:
-            bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+                bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+            bests.append(bestS)
+        bestS=np.min(bests)
         if(bestS > self.best_score):
             return True
     return False
@@ -676,20 +683,22 @@ def pre_bound_min_migliorato_iterations(self):
 
 def bound_min_migliorato_iterations(self, C, vecC):  # DA COMPLETARE
     dist = self.k - len(C)
-    last=C[len(C)-1]
-    bestS = np.sum(np.multiply(self.best_vectors[self.index][last][dist], vecC))  # self.best_vectors[g][dist]
-    """
-    Debugging part
-    print(self.best_vectors[g][dist])
-    print(vectorization_solution(self,C))
-    print("bestS: "+ str(bestS))
-    print("ActualScore: "+str(np.dot(vectorization_solution(self,C))))
-    print()
-    print("bestS: "+str(bestS))
-    print("BestScore: "+str(self.best_score))
-    """
-    if bestS < self.best_score:
-        return False
+    minBestS=10000
+    for g in C:
+        bestS = np.sum(
+            np.multiply(self.best_vectors[self.index][g][dist], vecC))  # self.best_vectors[g][dist]
+        if bestS < self.best_score:
+            return False
+        """
+        Debugging part
+        print(self.best_vectors[g][dist])
+        print(vectorization_solution(self,C))
+        print("bestS: "+ str(bestS))
+        print("ActualScore: "+str(np.dot(vectorization_solution(self,C))))
+        print()
+        print("bestS: "+str(bestS))
+        print("BestScore: "+str(self.best_score))
+        """
     return True
 
 def update_bound_min_migliorato_iterations(self):
@@ -815,19 +824,23 @@ def pre_bound_min_migliorato(self):
 
 def bound_min_migliorato(self, C, vecC):  # DA COMPLETARE
     dist = self.k - len(C)
-    last=C[len(C)-1]
-    bestS = np.sum(np.multiply(self.best_vectors[last][dist], vecC))  # self.best_vectors[g][dist]
-    """
-    Debugging part
-    print(self.best_vectors[g][dist])
-    print(vectorization_solution(self,C))
-    print("bestS: "+ str(bestS))
-    print("ActualScore: "+str(np.dot(vectorization_solution(self,C))))
-    print()
-    print("bestS: "+str(bestS))
-    print("BestScore: "+str(self.best_score))
-    """
-    if bestS > self.best_score:
+    minBestS=10000
+    for g in C:
+        bestS = np.sum(
+            np.multiply(self.best_vectors[g][dist], vecC))  # self.best_vectors[g][dist]
+        if minBestS > bestS:
+            minBestS = bestS
+        """
+        Debugging part
+        print(self.best_vectors[g][dist])
+        print(vectorization_solution(self,C))
+        print("bestS: "+ str(bestS))
+        print("ActualScore: "+str(np.dot(vectorization_solution(self,C))))
+        print()
+        print("bestS: "+str(bestS))
+        print("BestScore: "+str(self.best_score))
+        """
+    if minBestS > self.best_score:
         return True
     return False
 
