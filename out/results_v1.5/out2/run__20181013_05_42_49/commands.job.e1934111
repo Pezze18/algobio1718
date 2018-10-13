@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/dallepez/algobio1718/src/main.py", line 55, in <module>
+    main()
+  File "/home/dallepez/algobio1718/src/main.py", line 35, in main
+    BDDE_obj.enumeration_algorithm()
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 115, in enumeration_algorithm
+    self.DEPTH([],v,[])
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 151, in DEPTH
+    if self.inspectNode(S1):
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 57, in inspectNode
+    return self.prob and self.bound and self.bound_function(self,C,self.levelsVec[size])
+  File "/home/dallepez/algobio1718/src/lib/bounds.py", line 681, in bound_min_migliorato_iterations
+    bestS = np.sum(np.multiply(self.best_vectors[self.index][g][dist], vecC))  # self.best_vectors[g][dist]
+NameError: name 'g' is not defined
+
+real	2m6.970s
+user	2m5.727s
+sys	0m0.811s

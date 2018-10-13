@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/dallepez/algobio1718/src/main.py", line 55, in <module>
+    main()
+  File "/home/dallepez/algobio1718/src/main.py", line 28, in main
+    combinatorial_obj.combinatorial_algorithm()
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 223, in combinatorial_algorithm
+    self.combinatorial_algorithm_prob()
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 294, in combinatorial_algorithm_prob
+    newC, father=findAncestor(self,v,s)
+  File "/home/dallepez/algobio1718/src/lib/bounds.py", line 1193, in findAncestor
+    newC.append(s)
+MemoryError
+
+real	258m58.437s
+user	24m53.321s
+sys	2m40.532s

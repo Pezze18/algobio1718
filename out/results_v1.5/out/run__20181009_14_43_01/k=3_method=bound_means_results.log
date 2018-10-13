@@ -1,0 +1,80 @@
+Samples size: 391
+Probabilistic con bound bound_means BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9856]
+Current P_C (cardinality): 388.936558782
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9410]
+Current P_C (cardinality): 388.313260304
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9191]
+Current P_C (cardinality): 387.351185654
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821]
+Current P_C (cardinality): 358.430555845
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 8821]
+Current P_C (cardinality): 357.612374027
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 9177, 8821]
+Current P_C (cardinality): 355.199336376
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 8821]
+Current P_C (cardinality): 354.477360145
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 6780]
+Current P_C (cardinality): 350.945061954
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 6780]
+Current P_C (cardinality): 350.890530376
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821, 6780]
+Current P_C (cardinality): 327.099732401
+_________________
+
+Best solution updated!
+Current C (ids):  [244, 6780, 8821]
+Current P_C (cardinality): 326.520173868
+_________________
+
+Best solution updated!
+Current C (ids):  [771, 8821, 6780]
+Current P_C (cardinality): 324.775574196
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 7031]
+Current P_C (cardinality): 324.500805324
+Numero foglie: 
+1427465
+Numero nodi interni visitati in totale: 
+39310
+Numero nodi interni visitati per livello: 
+[0, 5782, 33528, 1427465]
+_________________
+Final solution (ids):  [6780, 8821, 7031]
+Final solution (genes' names):  ['PTEN', 'TP53', 'RB1CC1']
+Final solution score:  324.500805324
+Final solution score(max version):  66.4991946759
+Elapsed time:  00:00:36
+_________________

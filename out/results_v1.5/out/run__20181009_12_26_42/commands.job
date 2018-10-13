@@ -1,0 +1,2 @@
+#!/bin/bash 
+time python3 /home/dallepez/algobio1718/src/main.py --k 4 --proteins_input ../../data/hint+hi2012_index_file.txt --samples_input ../../data/matriceProb.csv --genes_input ../../data/hint+hi2012_edge_file.txt --filter_input ../../data/mutated_expressed_genes.txt --delta 0.8 --strategy enumerate --best_score 10000000 --method bound_min --bestVectors ../../data/bestVectors2 --prob  > /home/dallepez/algobio1718/out/run__20181009_12:26:42/k=4_method=bound_min_results.log

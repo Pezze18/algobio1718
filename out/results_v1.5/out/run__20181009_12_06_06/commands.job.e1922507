@@ -1,0 +1,78 @@
+Invalid requirement: ''
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/packaging/requirements.py", line 92, in __init__
+    req = REQUIREMENT.parseString(requirement_string)
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1172, in parseString
+    raise exc
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1162, in parseString
+    loc, tokens = self._parse( instring, 0 )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2462, in parseImpl
+    loc, exprtokens = e._parse( instring, loc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2719, in parseImpl
+    return self.expr._parse( instring, loc, doActions, callPreParse=False )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2445, in parseImpl
+    loc, resultlist = self.exprs[0]._parse( instring, loc, doActions, callPreParse=False )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1823, in parseImpl
+    raise ParseException(instring, loc, self.errmsg, self)
+pip._vendor.pyparsing.ParseException: Expected W:(abcd...) (at char 0), (line:1, col:1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/pip/req/req_install.py", line 78, in __init__
+    req = Requirement(req)
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/packaging/requirements.py", line 96, in __init__
+    requirement_string[e.loc:e.loc + 8]))
+pip._vendor.packaging.requirements.InvalidRequirement: Invalid requirement, parse error at "''"
+
+You are using pip version 8.1.2, however version 18.0 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Invalid requirement: ''
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/packaging/requirements.py", line 92, in __init__
+    req = REQUIREMENT.parseString(requirement_string)
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1172, in parseString
+    raise exc
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1162, in parseString
+    loc, tokens = self._parse( instring, 0 )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2462, in parseImpl
+    loc, exprtokens = e._parse( instring, loc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2719, in parseImpl
+    return self.expr._parse( instring, loc, doActions, callPreParse=False )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 2445, in parseImpl
+    loc, resultlist = self.exprs[0]._parse( instring, loc, doActions, callPreParse=False )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1028, in _parseNoCache
+    loc,tokens = self.parseImpl( instring, preloc, doActions )
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/pyparsing.py", line 1823, in parseImpl
+    raise ParseException(instring, loc, self.errmsg, self)
+pip._vendor.pyparsing.ParseException: Expected W:(abcd...) (at char 0), (line:1, col:1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/pip/req/req_install.py", line 78, in __init__
+    req = Requirement(req)
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/packaging/requirements.py", line 96, in __init__
+    requirement_string[e.loc:e.loc + 8]))
+pip._vendor.packaging.requirements.InvalidRequirement: Invalid requirement, parse error at "''"
+
+You are using pip version 8.1.2, however version 18.0 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+real	403m10.665s
+user	402m58.331s
+sys	0m3.511s

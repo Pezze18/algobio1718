@@ -1,0 +1,4 @@
+#!/bin/bash 
+pip3 install --user networkx 
+pip3 install --user pandas 
+time python3 /home/dallepez/algobio1718/src/main.py --k 43 --delta 0.8 --prob  --proteinsin ../../data/hint+hi2012_index_file.txt --samplesin ../../data/matriceProb.csv --genesin ../../data/hint+hi2012_edge_file.txt --filterin ../../data/mutated_expressed_genes.txt --strategy combinatorial > /home/dallepez/algobio1718/out/run__20181010_21:13:51/k=43_delta=0.8_results.log

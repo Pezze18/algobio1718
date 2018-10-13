@@ -1,0 +1,155 @@
+Samples size: 391
+Probabilistic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 9814, 9704]
+Current P_C (cardinality): 390.048506385
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9814]
+Current P_C (cardinality): 389.935898593
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9811]
+Current P_C (cardinality): 389.115052674
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9764]
+Current P_C (cardinality): 388.836347098
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9712]
+Current P_C (cardinality): 388.473072609
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9612]
+Current P_C (cardinality): 388.039797085
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9579]
+Current P_C (cardinality): 386.987402744
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 9559]
+Current P_C (cardinality): 386.750127157
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 5728]
+Current P_C (cardinality): 386.493536645
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903, 3484, 375]
+Current P_C (cardinality): 385.646487157
+_________________
+
+Best solution updated!
+Current C (ids):  [6, 1847, 9769, 8972]
+Current P_C (cardinality): 383.523986216
+_________________
+
+Best solution updated!
+Current C (ids):  [6, 1847, 9276, 9769]
+Current P_C (cardinality): 381.135210826
+_________________
+
+Best solution updated!
+Current C (ids):  [6, 1847, 9276, 6273]
+Current P_C (cardinality): 366.812344514
+_________________
+
+Best solution updated!
+Current C (ids):  [6, 1847, 8021, 2622]
+Current P_C (cardinality): 363.922022586
+_________________
+
+Best solution updated!
+Current C (ids):  [10, 5096, 3554, 2622]
+Current P_C (cardinality): 362.583303483
+_________________
+
+Best solution updated!
+Current C (ids):  [13, 2005, 8823, 8821]
+Current P_C (cardinality): 356.237749242
+_________________
+
+Best solution updated!
+Current C (ids):  [13, 2005, 6793, 6780]
+Current P_C (cardinality): 351.327108167
+_________________
+
+Best solution updated!
+Current C (ids):  [13, 2005, 2622, 6278]
+Current P_C (cardinality): 348.830942025
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 6780, 9246]
+Current P_C (cardinality): 348.809613007
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 6780, 9156]
+Current P_C (cardinality): 347.4531877
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 6780, 8821]
+Current P_C (cardinality): 324.640437172
+_________________
+
+Best solution updated!
+Current C (ids):  [2206, 8821, 6780, 7031]
+Current P_C (cardinality): 324.500805324
+_________________
+
+Best solution updated!
+Current C (ids):  [3978, 9585, 8821, 6780]
+Current P_C (cardinality): 314.533316012
+_________________
+
+Best solution updated!
+Current C (ids):  [2291, 6273, 8821, 6780]
+Current P_C (cardinality): 310.734576935
+_________________
+
+Best solution updated!
+Current C (ids):  [5864, 2622, 8821, 6780]
+Current P_C (cardinality): 308.504557131
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 8236, 2622]
+Current P_C (cardinality): 308.275337145
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 3919, 2622]
+Current P_C (cardinality): 307.717903189
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 6793, 2622, 8821]
+Current P_C (cardinality): 307.65190743
+Numero foglie: 
+131883233
+Numero nodi interni visitati in totale: 
+1858871
+Numero nodi interni visitati per livello: 
+[0, 9859, 40705, 1808307, 131883233]
+_________________
+Final solution (ids):  [6780, 6793, 2622, 8821]
+Final solution (genes' names):  ['PTEN', 'PTK2', 'EGFR', 'TP53']
+Final solution score:  307.65190743
+Final solution score(max version):  83.3480925701
+Elapsed time:  00:53:49
+_________________

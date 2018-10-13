@@ -1,0 +1,24 @@
+Samples size: 391
+Inizio Ordinamento
+Fine Ordinamento
+Inizio Ordinamento
+Fine Ordinamento
+Probabilistic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [6780]
+Current P_C (cardinality): 354.420655886
+Numero foglie: 
+5782
+Numero nodi interni visitati in totale: 
+0
+Numero nodi interni visitati per livello: 
+[0, 5782]
+_________________
+Final solution (ids):  [6780]
+Final solution (genes' names):  ['PTEN']
+Final solution score:  354.420655886
+Final solution score(max version):  36.5793441139
+Elapsed time:  00:00:16
+_________________

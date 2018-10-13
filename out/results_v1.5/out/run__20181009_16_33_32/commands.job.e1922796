@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/dallepez/algobio1718/src/main.py", line 55, in <module>
+    main()
+  File "/home/dallepez/algobio1718/src/main.py", line 34, in main
+    BDDE_obj = BDDE(G, patients, k, parameters)
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 25, in __init__
+    self.pre(self)
+  File "/home/dallepez/algobio1718/src/lib/bounds.py", line 261, in pre_bound_order
+    fileObject=open(self.parameters["bestVectors"],"rb")
+AttributeError: 'BDDE' object has no attribute 'parameters'
+
+real	0m10.979s
+user	0m10.462s
+sys	0m0.167s

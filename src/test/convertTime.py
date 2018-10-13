@@ -1,6 +1,6 @@
 import sys
 
-times=["0m11.588s", " 0m15.902s", "4m48.703s", "403m10.665s"]
+times=["0m17.769s", "0m30.661s", "0m45.778s", "29m43.159s"]
 times_trad=[]
 for time in times:
     (time,seconds)=time.split("m")

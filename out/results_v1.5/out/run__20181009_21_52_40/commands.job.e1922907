@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/dallepez/algobio1718/src/main.py", line 55, in <module>
+    main()
+  File "/home/dallepez/algobio1718/src/main.py", line 28, in main
+    combinatorial_obj.combinatorial_algorithm()
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 223, in combinatorial_algorithm
+    self.combinatorial_algorithm_prob()
+  File "/home/dallepez/algobio1718/src/lib/core.py", line 317, in combinatorial_algorithm_prob
+    self.best_score=P_C
+NameError: name 'P_C' is not defined
+
+real	0m11.614s
+user	0m10.292s
+sys	0m0.203s

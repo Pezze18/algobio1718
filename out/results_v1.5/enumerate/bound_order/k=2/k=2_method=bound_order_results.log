@@ -1,0 +1,80 @@
+Samples size: 391
+Inizio Ordinamento
+Numero di geni con almeno una cella diversa da 1: 5782
+[[   1 1425]
+ [   2 1348]
+ [   3  965]
+ [   4  756]
+ [   5  434]
+ [   6  272]
+ [   7  200]
+ [   8  118]
+ [   9   85]
+ [  10   50]
+ [  11   49]
+ [  12   24]
+ [  13   14]
+ [  14   11]
+ [  15    9]
+ [  16    2]
+ [  17    3]
+ [  18    7]
+ [  19    2]
+ [  21    2]
+ [  23    1]
+ [  34    2]
+ [  46    1]
+ [  57    1]
+ [  67    1]]
+Fine Ordinamento
+bestVectors loading
+Fine loading bestVectors
+Probabilistic con bound bound_order BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661]
+Current P_C (cardinality): 366.623443646
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9489]
+Current P_C (cardinality): 363.937744552
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9281]
+Current P_C (cardinality): 362.873087708
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6638]
+Current P_C (cardinality): 361.852397143
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6347]
+Current P_C (cardinality): 360.061960735
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278]
+Current P_C (cardinality): 350.077882751
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821]
+Current P_C (cardinality): 328.170562682
+Numero foglie: 
+888
+Numero nodi interni visitati in totale: 
+5782
+Numero nodi interni visitati per livello: 
+[0, 5782, 888]
+_________________
+Final solution (ids):  [6780, 8821]
+Final solution (genes' names):  ['PTEN', 'TP53']
+Final solution score:  328.170562682
+Final solution score(max version):  62.8294373178
+Elapsed time:  00:00:09
+_________________
