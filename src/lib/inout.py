@@ -49,7 +49,7 @@ parameters = {
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': True,
-    'method': "bound_kantorovich",
+    'method': "bound_min_migliorato_iterations_not_optimized",
     'bestVectors':"../data/bestVectors2"
 }
 # options: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
