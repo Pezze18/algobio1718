@@ -336,8 +336,6 @@ class Combinatorial:
                 self.best_score=score_C_v
                 self.best_subgraph=C_v
                 print("Current score(min_version):",  score_C)
-
-
         return self.best_subgraph, self.best_score
 
     def delta_removal(G, delta):

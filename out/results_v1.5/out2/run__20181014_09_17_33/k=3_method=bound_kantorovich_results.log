@@ -1,0 +1,66 @@
+Samples size: 391
+Numero di vettori che hanno minimo a 0: 156
+['APC', 'APLP2', 'ARHGEF7', 'ASH1L', 'ASUN', 'ATP2A2', 'ATXN2', 'BIN1', 'BNIP3', 'BPTF', 'BYSL', 'C10orf12', 'C11orf30', 'CALCOCO2', 'CCDC14', 'CD4', 'CD40', 'CENPF', 'CENPN', 'CENPP', 'CUL2', 'DAB2IP', 'DAXX', 'DBF4B', 'DBP', 'DCLRE1B', 'DHX32', 'DHX34', 'DLL1', 'DNM1', 'DOK6', 'DYRK1A', 'EHMT1', 'EIF4B', 'ENC1', 'EPM2A', 'ESPL1', 'F11R', 'FBLN5', 'FBXL18', 'FLNB', 'FNBP1L', 'FZD5', 'GALNT2', 'GART', 'GIPC1', 'GPBP1L1', 'GSPT1', 'GTF3C4', 'HACE1', 'IFIH1', 'INADL', 'ITCH', 'ITGAX', 'ITGB7', 'KBTBD7', 'KIAA2026', 'KIF17', 'KRI1', 'LAMB2', 'LAT', 'LCK', 'LONRF3', 'LRRC8E', 'LY9', 'MAN2B1', 'MAP3K1', 'MAP4', 'MAPK8IP3', 'MCRS1', 'MICALL2', 'MLH1', 'MMP14', 'MOGS', 'MRPL42', 'MTHFR', 'MTX2', 'MYO18A', 'MYO1C', 'NCALD', 'NFX1', 'NIPBL', 'NRM', 'PDCD11', 'PER1', 'PGS1', 'PHF19', 'PHLDA1', 'PIK3R5', 'PLTP', 'PLXND1', 'POLA1', 'POLL', 'POLR1E', 'POLR3D', 'PPP2R1B', 'PRPS2', 'PRUNE', 'PTEN', 'PTK6', 'PYCARD', 'RAB3IL1', 'RABEP1', 'RALGDS', 'RALGPS2', 'RB1', 'RBBP6', 'RCN2', 'RET', 'RHPN1', 'RNF139', 'RNH1', 'RPS16', 'RPS6KB2', 'RRAGA', 'SCARF2', 'SHPRH', 'SMC1A', 'SNAPC4', 'SOCS2', 'SORL1', 'SPTBN1', 'STAG2', 'STXBP2', 'SULT1A1', 'SYNJ1', 'TAF1C', 'TBC1D9B', 'THAP2', 'TM6SF1', 'TMEM25', 'TP53', 'TPD52L2', 'TPR', 'TRIM68', 'TSC2', 'TUBGCP4', 'UFL1', 'ULK1', 'UNC13D', 'UPF3A', 'USP15', 'VAC14', 'VRK2', 'WDR27', 'WDR6', 'XPNPEP1', 'ZFYVE16', 'ZMAT3', 'ZMYM3', 'ZNF107', 'ZNF180', 'ZNF592', 'ZNF839', 'ZNRF2', 'ZZEF1']
+
+Numero di vettori che hanno vicino minimo a 0: 1123
+Numero di vettori che hanno vicino minimo a 0: 0
+Len sorted vertices: 5782
+Probabilistic con bound bound_kantorovich BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9561, 9411]
+Current P_C (cardinality): 384.791670151
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9101, 9457]
+Current P_C (cardinality): 384.359321241
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9101, 9246]
+Current P_C (cardinality): 383.834623355
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9101, 9156]
+Current P_C (cardinality): 382.206278715
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9101, 8821]
+Current P_C (cardinality): 355.412928969
+_________________
+
+Best solution updated!
+Current C (ids):  [375, 9101, 6780]
+Current P_C (cardinality): 350.50122765
+_________________
+
+Best solution updated!
+Current C (ids):  [2216, 8821, 6780]
+Current P_C (cardinality): 325.605452045
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 7792]
+Current P_C (cardinality): 324.947096794
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 7031]
+Current P_C (cardinality): 324.500805324
+Numero foglie: 
+1694474
+Numero nodi interni visitati in totale: 
+41001
+Numero nodi interni visitati per livello: 
+[0, 5782, 35219, 1694474]
+_________________
+Final solution (ids):  [6780, 8821, 7031]
+Final solution (genes' names):  ['PTEN', 'TP53', 'RB1CC1']
+Final solution score:  324.500805324
+Final solution score(max version):  66.4991946759
+Elapsed time:  00:00:43
+_________________
