@@ -359,4 +359,38 @@ class Combinatorial:
         return G
 
 
+class FloydWarshall:
+    def __init__(self, G, samples, k, parameters):
+        self.G = G
+        self.k = k
+        self.samples = samples
+        self.sample_size = len(self.samples)
+        self.prob = parameters["prob"]
+        self.bound= parameters["bound"]
+        self.best_score=0
+        self.best_subgraph = []
+        self.delta=parameters["delta"]
+
+        if(self.prob):
+            self.matrix = toMatrix(self, self.G.nodes)
+    def execute(self):
+        d=[[10000 for j in range(10000)] for i in range(10000)]#costo infinito per tutti inizialmente
+        for i in self.G.nodes:
+            for j in self.G.nodes:
+                if i!=j:
+                    d[i][j]=np.multiply(self.matrix[i], self.matrix[j])
+
+        nodes=set(self.G.nodes)
+        for h in range(10000):
+            if h not in nodes:
+                continue
+            for i in nodes:
+                for j in nodes:
+                    d_ihhj=np.multiply(d[i][h],d[h][j])
+                    JoinScore=np.sum(d_ihhj)
+                    if JoinScore < d[i][j]:
+                        d[i][j]=d_ihhj
+
+
+
 

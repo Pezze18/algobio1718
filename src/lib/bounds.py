@@ -226,11 +226,9 @@ def bound_kantorovich(self,C,vecC):
     if(dist==1):
         miny=1
         min_norm_y=len(self.samples)
-        for c in C:
-            if miny > self.mins[self.index][c][1]:
-                miny=self.mins[self.index][c][1]
-            if self.normL2[c] < min_norm_y:
-                min_norm_y = self.normL2[c]
+        last=C[len(C)-1]
+        miny = self.mins[self.index][last][1]
+        min_norm_y = self.normL2[last]
 
         rapy=miny/1
         rapx=minx/maxx
@@ -688,9 +686,9 @@ def bound_min_migliorato_iterations(self, C, vecC):  # DA COMPLETARE
     print("bestS: "+str(bestS))
     print("BestScore: "+str(self.best_score))
     """
-    if bestS < self.best_score:
-        return False
-    return True
+    if bestS > self.best_score:
+        return True
+    return False
 
 def update_bound_min_migliorato_iterations(self):
     for i in range(len(self.contatori)):
