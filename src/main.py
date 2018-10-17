@@ -22,6 +22,7 @@ def main():
         patients = read_patients(parameters['samples_input'], str_to_id, filter=filter)
 
     print("Samples size: " + str(len(patients)))
+    print("Number nodes: "+str(len(G.nodes)))
 
     if strategy == 'combinatorial':
         combinatorial_obj = Combinatorial(G, patients, k, parameters)
@@ -36,6 +37,10 @@ def main():
 
         C = BDDE_obj.best_subgraph
         score_C = BDDE_obj.best_score
+
+    elif strategy == 'UpperBoundEstimate':
+        UpperBound_obj = UpperBoundEstimate(G, patients, k, parameters)
+        UpperBound_obj.execute()
     else:
         raise ValueError("Unkown strategy given. Input: " + str(strategy))
 

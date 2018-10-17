@@ -3,6 +3,7 @@ import lib.bounds as bounds
 from lib.bounds import *
 import numpy as np
 import math
+import bottleneck as bottle
 
 class BDDE:
     def __init__(self, G, samples, k, parameters):
@@ -389,6 +390,84 @@ class FloydWarshall:
                     if JoinScore < d[i][j]:
                         d[i][j]=d_ihhj
 
+
+
+class UpperBoundEstimate:
+    def __init__(self, G, samples, k, parameters):
+        self.G = G
+        self.k = k
+        self.samples = samples
+        self.sample_size = len(self.samples)
+        self.prob = parameters["prob"]
+        self.bound= parameters["bound"]
+        self.best_score=0
+        self.best_subgraph = []
+        self.delta=parameters["delta"]
+
+        if(self.prob):
+            self.matrix = toMatrix(self, self.G.nodes)
+    def execute(self):
+        percentiles=[i*10 for i in range(0,10)]
+        totale=[]
+        for g in self.G.nodes:
+            totale+=list(self.matrix[g][self.matrix[g]<1])
+        thresholds=np.percentile(totale,percentiles)
+        thresholds=list(thresholds)+[1]
+        print(thresholds)
+
+        orderedMatrix = [[] for i in range(10000)]
+        max_counts = [0 for i in range(10000)]  # mi pare sia corretto
+        for g in self.G.nodes:
+            orderedMatrix[g] = list(which_diff(self.matrix[g]))
+            max_counts[g]= len(orderedMatrix[g]) # ad ogni nodo è associato il max_count
+
+
+
+
+        max_counts_percentiles = [0 for i in range(10)]
+        for g in self.G.nodes:
+            counts = list(np.histogram(orderedMatrix[g], thresholds)[0])
+            for i in range(len(thresholds)-1):
+                if max_counts_percentiles[i]<counts[i]:
+                    max_counts_percentiles[i]=counts[i]
+        print(max_counts_percentiles)
+
+        ordered_percentiles=[[] for i in range(len(thresholds)-1)]
+        cont=0
+        for g in self.G.nodes:
+            indices=list(np.digitize(orderedMatrix[g],thresholds)-1)
+            cont+=1
+            for i in range(len(indices)):
+                ordered_percentiles[indices[i]].append(orderedMatrix[g][i])
+        #print("cont: "+str(cont))
+        for i in range(len(ordered_percentiles)):
+            ordered_percentiles[i] = bottle.partition(ordered_percentiles[i], max_counts_percentiles[i])[:max_counts_percentiles[i]]
+
+        #print(ordered_percentiles)
+
+        counts_k = sorted(max_counts,reverse=True)[0:self.k]
+        best_vectors=[[] for i in range(self.k)]
+        for i in range(len(counts_k)):
+            index_perc = len(thresholds) - 2
+            best_vectors[i]=np.ones(len(self.samples)-counts_k[i])
+            remains=counts_k[i]
+            while(remains>0):
+                if remains>len(ordered_percentiles[index_perc]):
+
+                    best_vectors[i]=np.concatenate((best_vectors[i],ordered_percentiles[index_perc]))
+                    remains-=len(ordered_percentiles[index_perc])
+                else:
+                    best_vectors[i]=np.concatenate((best_vectors[i],
+                                                   ordered_percentiles[index_perc][0:remains]))
+                    remains=0
+        result=best_vectors[0]
+        for i in range(1,len(best_vectors)):
+            result=np.multiply(result,best_vectors[i])
+
+        score=np.sum(result)
+        score_max=len(self.samples)-score
+        print("MinVersion: "+str(score))
+        print("MaxVersion: "+str(score_max))
 
 
 
