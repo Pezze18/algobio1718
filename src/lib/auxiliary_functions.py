@@ -1,9 +1,9 @@
 import numpy as np
 import math
 
-####################################
-#########SCORING FUNCTIONS##########
-####################################
+######################################################
+#########SCORING FUNCTIONS PROB VERSIONE##############
+######################################################
 def toMatrix(self,genes):#matrice in formato qij
     samples=self.samples
     matrix = [[1 for j in range(len(self.samples))] for i in range(10000)]  # 10000 is number maximum of nodes
@@ -63,26 +63,54 @@ def prob_cover_old(self,C):#version min
         som+=prod
     return som
 
-def score_cover(self,C):
+
+###############################################################
+#########SCORING FUNCTIONS DETERMINISTIC VERSION###############
+###############################################################
+
+def score_cover_old(self,C):#max_version
     samples = self.samples
     return len([
         p for p in samples
         if len(samples[p].intersection(C))>0
     ])
 
-def set_cover(self,C):
+def score_cover(self,C):#max_version
+    vecC=vectorization_solution_det(self,C)
+    return (vecC>=1).sum() #conto quanti valori sono >=1
+
+def score_cover_vec(self,vecC):#max_version
+    return (vecC >= 1).sum()  # conto quanti valori sono >=1
+
+def set_cover(self,C):#max_version
     samples = self.samples
     return set([
         p for p in samples
         if len(samples[p].intersection(C)) > 0
     ])
 
+def vectorization_solution_det(self,C):
+    vecC=np.zeros(len(self.samples))
+    for c in C:
+        vecC+=self.matrix[c]
+    return vecC
+
+def toMatrix_det(self,genes):
+    samples=self.samples
+    matrix = [[1 for j in range(len(self.samples))] for i in range(10000)]  # 10000 is number maximum of nodes
+    for g in genes:
+        index=0
+        for s in samples:
+            if g in samples[s]:
+                matrix[g][index]=1
+            index+=1
+        matrix[g]=np.asarray(matrix[g])
 
 
 ####################################
 ######### AUXILIAR FUNCTIONS #######
 ####################################
-def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True):
+def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichetta=True, creaDepths=True, creaRami=True):
     visit = [False for i in range(10000)]
     visit[radice]=True
 
@@ -103,6 +131,10 @@ def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=
         labels=[False for i in range(10000)]
         labels[radice]=True# v viene sicuramente scelta in C_v
         self.labels=labels
+    if creaRami:
+        branches=[[] for i in range(10000)]
+        branches[radice]=[radice]
+        self.branches=branches
     if creaDepths:
         depths=[-1 for i in range(10000)]
         depths[radice]=0
@@ -123,6 +155,9 @@ def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=
                         self.pred[u] = g
                     if creaVec:
                         shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+                    if creaRami:
+                        #richiede che creaPredecessori sia a True
+                        branches[u]=[u]+branches[pred[u]]
         #if creaLevels==False:
         #    L[k-1]=0
     #if creaLevels == False:
@@ -145,7 +180,16 @@ def findAncestor(self,v,s):#newC è l'insieme complemento e father è l'ancestor
         newC.append(s)
 
 
-def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichette=True,creaDepths=True):
+def findRamo(self,v,s):#newC è l'insieme complemento e father è l'ancestor comune(nel caso peggiore == radice)
+    newC=[s]
+    while True:
+        father=self.pred[s]
+        if father==v:
+            return newC
+        s=father
+        newC.append(s)
+
+def BFS_complete(self,creaLevels=True,creaPredecessori=True,creaVec=True,creaEtichette=True,creaDepths=True, creaRami=True):
     if creaLevels:
         L=[ [[] for v in range(self.k)] for i in range(10000)]
     visit = [[False for v in range(10000)] for i in range(10000)]

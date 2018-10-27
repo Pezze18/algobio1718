@@ -74,77 +74,90 @@ for file in files:
 
     sftp.put(file_local, file_remote)
 
-print("Excecuting...")
 
-# Create a local file that will be sent to the server (the infamous '.job' file)
-# Main output folder:
+def cluster_script(parameters):
+    print("Excecuting...")
 
-time.sleep(.250)
-current_time = time.time()
-timestamp = datetime.datetime.fromtimestamp(current_time).strftime('%Y%m%d_%H:%M:%S')
-current_folder = "run__" + timestamp
+    folder=remote_path + "out/"
+    # È necessario creare la cartella /out/ in remoto!
+    try:
+        sftp.mkdir(folder)
+    except IOError:
+        # Se è già stata creata, non occorre ri-crearla
+        pass
 
-# È necessario creare la cartella /out/ in remoto!
-try:
-    sftp.mkdir(remote_path + "out/")
-except IOError:
-    # Se è già stata creata, non occorre ri-crearla
-    pass
+    folder=folder+parameters["strategy"]
+    try:
+        sftp.mkdir(folder)
+    except IOError:
+        pass
 
-# Dato che la cartella corrente è un timestamp, siamo sicuri di poterla creare sempre (in remoto)
-sftp.mkdir(remote_path + "out/" + current_folder)
+    folder=folder + "/"+parameters["method"]
+    try:
+        sftp.mkdir(folder)
+    except IOError:
+        pass
 
-with open("commands.job", "w", newline='\n') as fp:
-    fp.write("#!/bin/bash \n")
-    #fp.write("pip3 install --user bottleneck \n")
-    # fp.write("pip3 install --user pandas \n")
-    # Formatting/constructing the instruction to be given:
-    instruction = "time python3 " + remote_path + "src/main.py"
-    # Options to be added:
-    for k in parameters:
-        if k != "prob" and k != "bound":
-            instruction += " --" + k + " " + str(parameters[k])
-    if parameters["prob"]:
-        instruction += " --prob "
-        if parameters["bound"]:
-            instruction += " --bound"
-    # current outputfolder for now is not used in our code
-    # instruction += " --outfolder " + output_folder
+    ks=[1,2,3,4,5,6,7,8]
+    for k in ks:
+        parameters['k']=k
 
-    # Timeout is not currently used in our code
-    # instruction += " --timeout 600 " + str(time_out)
+        # Create a local file that will be sent to the server (the infamous '.job' file)
+        time.sleep(.250)
+        current_time = time.time()
+        timestamp = datetime.datetime.fromtimestamp(current_time).strftime('%Y%m%d_%H:%M:%S')
+        current_folder = folder+"k_"+parameters['k']+"_run__" + timestamp
 
-    # Saving the output to a log file:
-    output_logfilename = 'k=' + str(parameters['k']) + '_' + 'method=' + parameters['method']
-    instruction += ' > '
-    instruction += remote_path + "out/" + current_folder + '/' + output_logfilename + '_results.log'
-    instruction += '\n'
-    fp.write(instruction)
+        # Dato che la cartella corrente è un timestamp, siamo sicuri di poterla creare sempre (in remoto)
+        sftp.mkdir(current_folder )
 
-# Put the file on the current folder on the cluster and delete the local one
-print(local_path + 'src/commands.job' ' >>> ' + remote_path + 'out/' + current_folder + '/commands.job')
-sftp.put(local_path + 'src/commands.job', remote_path + 'out/' + current_folder + '/commands.job')
-os.remove("commands.job")
+        with open("commands.job", "w", newline='\n') as fp:
+            fp.write("#!/bin/bash \n")
+            # Formatting/constructing the instruction to be given:
+            instruction = "time python3 " + remote_path + "src/main.py"
+            # Options to be added:
+            for k in parameters:
+                if k != "prob" and k != "bound":
+                    instruction += " --" + k + " " + str(parameters[k])
+            if parameters["prob"]:
+                instruction += " --prob "
+                if parameters["bound"]:
+                    instruction += " --bound"
 
-instruction=""
-with open("exec", "w", newline='\n') as exec:
-    instruction+="export SGE_ROOT=/usr/share/gridengine \n"
-    instruction+="cd {0}out/{1} \n".format(remote_path,current_folder)
-    instruction+="qsub -q Q@runner-04 -cwd commands.job"
-    exec.write(instruction)
-    exec.close()
-    with open("exec", "r", newline='\n') as exec:
-        # Give this job to the cluster
-        ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(exec.read())
-if os.path.exists("exec"):
-    os.remove("exec")
+            # Saving the output to a log file:
+            output_logfilename = 'k=' + str(parameters['k']) + '_' + 'method=' + parameters['method']
+            instruction += ' > '
+            instruction += current_folder + '/' + output_logfilename + '_results.log'
+            instruction += '\n'
+            fp.write(instruction)
 
-# Print output and errors
-print(ssh_stdout.read().decode('utf-8'))
-print(ssh_stderr.read().decode('utf-8'))
+        # Put the file on the current folder on the cluster and delete the local one
+        print(local_path + 'src/commands.job' ' >>> ' + current_folder + '/commands.job')
+        sftp.put(local_path + 'src/commands.job',  current_folder + '/commands.job')
+        os.remove("commands.job")
 
-time.sleep(5 - .250)
+        instruction=""
+        with open("exec", "w", newline='\n') as exec:
+            instruction+="export SGE_ROOT=/usr/share/gridengine \n"#non serve
+            instruction+="cd {0} \n".format(current_folder)
+            instruction+="qsub -q Q@runner-04 -cwd commands.job"
+            exec.write(instruction)
+            exec.close()
+            with open("exec", "r", newline='\n') as exec:
+                # Give this job to the cluster
+                ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(exec.read())
+        if os.path.exists("exec"):
+            os.remove("exec")
 
-sftp.close()
-ssh.close()
+        # Print output and errors
+        print(ssh_stdout.read().decode('utf-8'))
+        print(ssh_stderr.read().decode('utf-8'))
+
+    #close
+    time.sleep(5 - .250)
+    sftp.close()
+    ssh.close()
+
+if __name__ == "__main__":
+    cluster_script(parameters)
 
