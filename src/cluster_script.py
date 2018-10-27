@@ -20,11 +20,11 @@ from lib.inout import *
 """
 
 #ho importato i parametri di default da inout.py
-parameters['proteins_input']="../"+parameters['proteins_input']
-parameters['samples_input']="../"+parameters['samples_input']
-parameters['genes_input']="../"+parameters['genes_input']
-parameters['filter_input']="../"+parameters['filter_input']
-parameters['bestVectors']="../"+parameters['bestVectors']
+parameters['proteins_input']="../../../"+parameters['proteins_input']
+parameters['samples_input']="../../../"+parameters['samples_input']
+parameters['genes_input']="../../../"+parameters['genes_input']
+parameters['filter_input']="../../../"+parameters['filter_input']
+parameters['bestVectors']="../../../"+parameters['bestVectors']
 
 server = "login.dei.unipd.it"
 
@@ -77,13 +77,16 @@ for file in files:
 
 def cluster_script(parameters):
     print("Excecuting...")
+    ks = [3]
+
+    waitingFor=open("../out/waitingFor.txt","a")
+    waitingFor.write("\n")
 
     folder=remote_path + "out/"
     # È necessario creare la cartella /out/ in remoto!
     try:
         sftp.mkdir(folder)
-    except IOError:
-        # Se è già stata creata, non occorre ri-crearla
+    except IOError:        # Se è già stata creata, non occorre ri-crearla
         pass
 
     folder=folder+parameters["strategy"]
@@ -98,7 +101,7 @@ def cluster_script(parameters):
     except IOError:
         pass
 
-    ks=[1,2,3,4,5,6,7,8]
+
     for k in ks:
         parameters['k']=k
 
@@ -106,7 +109,7 @@ def cluster_script(parameters):
         time.sleep(.250)
         current_time = time.time()
         timestamp = datetime.datetime.fromtimestamp(current_time).strftime('%Y%m%d_%H:%M:%S')
-        current_folder = folder+"k_"+parameters['k']+"_run__" + timestamp
+        current_folder = folder+"/k="+str(parameters['k'])+"_run__" + timestamp
 
         # Dato che la cartella corrente è un timestamp, siamo sicuri di poterla creare sempre (in remoto)
         sftp.mkdir(current_folder )
@@ -150,13 +153,25 @@ def cluster_script(parameters):
             os.remove("exec")
 
         # Print output and errors
-        print(ssh_stdout.read().decode('utf-8'))
-        print(ssh_stderr.read().decode('utf-8'))
+        line=ssh_stdout.read().decode('utf-8')
+        start=line.find("b")
+        end=line.find("(")
+        idJob=line[start+1:end]
+        k=parameters["k"]
+
+        line2=parameters["strategy"]+" "+parameters["method"]+" k="+str(k)+"_run__"+timestamp+" idJob:"+idJob+"\n"
+        waitingFor.write(line2)
+        print(line2)
+        print(line)
+        line=ssh_stderr.read().decode('utf-8')
+        print(line)
+
 
     #close
     time.sleep(5 - .250)
     sftp.close()
     ssh.close()
+    waitingFor.close()
 
 if __name__ == "__main__":
     cluster_script(parameters)

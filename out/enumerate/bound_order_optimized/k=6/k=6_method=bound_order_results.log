@@ -1,0 +1,185 @@
+Samples size: 391
+Inizio Ordinamento
+Numero di geni con almeno una cella diversa da 1: 5782
+[[   1 1425]
+ [   2 1348]
+ [   3  965]
+ [   4  756]
+ [   5  434]
+ [   6  272]
+ [   7  200]
+ [   8  118]
+ [   9   85]
+ [  10   50]
+ [  11   49]
+ [  12   24]
+ [  13   14]
+ [  14   11]
+ [  15    9]
+ [  16    2]
+ [  17    3]
+ [  18    7]
+ [  19    2]
+ [  21    2]
+ [  23    1]
+ [  34    2]
+ [  46    1]
+ [  57    1]
+ [  67    1]]
+Fine Ordinamento
+bestVectors loading
+Fine loading bestVectors
+Probabilistic con bound bound_order BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8436, 9597, 1872]
+Current P_C (cardinality): 359.992119205
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8436, 9597, 1231]
+Current P_C (cardinality): 358.460479582
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8436, 9482, 8821]
+Current P_C (cardinality): 334.841366791
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 9251]
+Current P_C (cardinality): 334.712870368
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 9137]
+Current P_C (cardinality): 334.415746023
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 8822]
+Current P_C (cardinality): 334.400140476
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 8406]
+Current P_C (cardinality): 334.173921507
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 7792]
+Current P_C (cardinality): 332.670305853
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 7031]
+Current P_C (cardinality): 332.335987546
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 8316, 8821, 6780]
+Current P_C (cardinality): 306.469231191
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9661, 1622, 4288, 8821, 6780]
+Current P_C (cardinality): 304.903566717
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9485, 8821, 6780, 9303, 7122]
+Current P_C (cardinality): 304.839051093
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9485, 8821, 6780, 9177, 6273]
+Current P_C (cardinality): 292.958434489
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9101, 4643, 6273, 6780, 8821]
+Current P_C (cardinality): 292.192504546
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 8236, 4643, 6273, 8821, 6780]
+Current P_C (cardinality): 291.822163501
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6793, 5589, 6273, 6780, 8821]
+Current P_C (cardinality): 290.869071748
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 9101, 3177, 6780, 8821]
+Current P_C (cardinality): 290.855195551
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 8236, 8140, 8821, 6780]
+Current P_C (cardinality): 290.62124611
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 8236, 4870, 8821, 6780]
+Current P_C (cardinality): 290.276078468
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6638, 2743, 8821, 6780]
+Current P_C (cardinality): 289.76739998
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6347, 6793, 6780, 8821]
+Current P_C (cardinality): 289.688081499
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 8105, 9485, 8821, 6780]
+Current P_C (cardinality): 289.077110114
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 8105, 8236, 8821, 6780]
+Current P_C (cardinality): 288.776970953
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 8105, 6793, 6780, 8821]
+Current P_C (cardinality): 288.406963686
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6273, 9485, 8821, 6780]
+Current P_C (cardinality): 280.094746817
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6273, 8236, 8821, 6780]
+Current P_C (cardinality): 279.794307898
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6273, 6793, 6780, 8821]
+Current P_C (cardinality): 279.443647432
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6273, 2291, 8821, 6780]
+Current P_C (cardinality): 278.697327045
+Numero foglie: 
+40917891
+Numero nodi interni visitati in totale: 
+403248073
+Numero nodi interni visitati per livello: 
+[0, 5782, 35219, 1694511, 127941059, 273571502, 40917891]
+_________________
+Final solution (ids):  [2622, 6278, 6273, 2291, 8821, 6780]
+Final solution (genes' names):  ['EGFR', 'PIK3R1', 'PIK3CA', 'DDX5', 'TP53', 'PTEN']
+Final solution score:  278.697327045
+Final solution score(max version):  112.302672955
+Elapsed time:  04:38:54
+_________________

@@ -16,6 +16,8 @@ def check_parameters(parameters):
 
     ##Check files path##
     if not os.path.isfile(parameters['filter_input']):
+        #for file in os.listdir("../../../../"):
+        #    print(file)
         raise FileNotFoundError("Can't find the 'proteins' file; filename given: " + parameters['filter_input'])
 
     if not os.path.isfile(parameters['proteins_input']):
@@ -49,7 +51,7 @@ parameters = {
     'strategy': 'combinatorial',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': False,
-    'method': "onlyBFS",
+    'method': "BFSAndLevelsVec",
     'bestVectors':"../data/bestVectors2"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations

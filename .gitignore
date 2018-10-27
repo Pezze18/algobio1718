@@ -16,3 +16,6 @@ inspection
 databaseDrivers.xml
 password.txt
 src/password.txt
+.ipynb_checkpoints
+.idea
+

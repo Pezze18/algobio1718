@@ -1,0 +1,115 @@
+Samples size: 391
+Probabilistic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [4, 3903]
+Current P_C (cardinality): 391
+_________________
+
+Best solution updated!
+Current C (ids):  [6, 1847]
+Current P_C (cardinality): 390.004636136
+_________________
+
+Best solution updated!
+Current C (ids):  [10, 5096]
+Current P_C (cardinality): 389.412834332
+_________________
+
+Best solution updated!
+Current C (ids):  [13, 2005]
+Current P_C (cardinality): 389.09595174
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101]
+Current P_C (cardinality): 386.319997381
+_________________
+
+Best solution updated!
+Current C (ids):  [22, 6182]
+Current P_C (cardinality): 385.863369189
+_________________
+
+Best solution updated!
+Current C (ids):  [77, 9265]
+Current P_C (cardinality): 384.84312559
+_________________
+
+Best solution updated!
+Current C (ids):  [129, 5494]
+Current P_C (cardinality): 384.462074821
+_________________
+
+Best solution updated!
+Current C (ids):  [326, 4870]
+Current P_C (cardinality): 384.086138811
+_________________
+
+Best solution updated!
+Current C (ids):  [475, 6988]
+Current P_C (cardinality): 383.844941273
+_________________
+
+Best solution updated!
+Current C (ids):  [856, 1232]
+Current P_C (cardinality): 383.560599099
+_________________
+
+Best solution updated!
+Current C (ids):  [871, 2633]
+Current P_C (cardinality): 382.301732133
+_________________
+
+Best solution updated!
+Current C (ids):  [2206, 8821]
+Current P_C (cardinality): 359.548872737
+_________________
+
+Best solution updated!
+Current C (ids):  [9335, 8821]
+Current P_C (cardinality): 359.523055181
+_________________
+
+Best solution updated!
+Current C (ids):  [6788, 8821]
+Current P_C (cardinality): 358.649700894
+_________________
+
+Best solution updated!
+Current C (ids):  [7972, 8821]
+Current P_C (cardinality): 358.234590699
+_________________
+
+Best solution updated!
+Current C (ids):  [2123, 8821]
+Current P_C (cardinality): 356.211103027
+_________________
+
+Best solution updated!
+Current C (ids):  [294, 6780]
+Current P_C (cardinality): 354.420655886
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 9257]
+Current P_C (cardinality): 353.542504626
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821]
+Current P_C (cardinality): 328.170562682
+Numero foglie: 
+40705
+Numero nodi interni visitati in totale: 
+9859
+Numero nodi interni visitati per livello: 
+[0, 9859, 40705]
+_________________
+Final solution (ids):  [6780, 8821]
+Final solution (genes' names):  ['PTEN', 'TP53']
+Final solution score:  328.170562682
+Final solution score(max version):  62.8294373178
+Elapsed time:  00:00:10
+_________________
