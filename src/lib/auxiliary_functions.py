@@ -282,7 +282,7 @@ def updateBestVector(self, v):
 
     for i in range(len(self.thresholds)-1):
         length=min(len(ordered_percentiles[i]), max_percentiles[i])
-        if length>0:
+        if length==0:
             ordered_percentiles[i]=[]
         else:
             ordered_percentiles[i] = bottle.partition(ordered_percentiles[i], length - 1)
@@ -291,15 +291,20 @@ def updateBestVector(self, v):
     remains = max
     index_perc=0
 
+    #print("max: "+str(max))
+    #print("max_percentiles"+str(max_percentiles))
+    #print("ordered_percentiles: "+str(ordered_percentiles))
+
     best_vector=np.asarray([])
     while (remains > 0):
+        #print(remains)
         if remains > len(ordered_percentiles[index_perc]):
             best_vector = np.concatenate((best_vector, ordered_percentiles[index_perc]))
             remains -= len(ordered_percentiles[index_perc])
         else:
-            best_vector = np.concatenate((best_vector,
-                                              ordered_percentiles[index_perc][0:remains]))
-            remains = 0
+            best_vector = np.concatenate((best_vector, ordered_percentiles[index_perc][0:remains]))
+            remains=0
+        index_perc+=1
     return best_vector
 
 

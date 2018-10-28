@@ -48,9 +48,11 @@ def pre_bound_order_improved(self):
     #Distanza 1
     index = 0
     for v in self.G:
+        #print(v)
         self.best_vectors[index][v][0] = updateBestVector(self, v)
     index=1
     for g in self.sorted_vertices:
+        #print(index)
         neighbors=set(self.G.neighbors(g))
         self.G.remove_node(g)
         for v in self.G:
@@ -407,24 +409,24 @@ def ordinamentoVertici_bound_order(self):
     cumsum=np.cumsum(freq)
     #print(cumsum[len(cumsum) - 1])
     cumsum=cumsum/cumsum[len(cumsum)-1]
-    #print(cumsum)
-    tresholds=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    contatori = [0 for i in range(len(tresholds))]
-    len_cont=len(contatori)
+    print(cumsum)
+    percentiles=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    thresholds = np.percentile(cumsum, percentiles)
+    contatori = [0 for i in range(len(thresholds))]
+    len_cont=len(thresholds)
 
     j=0
     for i in range(len(cumsum)):
         # elimino tutti i nodi da 0 a cumsum[i](quindi cumsum[i] risulta non compreso) e ricaclcolo i bounds
-        if cumsum[i]>=tresholds[j]:
+        if cumsum[i]>=thresholds[j]:
             contatori[j]=i
-            print()
             j=j+1
             if(j==len_cont):
                 break
 
-    #print()
-    #print(contatori)
-    #print()
+    print()
+    print("contatori: "+str(contatori))
+    print()
     self.contatori=contatori
     self.index=0
     """
