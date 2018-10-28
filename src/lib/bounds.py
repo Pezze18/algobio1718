@@ -20,24 +20,29 @@ def pre_bound_order_improved(self):
 
     #Dati percentili calcola tresholds
     percentiles = [i * 10 for i in range(0, 10)]
-    self.percentiles = [0,10e-9]+percentiles[1:len(percentiles)]
+    percentiles = [0]+percentiles[1:len(percentiles)]
     totale = []
     for g in self.G.nodes:
         totale += list(self.matrix[g][self.matrix[g] < 1])
     thresholds = np.percentile(totale, percentiles)
-    self.thresholds = list(thresholds) + [1]
-    print(thresholds)
+    thresholds =[0,10e-9] + list(thresholds)[1:len(thresholds)] + [1]
+    self.thresholds= thresholds
+    print(percentiles)
+    print(self.thresholds)
 
-    max_counts_percentiles = [0 for i in range(len(thresholds)-1)]
+    max_counts_percentiles = [ [0 for i in range(len(thresholds))] for i in range(10000)]
+
     for g in self.G.nodes:
         counts = list(np.histogram(self.orderedMatrix[g], thresholds)[0])
-        for i in range(len(thresholds) - 1):
-            if max_counts_percentiles[i] < counts[i]:
-                max_counts_percentiles[i] = counts[i]
+        for i in range(len(thresholds)-1):
+            #print(counts[i])
+            if max_counts_percentiles[g][i] < counts[i]:
+                max_counts_percentiles[g][i] = counts[i]
     self.max_counts_percentiles = max_counts_percentiles
-    self.max_percentiles = max_counts_percentiles
     print(max_counts_percentiles)
 
+    for i in range(len(self.orderedMatrix)):
+        self.orderedMatrix[i]=np.asarray(self.orderedMatrix[i])
 
     M=self.G.copy()
     #Distanza 1
@@ -67,20 +72,14 @@ def bound_order_improved(self,C,vecC):
         v=C[len(C)-1]
         best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
-            #print("Attenzione ! Serve intersezione !")
             dec=np.sort(dec)
             dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
             if(len(best_vector)>len(dec)):
                 inters=len(dec)- ( len(self.samples)-len(best_vector) )
             else:
                 inters = len(best_vector) - (len(self.samples) - len(dec))
-            #print(len(best_vector))
             bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
             bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
-            #le 3 righe sotto sono equivalenti alle 2 di sopra per il calcolo del bestS ma sono più leggibili
-            #dec_reduce=dec[0:len(dec)-inters]
-            #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
-            #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
         else:
             bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
         if(bestS > self.best_score):
