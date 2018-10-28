@@ -1,3 +1,59 @@
 combinatorial BFSAndLevelsVec k=3_run__20181027_11:36:16 idJob: 1993923 
 
 combinatorial BFSAndLevelsVec k=3_run__20181027_11:40:58 idJob: 1993924 
+
+combinatorial BFSAndLevelsVec k=2_run__20181027_16:57:48 idJob: 1993929 
+combinatorial BFSAndLevelsVec k=3_run__20181027_16:57:48 idJob: 1993930 
+combinatorial BFSAndLevelsVec k=4_run__20181027_16:57:49 idJob: 1993931 
+combinatorial BFSAndLevelsVec k=5_run__20181027_16:57:50 idJob: 1993932 
+combinatorial BFSAndLevelsVec k=6_run__20181027_16:57:51 idJob: 1993933 
+combinatorial BFSAndLevelsVec k=7_run__20181027_16:57:52 idJob: 1993934 
+combinatorial BFSAndLevelsVec k=8_run__20181027_16:57:53 idJob: 1993935 
+
+combinatorial BFSAndProbCoverAndComplement k=2_run__20181027_17:01:03 idJob: 1993936 
+combinatorial BFSAndProbCoverAndComplement k=3_run__20181027_17:01:04 idJob: 1993937 
+combinatorial BFSAndProbCoverAndComplement k=4_run__20181027_17:01:05 idJob: 1993938 
+combinatorial BFSAndProbCoverAndComplement k=5_run__20181027_17:01:06 idJob: 1993939 
+combinatorial BFSAndProbCoverAndComplement k=6_run__20181027_17:01:06 idJob: 1993940 
+combinatorial BFSAndProbCoverAndComplement k=7_run__20181027_17:01:07 idJob: 1993941 
+combinatorial BFSAndProbCoverAndComplement k=8_run__20181027_17:01:08 idJob: 1993942 
+
+combinatorial onlyBFSAndComplement k=2_run__20181027_17:01:52 idJob: 1993943 
+combinatorial onlyBFSAndComplement k=3_run__20181027_17:01:53 idJob: 1993944 
+combinatorial onlyBFSAndComplement k=4_run__20181027_17:01:54 idJob: 1993945 
+combinatorial onlyBFSAndComplement k=5_run__20181027_17:01:55 idJob: 1993946 
+combinatorial onlyBFSAndComplement k=6_run__20181027_17:01:56 idJob: 1993947 
+combinatorial onlyBFSAndComplement k=7_run__20181027_17:01:58 idJob: 1993948 
+combinatorial onlyBFSAndComplement k=8_run__20181027_17:01:58 idJob: 1993949 
+
+combinatorial onlyBFSAndProbCover k=2_run__20181027_17:02:59 idJob: 1993950 
+combinatorial onlyBFSAndProbCover k=3_run__20181027_17:03:00 idJob: 1993951 
+combinatorial onlyBFSAndProbCover k=4_run__20181027_17:03:00 idJob: 1993952 
+combinatorial onlyBFSAndProbCover k=5_run__20181027_17:03:01 idJob: 1993953 
+combinatorial onlyBFSAndProbCover k=6_run__20181027_17:03:02 idJob: 1993954 
+combinatorial onlyBFSAndProbCover k=7_run__20181027_17:03:03 idJob: 1993955 
+combinatorial onlyBFSAndProbCover k=8_run__20181027_17:03:04 idJob: 1993956 
+
+combinatorial onlyBFS k=2_run__20181027_17:04:07 idJob: 1993957 
+combinatorial onlyBFS k=3_run__20181027_17:04:08 idJob: 1993958 
+combinatorial onlyBFS k=4_run__20181027_17:04:09 idJob: 1993959 
+combinatorial onlyBFS k=5_run__20181027_17:04:09 idJob: 1993960 
+combinatorial onlyBFS k=6_run__20181027_17:04:10 idJob: 1993961 
+combinatorial onlyBFS k=7_run__20181027_17:04:11 idJob: 1993962 
+combinatorial onlyBFS k=8_run__20181027_17:04:12 idJob: 1993963 
+
+combinatorial bound_order_not_optimized k=2_run__20181027_20:58:57 idJob: 1993966 
+combinatorial bound_order_not_optimized k=3_run__20181027_20:58:58 idJob: 1993967 
+combinatorial bound_order_not_optimized k=4_run__20181027_20:58:59 idJob: 1993968 
+combinatorial bound_order_not_optimized k=5_run__20181027_20:59:00 idJob: 1993969 
+combinatorial bound_order_not_optimized k=6_run__20181027_20:59:00 idJob: 1993970 
+combinatorial bound_order_not_optimized k=7_run__20181027_20:59:01 idJob: 1993971 
+combinatorial bound_order_not_optimized k=8_run__20181027_20:59:02 idJob: 1993972 
+
+combinatorial onlyBFS k=2_run__20181028_11:10:38 idJob: 1995306 
+combinatorial onlyBFS k=3_run__20181028_11:10:39 idJob: 1995307 
+combinatorial onlyBFS k=4_run__20181028_11:10:39 idJob: 1995308 
+combinatorial onlyBFS k=5_run__20181028_11:10:40 idJob: 1995309 
+combinatorial onlyBFS k=6_run__20181028_11:10:41 idJob: 1995310 
+combinatorial onlyBFS k=7_run__20181028_11:10:42 idJob: 1995311 
+combinatorial onlyBFS k=8_run__20181028_11:10:42 idJob: 1995312 

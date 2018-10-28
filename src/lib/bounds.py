@@ -9,6 +9,67 @@ from lib.auxiliary_functions import *
 
 
 
+def pre_bound_order_improved(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+
+    self.best_vectors=[ [[0] for i in range(self.max_node+1)] for j in range(5783)]#5782 sono il numero di iterazioni,
+    #  max_node è l'id più alto per un nodo, dato che max_node è uguale alla lunghezza della lista di nodi
+    print("Inizio Ordinamento")
+    ordinamentoVertici_bound_order(self)
+    #print(self.max_counts)
+
+    M=self.G.copy()
+    #Distanza 1
+    index = 0
+    for v in self.G:
+        self.best_vectors[index][v][0] = updateBestVector(self, v)
+    index=1
+    for g in self.sorted_vertices:
+        neighbors=set(self.G.neighbors(g))
+        self.G.remove_node(g)
+        for v in self.G:
+            if v in neighbors:
+                self.best_vectors[index][v][0] = updateBestVector(self, v)
+            else:
+                self.best_vectors[index][v][0] = self.best_vectors[index-1][v][0]
+        index+=1
+    print("Fine Ordinamento")
+    self.G=M
+    self.index=0
+
+def bound_order_improved(self,C,vecC):
+    dist=self.k-len(C)
+    lista=which_diff(vecC)
+    dec=np.asarray(lista)
+    bests=[]
+    if(dist==1):
+        v=C[len(C)-1]
+        best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
+        if((len(dec)+len(best_vector) >len(self.samples))):
+            #print("Attenzione ! Serve intersezione !")
+            dec=np.sort(dec)
+            dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
+            if(len(best_vector)>len(dec)):
+                inters=len(dec)- ( len(self.samples)-len(best_vector) )
+            else:
+                inters = len(best_vector) - (len(self.samples) - len(dec))
+            #print(len(best_vector))
+            bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
+            bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
+            #le 3 righe sotto sono equivalenti alle 2 di sopra per il calcolo del bestS ma sono più leggibili
+            #dec_reduce=dec[0:len(dec)-inters]
+            #best_vector_reduce=best_vector[inters:len(best_vector)]#return a view non una copia
+            #bestS=np.sum(dec_reduce)+np.sum(best_vector_reduce)+np.dot(dec[len(dec)-inters:len(dec)], best_vector_reduce[0:inters] )
+        else:
+            bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+        if(bestS > self.best_score):
+            return True
+    return False
+
+
+def update_bound_order_improved(self):
+    self.index=self.cont
+
 ##############################################
 ####### BOUND_MEANS_ITERATIONS ###############
 ##############################################
@@ -304,10 +365,11 @@ def ordinamentoVertici_bound_order(self):
     cont=[c for c in cont if c[1]!=0]
 
     #Mi salvo per ogni nodo il proprio max_count(a livello 0 quindi)
-    self.max_counts=[[0 for i in range(self.k)] for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
+    self.max_counts=[0 for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
                                             #ovvero hanno 0 numeri diversi da 1
     for c in cont:
-        self.max_counts[c[0]][0]=c[1]
+        self.max_counts[c[0]]=c[1]
+    self.orderedMatrix=orderedMatrix
 
     cont=sorted(cont, key=lambda x: x[1],reverse=True)
     #print(cont)  # guarda distribuzione max_count

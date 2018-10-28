@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import bottleneck as bottle
 
 ######################################################
 #########SCORING FUNCTIONS PROB VERSIONE##############
@@ -260,4 +261,25 @@ def how_many_diff_old(L):# metodo ausiliario di bound_min(deprecated)
         if (n != 1):
             lista.append(n)
     return lista
+
+
+def updateBestVector(self, v):
+    G=self.G
+    lista = []
+    max=0
+    for u in G.neighbors(v):
+        if max < self.max_counts[u]:
+            max=self.max_counts[u]
+        lista = lista + self.orderedMatrix[u] #list(which_diff(self.matrix[u]))
+
+    length = min(len(self.samples),len(lista) )
+    length= min(length,max)
+    #print(lista)
+    #print(length)
+    ord = bottle.partition(lista, length-1)[0:length]
+    #print(ord)
+    #print(len(ord))
+    #print("____________________________")
+    return ord
+
 
