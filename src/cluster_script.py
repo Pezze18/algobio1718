@@ -7,8 +7,6 @@ import getpass
 import lib.inout as inout
 from lib.inout import *
 
-
-print("Cluster script")
 """
     --- WARNING ---
     FIRST TIME INFO, MANDATORY TODOs
@@ -79,7 +77,7 @@ for file in files:
 
 def cluster_script(parameters):
     print("Excecuting...")
-    ks = [2,3,4,5,6,7,8]
+    ks = [3]
 
     waitingFor=open("../out/waitingFor.txt","a")
     waitingFor.write("\n")

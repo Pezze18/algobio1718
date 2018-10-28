@@ -267,19 +267,40 @@ def updateBestVector(self, v):
     G=self.G
     lista = []
     max=0
+
+    max_percentiles=[0 for i in range(len(self.max_percentiles))]
+
     for u in G.neighbors(v):
         if max < self.max_counts[u]:
             max=self.max_counts[u]
+        for i in range(len(self.max_percentiles)):
+            if max_percentiles[i] < self.max_percentiles[i]:
+                max_percentiles[i] = self.max_percentiles[i]
         lista = lista + self.orderedMatrix[u] #list(which_diff(self.matrix[u]))
 
-    length = min(len(self.samples),len(lista) )
-    length= min(length,max)
-    #print(lista)
-    #print(length)
-    ord = bottle.partition(lista, length-1)[0:length]
-    #print(ord)
-    #print(len(ord))
-    #print("____________________________")
-    return ord
+    remains = max
+    index_perc=0
+    lista=np.asarray(lista)
+    indices_perc=np.digitize(lista, self.thresholds)
+    ordered_percentiles=[ 0 for i in range(len(self.max_percentiles))]
+    for i in range(len(self.max_percentiles)):
+        ord_perc = lista[indices_perc==(i+1)]
+        length = min(len(self.samples), len(lista))
+        length = min(length, max_percentiles[i])
+        ord_perc = bottle.partition(ord_perc, length - 1)[0:length]
+        ordered_percentiles[i]=ord_perc
+
+    best_vector=np.asarray([])
+    while (remains > 0):
+        if remains > len(ordered_percentiles[index_perc]):
+
+            best_vector = np.concatenate((best_vector, ordered_percentiles[index_perc]))
+            remains -= len(ordered_percentiles[index_perc])
+        else:
+            best_vector = np.concatenate((best_vector,
+                                              ordered_percentiles[index_perc][0:remains]))
+            remains = 0
+
+    return best_vector
 
 

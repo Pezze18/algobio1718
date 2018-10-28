@@ -18,6 +18,27 @@ def pre_bound_order_improved(self):
     ordinamentoVertici_bound_order(self)
     #print(self.max_counts)
 
+    #Dati percentili calcola tresholds
+    percentiles = [i * 10 for i in range(0, 10)]
+    self.percentiles = [0,10e-9]+percentiles[1:len(percentiles)]
+    totale = []
+    for g in self.G.nodes:
+        totale += list(self.matrix[g][self.matrix[g] < 1])
+    thresholds = np.percentile(totale, percentiles)
+    self.thresholds = list(thresholds) + [1]
+    print(thresholds)
+
+    max_counts_percentiles = [0 for i in range(len(thresholds)-1)]
+    for g in self.G.nodes:
+        counts = list(np.histogram(self.orderedMatrix[g], thresholds)[0])
+        for i in range(len(thresholds) - 1):
+            if max_counts_percentiles[i] < counts[i]:
+                max_counts_percentiles[i] = counts[i]
+    self.max_counts_percentiles = max_counts_percentiles
+    self.max_percentiles = max_counts_percentiles
+    print(max_counts_percentiles)
+
+
     M=self.G.copy()
     #Distanza 1
     index = 0

@@ -26,12 +26,7 @@ class BDDE:
         self.genes=list(self.G.nodes).copy()
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.levelsVecUse=True#parameters["levelsVec"]
-
-        lista = []
-        for v in self.G:
-            lista.append(v)
-        self.max_node=np.max(lista)
-        #print("max: " + str(np.max(lista)))
+        self.max_node=9859
 
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
