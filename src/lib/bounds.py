@@ -14,7 +14,7 @@ def pre_bound_order_improved(self):
     ordinamentoVertici_bound_order(self)
 
     print("Inizio Calcolo Best Vectors")
-    self.best_vectors=[ [[0] for i in range(self.max_node+1)] for j in range(5783)]#5782 sono il numero di iterazioni,
+    self.best_vectors=[ [[0] for i in range(self.max_node+1)] for j in range(len(self.contatori))]#5782 sono il numero di iterazioni,
     #  max_node è l'id più alto per un nodo, dato che max_node è uguale alla lunghezza della lista di nodi
 
     #Dati percentili calcola tresholds
@@ -24,7 +24,7 @@ def pre_bound_order_improved(self):
         totale += list(self.matrix[g][self.matrix[g] < 1])
 
     totale=np.sort(totale)
-    contatori, values = calculatePercentiles(self, totale, percentiles)
+    indici, values = calculatePercentiles(self, totale, percentiles)
     values=[0]+values+[1]
     self.thresholds=values
     thresholds=values
@@ -52,16 +52,23 @@ def pre_bound_order_improved(self):
         #print(v)
         self.best_vectors[index][v][0] = updateBestVector(self, v)
     index=1
-    for g in self.sorted_vertices:
-        #print(index)
-        neighbors=set(self.G.neighbors(g))
-        self.G.remove_node(g)
+
+    print(self.contatori)
+    cont=0
+    for index in range(1,len(self.contatori)):
+        print(index)
+        neighbors=set([])
+        for v in self.sorted_vertices[self.contatori[index-1]: self.contatori[index]]:
+            neighbors|=set(self.G.neighbors(v))
+        self.G.remove_nodes_from( self.sorted_vertices[self.contatori[index-1]: self.contatori[index]] )
+
         for v in self.G:
             if v in neighbors:
                 self.best_vectors[index][v][0] = updateBestVector(self, v)
+                cont+=1
             else:
                 self.best_vectors[index][v][0] = self.best_vectors[index-1][v][0]
-        index+=1
+    print("cont: "+str(cont))
     print("Fine Calcolo Best Vectors")
     self.G=M
     self.index=0
@@ -91,7 +98,9 @@ def bound_order_improved(self,C,vecC):
 
 
 def update_bound_order_improved(self):
-    self.index=self.cont
+    for i in range(len(self.contatori)):
+        if(self.cont>=self.contatori[i]):
+            self.index=i
 
 ##############################################
 ####### BOUND_MEANS_ITERATIONS ###############
@@ -401,36 +410,18 @@ def ordinamentoVertici_bound_order(self):
 
     #Per ora in standby
     freq = [c[1] for c in cont]
-    #Debugging part
+    """
     print("Numero di geni con almeno una cella diversa da 1: "+str(len(cont)))
     unique, counts = np.unique(freq, return_counts=True)
     print(np.asarray((unique, counts)).T)
-
     """
-    cumsum=np.cumsum(freq)
-    #print(cumsum[len(cumsum) - 1])
-    cumsum=cumsum/cumsum[len(cumsum)-1]
-    print(cumsum)
-    percentiles=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    thresholds = np.percentile(cumsum, percentiles)
-    contatori = [0 for i in range(len(thresholds))]
-    len_cont=len(thresholds)
+    percentiles=np.asarray([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    thresholds=percentiles
+    indici,values=calculatePercentiles(self, freq, thresholds)
+    print("contatori: "+str(indici))
 
-    j=0
-    for i in range(len(cumsum)):
-        # elimino tutti i nodi da 0 a cumsum[i](quindi cumsum[i] risulta non compreso) e ricaclcolo i bounds
-        if cumsum[i]>=thresholds[j]:
-            contatori[j]=i
-            j=j+1
-            if(j==len_cont):
-                break
-
-    print()
-    print("contatori: "+str(contatori))
-    print()
-    self.contatori=contatori
     self.index=0
-    """
+    self.contatori = indici
     self.sorted_vertices = sorted_vertices
     self.orderedMatrix = orderedMatrix
     print("Fine Ordinamento")

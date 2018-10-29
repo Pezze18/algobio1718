@@ -309,7 +309,7 @@ def updateBestVector(self, v):
 
 
 #freq indica l'array e percentiles sono tra 0 e 1
-def calculatePercentiles(self, freq, percentiles):
+def calculatePercentiles(self, freq, percentiles):#Se true effettua cumsum
     cumsum = np.cumsum(freq)
     cumsum = cumsum / cumsum[len(cumsum) - 1]
     j = 0
@@ -326,9 +326,9 @@ def calculatePercentiles(self, freq, percentiles):
             j = j + 1
             if (j == len_cont):
                 break
-    print("percentiles: "+str(percentiles))
-    print("contatori: " + str(contatori))
-    print("values: "+str(values))
+    #print("percentiles: "+str(percentiles))
+    #print("contatori: " + str(contatori))
+    #print("values: "+str(values))
     return contatori,values
 
 
