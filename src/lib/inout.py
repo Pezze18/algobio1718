@@ -48,10 +48,10 @@ parameters = {
     'filter_input': '../data/mutated_expressed_genes.txt',
     'delta': 0.8,
     'prob': True,
-    'strategy': 'enumerate',  # options: enumerate,combinatorial
+    'strategy': 'combinatorial',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
-    'bound': True,
-    'method': "bound_order_improved",
+    'bound': False,
+    'method': "oldVersion",#bound_order_improved
     'bestVectors':"../data/bestVectors2"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations

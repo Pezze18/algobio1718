@@ -15,8 +15,12 @@
 ","['PTK2','PTEN','TP53','EGFR','PIK3CA','PIK3R1','SPEN']
 ","['PTK2','PTEN','TP53','EGFR','PIK3CA','PIK3R1','SPEN','PLCG2']
 ",,
-2,onlyBFSAndComplement,,"['PTEN','TP53']
+2,oldVersion,,,,,,,,,,
+3,onlyBFS,,"['PTEN','TP53']
 ","['PTEN','TP53','RB1CC1']
 ","['PTK2','PTEN','TP53','EGFR']
-",,,,,,
-3,onlyBFSAndProbCover,,,,,,,,,,
+","['PTK2','PTEN','TP53','EGFR','PIK3R1']
+","['PTK2','PTEN','TP53','EGFR','PIK3CA','PIK3R1']
+","['PTK2','PTEN','TP53','EGFR','PIK3CA','PIK3R1','SPEN']
+","['PTK2','PTEN','TP53','EGFR','PIK3CA','PIK3R1','SPEN','PLCG2']
+",,

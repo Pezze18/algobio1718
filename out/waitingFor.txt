@@ -1,3 +1,28 @@
 combinatorial BFSAndLevelsVec k=3_run__20181027_11:36:16 idJob: 1993923 
 
 combinatorial BFSAndLevelsVec k=3_run__20181027_11:40:58 idJob: 1993924 
+
+combinatorial onlyBFS k=3_run__20181029_09:24:44 idJob: 1995582 
+
+combinatorial onlyBFS k=2_run__20181029_09:25:23 idJob: 1995583 
+combinatorial onlyBFS k=4_run__20181029_09:25:23 idJob: 1995584 
+combinatorial onlyBFS k=5_run__20181029_09:25:24 idJob: 1995585 
+combinatorial onlyBFS k=6_run__20181029_09:25:25 idJob: 1995586 
+combinatorial onlyBFS k=7_run__20181029_09:25:26 idJob: 1995587 
+combinatorial onlyBFS k=8_run__20181029_09:25:27 idJob: 1995588 
+
+combinatorial onlyBFSAndProbCover k=2_run__20181029_09:36:57 idJob: 1995589 
+combinatorial onlyBFSAndProbCover k=3_run__20181029_09:36:57 idJob: 1995590 
+combinatorial onlyBFSAndProbCover k=4_run__20181029_09:36:58 idJob: 1995591 
+combinatorial onlyBFSAndProbCover k=5_run__20181029_09:36:59 idJob: 1995592 
+combinatorial onlyBFSAndProbCover k=6_run__20181029_09:37:00 idJob: 1995593 
+combinatorial onlyBFSAndProbCover k=7_run__20181029_09:37:01 idJob: 1995594 
+combinatorial onlyBFSAndProbCover k=8_run__20181029_09:37:01 idJob: 1995595 
+
+combinatorial oldVersion k=2_run__20181029_09:51:03 idJob: 1995607 
+combinatorial oldVersion k=3_run__20181029_09:51:04 idJob: 1995608 
+combinatorial oldVersion k=4_run__20181029_09:51:05 idJob: 1995609 
+
+combinatorial oldVersion k=2_run__20181029_08:59:15 idJob: 1995612 
+combinatorial oldVersion k=3_run__20181029_08:59:15 idJob: 1995613 
+combinatorial oldVersion k=4_run__20181029_08:59:16 idJob: 1995614 

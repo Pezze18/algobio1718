@@ -50,6 +50,49 @@ def combinatorial_algorithm_det(self):
             print("Current P_C (cardinality):", len(P_C))
     return C, P_C
 
+def combinatorial_algorithm_prob_oldVersion(self):
+    #G = delta_removal(G, delta)
+    G=self.G
+    k=self.k
+    patients=self.samples
+
+    C = {}
+    P_C = -1
+
+    for v in G.nodes():
+        C_v = {v}
+        P_C_v = prob_cover_old(self, C_v)  # no need to compute this \foreach u
+
+        p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
+
+        while len(C_v) < k:
+            maximum = -1
+            l_v_max = set()
+
+            for u in G.nodes() - C_v:  # "-" is an overloaded operator, it means 'difference'
+                l_v = p_v[u]
+
+                if len(l_v | C_v) <= k:  # "|" is an overloaded operator, it means 'union'
+                    P_v = prob_cover_old(self, l_v | C_v)
+
+                    s = (P_v - P_C_v)/ len(l_v - C_v)
+                    if maximum < s:
+                        maximum = s
+                        l_v_max = l_v
+            C_v = C_v | l_v_max
+            P_C_v = prob_cover_old(self, C_v)
+
+        if P_C_v > P_C:  # if we've found a better solution, update it and let us know
+            C = C_v
+            P_C = P_C_v
+            print("_________________")
+            print()
+            print("Best solution updated!")
+            print("Current C (ids): ", C)
+            print("Current P_C (cardinality):", P_C)
+
+    return C, P_C
+
 def combinatorial_algorithm_prob_onlyBFS(self):  # Complementary incluso
     G = self.G
     delta = self.delta
