@@ -11,24 +11,25 @@ from lib.auxiliary_functions import *
 
 def pre_bound_order_improved(self):
     self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order(self)
 
+    print("Inizio Calcolo Best Vectors")
     self.best_vectors=[ [[0] for i in range(self.max_node+1)] for j in range(5783)]#5782 sono il numero di iterazioni,
     #  max_node è l'id più alto per un nodo, dato che max_node è uguale alla lunghezza della lista di nodi
-    print("Inizio Ordinamento")
-    ordinamentoVertici_bound_order(self)
-    #print(self.max_counts)
 
     #Dati percentili calcola tresholds
-    percentiles = [i * 10 for i in range(0, 10)]
-    percentiles = [0]+percentiles[1:len(percentiles)]
+    percentiles = [i * 0.1 for i in range(0, 10)]
     totale = []
     for g in self.G.nodes:
         totale += list(self.matrix[g][self.matrix[g] < 1])
-    thresholds = np.percentile(totale, percentiles)
-    thresholds =[0,10e-9] + list(thresholds)[1:len(thresholds)] + [1]
-    self.thresholds= thresholds
-    print(percentiles)
-    print(self.thresholds)
+
+    totale=np.sort(totale)
+    contatori, values = calculatePercentiles(self, totale, percentiles)
+    values=[0]+values+[1]
+    self.thresholds=values
+    thresholds=values
+    print(thresholds)
+    print(len(thresholds))
 
     max_counts_percentiles = [ [0 for i in range(len(thresholds))] for i in range(10000)]
 
@@ -61,7 +62,7 @@ def pre_bound_order_improved(self):
             else:
                 self.best_vectors[index][v][0] = self.best_vectors[index-1][v][0]
         index+=1
-    print("Fine Ordinamento")
+    print("Fine Calcolo Best Vectors")
     self.G=M
     self.index=0
 
