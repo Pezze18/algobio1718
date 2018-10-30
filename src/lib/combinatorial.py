@@ -376,8 +376,8 @@ def combinatorial_algorithm_prob_BFSAndLevelsVec(self):#Complementary incluso
                     #print(s)
                     newC, father=findAncestor(self,v,s)
                     if len(newC)+len(C_v)<=self.k:
-                        zeros_indices=self.shortestVec[father]==0
                         if father != v:
+                            zeros_indices = self.shortestVec[father] == 0
                             vec_complementare = np.divide(self.shortestVec[s], self.shortestVec[father])
                             vec_complementare[zeros_indices]=0
                         else:
