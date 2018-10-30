@@ -352,6 +352,9 @@ def combinatorial_algorithm_prob_BFSAndLevelsVec(self):#Complementary incluso
     delta = self.delta
     #G = delta_removal(G, delta)
 
+    import warnings
+    warnings.filterwarnings("error")
+
     C = []
     score_C = 1000
     for v in G.nodes():#[8821]:#
@@ -377,9 +380,11 @@ def combinatorial_algorithm_prob_BFSAndLevelsVec(self):#Complementary incluso
                     newC, father=findAncestor(self,v,s)
                     if len(newC)+len(C_v)<=self.k:
                         if father != v:
-                            zeros_indices = self.shortestVec[father] == 0
-                            vec_complementare = np.divide(self.shortestVec[s], self.shortestVec[father])
-                            vec_complementare[zeros_indices]=0
+                            try:
+                                vec_complementare = np.divide(self.shortestVec[s], self.shortestVec[father])
+                            except:
+                                zeros_indices = self.shortestVec[father] == 0
+                                vec_complementare[zeros_indices]=0
                         else:
                             #in BFS_complete_nodo la radice ha vettore associato a tutti 1
                             vec_complementare = self.shortestVec[s]
