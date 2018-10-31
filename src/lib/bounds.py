@@ -341,16 +341,28 @@ def update_bound_kantorovich(self):
 ####### BOUND_ORDER ###############
 ###################################
 def pre_bound_order(self):
-
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order(self)
-    import pickle
-    fileObject=open(self.parameters["bestVectors"],"rb")
-    print("bestVectors loading")
-    self.best_vectors=pickle.load(fileObject)
-    self.max_counts=pickle.load(fileObject)
-    fileObject.close()
-    print("Fine loading bestVectors")
+
+    best_vectors=[[0 for i in range(self.k)] for v in range(10000)]
+    for v in self.genes:
+        neighbors=list(self.G.neighbors(v))
+        lista=[self.max_counts[u] for u in neighbors]
+        max_count=np.max(lista)
+        lista=[]
+        for u in neighbors:
+            lista=lista+self.orderedMatrix[u]
+
+        if(len(lista)==max_count):
+            remains=np.asarray(lista)
+        else:
+            b=bottle.partition(lista, max_count-1)
+            remains=b[0:max_count]
+
+        remains=np.sort(remains)
+        best_vectors[v][1]=remains
+
+    self.best_vectors = best_vectors
 
 
 
@@ -359,7 +371,7 @@ def bound_order(self,C,vecC):
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1 or dist==2):
+    if(dist==1):
         v=C[len(C)-1]
         best_vector=self.best_vectors[v][dist]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
