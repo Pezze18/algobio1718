@@ -51,7 +51,7 @@ parameters = {
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': True,
-    'method': "bound_order",#bound_order_improved
+    'method': "bound_order_improved",#bound_order_improved
     'bestVectors':"../data/bestVectors2"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations

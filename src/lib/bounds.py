@@ -9,78 +9,110 @@ from lib.auxiliary_functions import *
 
 
 
+def updateBestVector(self,G,v):
+    b = []
+    neighbors=self.G.neighbors(v)
+    lista = [self.max_counts[u] for u in neighbors]
+    if len(lista)==0:
+        max_count=0
+    else:
+        max_count = np.max(lista)
+    neighbors = self.G.neighbors(v)
+    for u in neighbors:
+        ord = np.sort(self.orderedMatrix[u])
+        idx = np.searchsorted(b, ord)
+        b = np.insert(b, idx, ord)
+    b = which_diff(b)[0:max_count]#len(self.samples)
+    return b
+def creaBestVectors1(self):
+    M=self.G.copy()
+    for v in self.G.nodes:
+        self.best_vectors[v][0]=updateBestVector(self,self.G,v)
+
+def creaBestVectors2(self):
+    parameters=self.parameters.copy()
+    parameters["k"]=2
+    parameters["bound"]=False
+    parameters["method"]="creaBestVectors2"
+
+    from lib.core import BDDE
+    BDDE_obj = BDDE(self.G.copy(), self.samples, 2, parameters)
+    BDDE_obj.enumeration_algorithm()
+    print(BDDE_obj.best_vectors[4322])
+    for u in self.G:
+        self.best_vectors[u][1]=BDDE_obj.best_vectors[u][1][0:BDDE_obj.max_counts[u]]
+    print("Best vector a distanza 2 di 4322: " +str(self.best_vectors[4322][1]))
+
+def pre_creaBestVectors2(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+    self.crea=True
+    #print("Dentro pre_creaBestVectors2")
+    #print(self.best_vectors[4322])
+    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
+    self.max_counts = [0 for i in range(10000)]
+    self.M=self.G.copy()
+
+def update_creaBestVectors2(self):
+    return True
+
+def ordinamentoVertici_bound_order_improved(self):
+    print("Inizio Ordinamento")
+    #ritorna self.sorted_vertices e self.max_counts
+    cont = [(i,0) for i in range(10000)]#mi pare sia corretto
+    sorted_vertices = []
+    orderedMatrix=[[] for i in range(10000)]
+    for g in self.genes:
+        orderedMatrix[g]=list(which_diff(self.matrix[g]))
+        cont.append((g, len(orderedMatrix[g])))  # (IdNodo,max_count)
+    cont=[c for c in cont if c[1]!=0]
+
+    #Mi salvo per ogni nodo il proprio max_count(a livello 0 quindi)
+    self.max_counts=[0 for i in range(10000)]#quelli che non esistono o che hanno 0 numeri diversi da 1 sono settati a 0,
+                                            #ovvero hanno 0 numeri diversi da 1
+    for c in cont:
+        self.max_counts[c[0]]=c[1]
+    self.orderedMatrix=orderedMatrix
+
+    cont=sorted(cont, key=lambda x: x[1],reverse=True)
+    for i in range(len(cont)):
+            sorted_vertices.append(cont[i][0])
+
+    #Per ora in standby
+    freq = [c[1] for c in cont]
+
+    percentiles=np.asarray([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    thresholds=percentiles
+    indici,values=calculatePercentiles(self, freq, thresholds)
+    print("contatori: "+str(indici))
+
+    self.index=0
+    self.contatori = indici
+    self.sorted_vertices = sorted_vertices
+    self.orderedMatrix = orderedMatrix
+    print("Fine Ordinamento")
+
+
+
 def pre_bound_order_improved(self):
     self.matrix = toMatrix(self, self.G.nodes)
-    ordinamentoVertici_bound_order(self)
+    ordinamentoVertici_bound_order_improved(self)
 
-    print("Inizio Calcolo Best Vectors")
-    self.best_vectors=[ [[0] for i in range(self.max_node+1)] for j in range(len(self.contatori))]#5782 sono il numero di iterazioni,
-    #  max_node è l'id più alto per un nodo, dato che max_node è uguale alla lunghezza della lista di nodi
+    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
+    creaBestVectors1(self)
+    self.max_counts = [0 for i in range(10000)]
+    creaBestVectors2(self)
 
-    #Dati percentili calcola tresholds
-    percentiles = [i * 0.1 for i in range(0, 10)]
-    totale = []
-    for g in self.G.nodes:
-        totale += list(self.matrix[g][self.matrix[g] < 1])
-
-    totale=np.sort(totale)
-    indici, values = calculatePercentiles(self, totale, percentiles)
-    values=[0]+values+[1]
-    self.thresholds=values
-    thresholds=values
-    print(thresholds)
-    print(len(thresholds))
-
-    max_counts_percentiles = [ [0 for i in range(len(thresholds))] for i in range(10000)]
-
-    for g in self.G.nodes:
-        counts = list(np.histogram(self.orderedMatrix[g], thresholds)[0])
-        for i in range(len(thresholds)-1):
-            #print(counts[i])
-            if max_counts_percentiles[g][i] < counts[i]:
-                max_counts_percentiles[g][i] = counts[i]
-    self.max_counts_percentiles = max_counts_percentiles
-    print(max_counts_percentiles)
-
-    for i in range(len(self.orderedMatrix)):
-        self.orderedMatrix[i]=np.asarray(self.orderedMatrix[i])
-
-    M=self.G.copy()
-    #Distanza 1
-    index = 0
-    for v in self.G:
-        #print(v)
-        self.best_vectors[index][v][0] = updateBestVector(self, v)
-    index=1
-
-    print(self.contatori)
-    cont=0
-    for index in range(1,len(self.contatori)):
-        print(index)
-        neighbors=set([])
-        for v in self.sorted_vertices[self.contatori[index-1]: self.contatori[index]]:
-            neighbors|=set(self.G.neighbors(v))
-        self.G.remove_nodes_from( self.sorted_vertices[self.contatori[index-1]: self.contatori[index]] )
-
-        for v in self.G:
-            if v in neighbors:
-                self.best_vectors[index][v][0] = updateBestVector(self, v)
-                cont+=1
-            else:
-                self.best_vectors[index][v][0] = self.best_vectors[index-1][v][0]
-    print("cont: "+str(cont))
-    print("Fine Calcolo Best Vectors")
-    self.G=M
-    self.index=0
 
 def bound_order_improved(self,C,vecC):
     dist=self.k-len(C)
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1):
+    if(dist==1 or dist==2):
         v=C[len(C)-1]
-        best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
+        best_vector=self.best_vectors[v][dist-1]#già ordinato in ordine crescente
+        #print(best_vector)
         if((len(dec)+len(best_vector) >len(self.samples))):
             dec=np.sort(dec)
             dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
@@ -98,9 +130,7 @@ def bound_order_improved(self,C,vecC):
 
 
 def update_bound_order_improved(self):
-    for i in range(len(self.contatori)):
-        if(self.cont>=self.contatori[i]):
-            self.index=i
+    return True
 
 ##############################################
 ####### BOUND_MEANS_ITERATIONS ###############

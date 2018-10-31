@@ -27,6 +27,7 @@ class BDDE:
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.levelsVecUse=True#parameters["levelsVec"]
         self.max_node=9859
+        self.crea=False
 
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
@@ -82,6 +83,27 @@ class BDDE:
                 score = self.scoring_function(self,self.levelsVec[size])
             else:
                 score= self.scoring_function(self, C)#scoring_function per prob_cover senza levelsVec
+
+            if self.crea:
+
+                diff = which_diff(self.levelsVec[size])
+                max = len(diff)
+                neighbors=set()
+                for c in C:
+                    neighbors|=set(self.M.neighbors(c))
+                for u in neighbors:
+                    #print(self.best_vectors[u])
+                    b=self.best_vectors[u][1]
+                    ord=np.sort(diff)
+                    idx = np.searchsorted(b, ord)
+                    b = np.insert(b, idx, ord)[0:len(self.samples)]
+                    self.best_vectors[u][1]=b
+                    #if u==4322:
+                    #    print(b)
+
+                    if self.max_counts[u] < max:
+                        self.max_counts[u] = max
+
             if score<self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
