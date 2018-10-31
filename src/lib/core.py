@@ -91,7 +91,6 @@ class BDDE:
                 for c in C:
                     neighbors|=set(self.G.neighbors(c))
                 for u in neighbors:
-                    #print(self.best_vectors[u])
                     b=self.best_vectors[u]
                     ord=np.sort(diff)
                     idx = np.searchsorted(b, ord)
