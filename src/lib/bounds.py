@@ -9,52 +9,13 @@ from lib.auxiliary_functions import *
 
 
 
-def updateBestVector(self,G,v):
-    b = []
-    neighbors=self.G.neighbors(v)
-    lista = [self.max_counts[u] for u in neighbors]
-    if len(lista)==0:
-        max_count=0
-    else:
-        max_count = np.max(lista)
-    neighbors = self.G.neighbors(v)
-    for u in neighbors:
-        ord = np.sort(self.orderedMatrix[u])
-        idx = np.searchsorted(b, ord)
-        b = np.insert(b, idx, ord)
-    b = which_diff(b)[0:max_count]#len(self.samples)
-    return b
-def creaBestVectors1(self):
-    M=self.G.copy()
-    for v in self.G.nodes:
-        self.best_vectors[v][0]=updateBestVector(self,self.G,v)
-
-def creaBestVectors2(self):
-    parameters=self.parameters.copy()
-    parameters["k"]=2
-    parameters["bound"]=False
-    parameters["method"]="creaBestVectors2"
-
-    from lib.core import BDDE
-    BDDE_obj = BDDE(self.G.copy(), self.samples, 2, parameters)
-    BDDE_obj.enumeration_algorithm()
-    print(BDDE_obj.best_vectors[4322])
-    for u in self.G:
-        self.best_vectors[u][1]=BDDE_obj.best_vectors[u][1][0:BDDE_obj.max_counts[u]]
-    print("Best vector a distanza 2 di 4322: " +str(self.best_vectors[4322][1]))
-
-def pre_creaBestVectors2(self):
+def pre_bound_order_improved(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
-    self.crea=True
-    #print("Dentro pre_creaBestVectors2")
-    #print(self.best_vectors[4322])
-    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
-    self.max_counts = [0 for i in range(10000)]
-    self.M=self.G.copy()
 
-def update_creaBestVectors2(self):
-    return True
+    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
+    creaBestVectors(self,1)
+    creaBestVectors(self, 2)
 
 def ordinamentoVertici_bound_order_improved(self):
     print("Inizio Ordinamento")
@@ -92,17 +53,54 @@ def ordinamentoVertici_bound_order_improved(self):
     self.orderedMatrix = orderedMatrix
     print("Fine Ordinamento")
 
+def creaBestVectors(self, dist):
+    if(dist==1):
+        creaBestVectors1(self)
+        return
 
+    parameters=self.parameters.copy()
+    parameters["k"]=dist
+    parameters["bound"]=False
+    parameters["method"]="creaBestVectors"
 
-def pre_bound_order_improved(self):
+    from lib.core import BDDE
+    BDDE_obj = BDDE(self.G.copy(), self.samples, dist, parameters)
+    BDDE_obj.enumeration_algorithm()
+    for u in self.G:
+        self.best_vectors[u][dist-1]=BDDE_obj.best_vectors[u][0:BDDE_obj.max_counts[u]]
+
+def creaBestVectors1(self):
+    M=self.G.copy()
+    for v in self.G.nodes:
+        self.best_vectors[v][0]=updateBestVector(self,self.G,v)
+
+def updateBestVector(self,G,v):
+    b = []
+    neighbors=self.G.neighbors(v)
+    lista = [self.max_counts[u] for u in neighbors]
+    if len(lista)==0:
+        max_count=0
+    else:
+        max_count = np.max(lista)
+    neighbors = self.G.neighbors(v)
+    for u in neighbors:
+        ord = np.sort(self.orderedMatrix[u])
+        idx = np.searchsorted(b, ord)
+        b = np.insert(b, idx, ord)
+    b = which_diff(b)[0:max_count]#len(self.samples)
+    return b
+
+def pre_creaBestVectors(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
-
-    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
-    creaBestVectors1(self)
+    self.crea=True
+    #print("Dentro pre_creaBestVectors2")
+    #print(self.best_vectors[4322])
+    self.best_vectors = [ [] for j in range(self.max_node + 1)]
     self.max_counts = [0 for i in range(10000)]
-    creaBestVectors2(self)
 
+def update_creaBestVectors(self):
+    return True
 
 def bound_order_improved(self,C,vecC):
     dist=self.k-len(C)
@@ -131,6 +129,18 @@ def bound_order_improved(self,C,vecC):
 
 def update_bound_order_improved(self):
     return True
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##############################################
 ####### BOUND_MEANS_ITERATIONS ###############
