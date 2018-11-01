@@ -135,7 +135,8 @@ def save_creaBestVectorsDistanza2_iterations(self):
                 #    cont=cont+1
                 b=np.insert(a, idx, my_values)
                 b=b[0:self.max_counts[index][v]]
-                self.best_vectors[index][v][1]=b
+                if(len(b)>0):
+                    self.best_vectors[index][v][1]=b
         #print("cont: " + str(cont))
 
         import pickle
