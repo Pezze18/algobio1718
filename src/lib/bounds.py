@@ -18,10 +18,10 @@ from lib.auxiliary_functions import *
 ###########BEST VECTORS DISTANZA 1 ITERATIONS########################
 #####################################################################
 
-def pre_creaBestVectorsDistanza1_iterations(self):
+def pre_creaBestVectorsDistanza_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
-    self.best_vectors = [ [ [[], []] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
+    self.best_vectors = [ [ [[] for n in self.k] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
     creaBestVectors1_iterations(self)
 
     import pickle
@@ -66,7 +66,7 @@ def updateBestVector_iterations(self,G,v):
 ########################################################
 ###########BEST VECTORS DISTANZA 2######################
 ########################################################
-def pre_creaBestVectorsDistanza2_iterations(self):
+def pre_creaBestVectorsDistanza_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
 
@@ -85,19 +85,19 @@ def pre_creaBestVectorsDistanza2_iterations(self):
     self.index=0
 
 
-def crea_creaBestVectorsDistanza2_iterations(self,C, vec):
+def crea_creaBestVectorsDistanza_iterations(self,C, vec):
     if self.onlyCount==False:
         diff = which_diff(vec)
         neighbors = set()
         for c in C:
             neighbors.update(self.G.neighbors(c))
         for u in neighbors:
-            b = self.best_vectors[self.index][u][1]
+            b = self.best_vectors[self.index][u][self.k-1]
             ord = np.sort(diff)
             ord = ord[0:self.max_counts[self.index][u]]
             idx = np.searchsorted(b, ord)
             b = np.insert(b, idx, ord)[0:self.max_counts[self.index][u]]
-            self.best_vectors[self.index][u][1] = b
+            self.best_vectors[self.index][u][self.k-1] = b
     else:
         diff = which_diff(vec)
         max = len(diff)
@@ -109,7 +109,7 @@ def crea_creaBestVectorsDistanza2_iterations(self,C, vec):
                 self.max_counts[self.index][u] = max
 
 
-def save_creaBestVectorsDistanza2_iterations(self):
+def save_creaBestVectorsDistanza_iterations(self):
     if self.onlyCount:
         cont = 0
         for index in range(len(self.contatori) - 2, -1, -1):
@@ -127,8 +127,8 @@ def save_creaBestVectorsDistanza2_iterations(self):
         #cont=0
         for v in self.genes:
             for index in range(len(self.contatori) - 2, -1, -1):
-                a=self.best_vectors[index][v][1]
-                my_values=self.best_vectors[index+1][v][1]
+                a=self.best_vectors[index][v][self.k-1]
+                my_values=self.best_vectors[index+1][v][self.k-1]
                 idx=np.searchsorted(a, my_values)
                 num = np.count_nonzero( idx >= len(a))
                 #if num >0:
@@ -136,7 +136,7 @@ def save_creaBestVectorsDistanza2_iterations(self):
                 b=np.insert(a, idx, my_values)
                 b=b[0:self.max_counts[index][v]]
                 if(len(b)>0):
-                    self.best_vectors[index][v][1]=b
+                    self.best_vectors[index][v][self.k-1]=b
         #print("cont: " + str(cont))
 
         import pickle

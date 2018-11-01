@@ -51,7 +51,7 @@ parameters = {
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': False,
-    'method': "creaBestVectorsDistanza2_iterations",#bound_order_improved#creaBestVectorsDistanza2
+    'method': "creaBestVectorsDistanza_iterations",#bound_order_improved#creaBestVectorsDistanza2
     'bestVectors':"../data/bestVectors2",
     "crea":True,
     "onlyCount":False
