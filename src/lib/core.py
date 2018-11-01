@@ -27,7 +27,8 @@ class BDDE:
         self.levels = [0 for i in range(k + 1)] # 0...k
         self.levelsVecUse=True#parameters["levelsVec"]
         self.max_node=9859
-        self.crea=False
+        self.crea=parameters["crea"]
+        self.onlyCount=parameters["onlyCount"]
 
         self.pre=getattr(bounds,"pre_"+parameters["method"])
         self.pre(self)
@@ -35,6 +36,9 @@ class BDDE:
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
             self.update_function = getattr(bounds, "update_" + parameters["method"])
+        if self.crea:
+            self.crea_function = getattr(bounds, "crea_" + parameters["method"])
+            self.save_function = getattr(bounds, "save_" + parameters["method"])
 
         if self.prob:
             if self.levelsVecUse:
@@ -85,20 +89,7 @@ class BDDE:
                 score= self.scoring_function(self, C)#scoring_function per prob_cover senza levelsVec
 
             if self.crea:
-                diff = which_diff(self.levelsVec[size])
-                max = len(diff)
-                neighbors=set()
-                for c in C:
-                    neighbors|=set(self.G.neighbors(c))
-                for u in neighbors:
-                    b=self.best_vectors[u]
-                    ord=np.sort(diff)
-                    idx = np.searchsorted(b, ord)
-                    b = np.insert(b, idx, ord)[0:len(self.samples)]
-                    self.best_vectors[u]=b
-
-                    if self.max_counts[u] < max:
-                        self.max_counts[u] = max
+                self.crea_function(self, C, self.levelsVec[size])
 
             if score<self.best_score:
                 self.best_score = score
@@ -152,6 +143,9 @@ class BDDE:
         print(sum(self.levels)-self.levels[self.k])
         print("Numero nodi interni visitati per livello: ")
         print(self.levels)
+
+        if self.crea:
+            self.save_function(self)
 
     def BREADTH(self, S,n,U):
         vn=n.data
