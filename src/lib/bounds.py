@@ -13,10 +13,9 @@ def pre_bound_order_improved(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
 
-    self.best_vectors = [[[], [],[]] for j in range(self.max_node + 1)]
+    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
     creaBestVectors(self,1)
     creaBestVectors(self, 2)
-    creaBestVectors(self, 3)
 
 def ordinamentoVertici_bound_order_improved(self):
     print("Inizio Ordinamento")
