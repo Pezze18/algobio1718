@@ -99,6 +99,7 @@ def updateBestVector_iterations_percentiles(self,G, v):
         else:
             ordered_percentiles[i] = bottle.partition(ordered_percentiles[i], length - 1)
             ordered_percentiles[i] = ordered_percentiles[i][0:length]
+            ordered_percentiles[i] = np.sort(ordered_percentiles[i])
 
     remains = max
     index_perc=0
@@ -145,7 +146,7 @@ def pre_creaBestVectorsDistanza_iterations_percentiles(self):
         self.max_counts_percentiles=pickle.load(f)
         f.close()
 
-        self.max_ordered_percentiles = [[[[] for s in range(len(self.thresholds) - 1)] for i in range(self.max_node + 1)]
+        self.ordered_percentiles = [[[[] for s in range(len(self.thresholds) - 1)] for i in range(self.max_node + 1)]
                                        for j in range(len(self.contatori))]
 
     self.index=0
@@ -162,13 +163,13 @@ def crea_creaBestVectorsDistanza_iterations_percentiles(self,C, vec):
 
         for u in neighbors:
             for i in range(len(self.thresholds) - 1):
-                b=self.max_ordered_percentiles[self.index][u][i]
+                b=self.ordered_percentiles[self.index][u][i]
                 if self.max_counts_percentiles[self.index][u][i]>0:
                     ord=np.sort(diff[indices==i])
                     ord = ord[0:self.max_counts_percentiles[self.index][u][i]]
                     idx=np.searchsorted(b, ord )
                     b=np.insert(b, idx, ord)[0:self.max_counts_percentiles[self.index][u][i]]
-                    self.best_vectors[self.index][u][self.k - 1] = b
+                    self.ordered_percentiles[self.index][u][i] = b
     else:
         diff = which_diff(vec)
         max = len(diff)
@@ -266,9 +267,13 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
         f.close()
 
 def update_creaBestVectorsDistanza_iterations_percentiles(self):
+    index=self.index
     for i in range(len(self.contatori)):
         if self.cont>=self.contatori[i]:
-            self.index=i
+            index=i
+    if index!=self.index:
+        print(self.index)
+        self.index=index
 
 ########################################################
 ###########BOUND ORDER IMPROVED#########################
@@ -318,6 +323,10 @@ def pre_bound_order_improved_iterations_percentiles(self):
     f=open("BestVectorsDistanza2","rb")
     self.best_vectors = pickle.load(f)
     f.close()
+
+    print(self.best_vectors[0][4322])
+    print(self.best_vectors[3][4322])
+
 
 def bound_order_improved_iterations_percentiles(self,C,vecC):
     dist=self.k-len(C)
