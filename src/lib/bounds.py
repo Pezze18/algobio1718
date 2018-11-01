@@ -14,15 +14,15 @@ from lib.auxiliary_functions import *
 
 
 
-########################################################
-###########BEST VECTORS DISTANZA 1######################
-########################################################
+#####################################################################
+###########BEST VECTORS DISTANZA 1 ITERATIONS########################
+#####################################################################
 
-def pre_creaBestVectorsDistanza1(self):
+def pre_creaBestVectorsDistanza1_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
-    self.best_vectors = [[[], []] for j in range(self.max_node + 1)]
-    creaBestVectors1(self)
+    self.best_vectors = [ [ [[], []] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
+    creaBestVectors1_iterations(self)
 
     import pickle
     f=open("BestVectorsDistanza1","wb")
@@ -30,12 +30,24 @@ def pre_creaBestVectorsDistanza1(self):
     f.close()
     raise ValueError
 
-def creaBestVectors1(self):
+def creaBestVectors1_iterations(self):
     M=self.G.copy()
     for v in self.G.nodes:
-        self.best_vectors[v][0]=updateBestVector(self,self.G,v)
+        self.best_vectors[0][v][0]=updateBestVector_iterations(self,self.G,v)
 
-def updateBestVector(self,G,v):
+    for index in range(1,len(self.contatori)):
+        neighbors=set()
+        for v in self.sorted_vertices[self.contatori[index-1]:self.contatori[index]] :
+            neighbors.update(self.G.neighbors(v))
+        self.G.remove_nodes_from(self.sorted_vertices[self.contatori[index-1]:self.contatori[index]])
+        for v in self.G:
+            if v in neighbors:
+                self.best_vectors[index][v][0]=updateBestVector_iterations(self,self.G, v)
+            else:
+                self.best_vectors[index][v][0]=self.best_vectors[index-1][v][0]
+    self.G=M
+
+def updateBestVector_iterations(self,G,v):
     b = []
     neighbors=self.G.neighbors(v)
     lista = [self.max_counts[u] for u in neighbors]
@@ -54,7 +66,7 @@ def updateBestVector(self,G,v):
 ########################################################
 ###########BEST VECTORS DISTANZA 2######################
 ########################################################
-def pre_creaBestVectorsDistanza2(self):
+def pre_creaBestVectorsDistanza2_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
 
@@ -64,26 +76,28 @@ def pre_creaBestVectorsDistanza2(self):
     f.close()
 
     if self.onlyCount:
-        self.max_counts = [0 for i in range(10000)]
+        self.max_counts =[ [0 for i in range(self.max_node+1)]  for j in range(len(self.contatori))]
     else:
         f=open("BestVectorsDistanza2_max_counts","rb")
         self.max_counts=pickle.load(f)
         f.close()
 
+    self.index=0
 
-def crea_creaBestVectorsDistanza2(self,C, vec):
+
+def crea_creaBestVectorsDistanza2_iterations(self,C, vec):
     if self.onlyCount==False:
         diff = which_diff(vec)
         neighbors = set()
         for c in C:
             neighbors.update(self.G.neighbors(c))
         for u in neighbors:
-            b = self.best_vectors[u][1]
+            b = self.best_vectors[self.index][u][1]
             ord = np.sort(diff)
-            ord = ord[0:self.max_counts[u]]
+            ord = ord[0:self.max_counts[self.index][u]]
             idx = np.searchsorted(b, ord)
-            b = np.insert(b, idx, ord)[0:self.max_counts[u]]
-            self.best_vectors[u][1] = b
+            b = np.insert(b, idx, ord)[0:self.max_counts[self.index][u]]
+            self.best_vectors[self.index][u][1] = b
     else:
         diff = which_diff(vec)
         max = len(diff)
@@ -91,11 +105,11 @@ def crea_creaBestVectorsDistanza2(self,C, vec):
         for c in C:
             neighbors.update(self.G.neighbors(c))
         for u in neighbors:
-            if self.max_counts[u] < max:
-                self.max_counts[u] = max
+            if self.max_counts[self.index][u] < max:
+                self.max_counts[self.index][u] = max
 
 
-def save_creaBestVectorsDistanza2(self):
+def save_creaBestVectorsDistanza2_iterations(self):
     if self.onlyCount:
         import pickle
         f = open("BestVectorsDistanza2_max_counts", "wb")
@@ -107,8 +121,10 @@ def save_creaBestVectorsDistanza2(self):
         pickle.dump(self.best_vectors,f)
         f.close()
 
-def update_creaBestVectorsDistanza2(self):
-    return True
+def update_creaBestVectorsDistanza2_iterations(self):
+    for i in range(len(self.contatori)):
+        if self.cont>=self.contatori[i]:
+            self.index=i
 
 ########################################################
 ###########BOUND ORDER IMPROVED#########################
@@ -150,7 +166,7 @@ def ordinamentoVertici_bound_order_improved(self):
     self.orderedMatrix = orderedMatrix
     print("Fine Ordinamento")
 
-def pre_bound_order_improved(self):
+def pre_bound_order_improved_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
 
@@ -159,14 +175,14 @@ def pre_bound_order_improved(self):
     self.best_vectors = pickle.load(f)
     f.close()
 
-def bound_order_improved(self,C,vecC):
+def bound_order_improved_iterations(self,C,vecC):
     dist=self.k-len(C)
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
     if(dist==1 or dist==2):
         v=C[len(C)-1]
-        best_vector=self.best_vectors[v][dist-1]#già ordinato in ordine crescente
+        best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
             dec=np.sort(dec)
             dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
@@ -183,8 +199,10 @@ def bound_order_improved(self,C,vecC):
     return False
 
 
-def update_bound_order_improved(self):
-    return True
+def update_bound_order_improved_iterations(self):
+    for i in range(len(self.contatori)):
+        if self.cont>=self.contatori[i]:
+            self.index=i
 
 
 
