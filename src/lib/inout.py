@@ -41,7 +41,7 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k':2,
+    'k':4,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
@@ -50,10 +50,10 @@ parameters = {
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
-    'bound': False,
-    'method': "creaBestVectorsDistanza_iterations",#bound_order_improved#creaBestVectorsDistanza2
+    'bound': True,
+    'method': "bound_order_improved_iterations",#bound_order_improved_iterations #creaBestVectorsDistanza_iterations
     'bestVectors':"../data/bestVectors2",
-    "crea":True,
+    "crea":False,
     "onlyCount":False
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations

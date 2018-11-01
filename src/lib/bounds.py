@@ -144,7 +144,7 @@ def save_creaBestVectorsDistanza_iterations(self):
         pickle.dump(self.best_vectors,f)
         f.close()
 
-def update_creaBestVectorsDistanza2_iterations(self):
+def update_creaBestVectorsDistanza_iterations(self):
     for i in range(len(self.contatori)):
         if self.cont>=self.contatori[i]:
             self.index=i
@@ -198,6 +198,9 @@ def pre_bound_order_improved_iterations(self):
     self.best_vectors = pickle.load(f)
     f.close()
 
+    #print(self.best_vectors[0][4322])
+    #print(self.best_vectors[3][4322])
+
 def bound_order_improved_iterations(self,C,vecC):
     dist=self.k-len(C)
     lista=which_diff(vecC)
@@ -226,6 +229,7 @@ def update_bound_order_improved_iterations(self):
     for i in range(len(self.contatori)):
         if self.cont>=self.contatori[i]:
             self.index=i
+    #print(self.index)
 
 
 

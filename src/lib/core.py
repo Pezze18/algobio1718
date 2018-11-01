@@ -36,6 +36,9 @@ class BDDE:
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
             self.update_function = getattr(bounds, "update_" + parameters["method"])
+
+        if (self.prob and self.crea):
+            self.update_function = getattr(bounds, "update_" + parameters["method"])
         if self.crea:
             self.crea_function = getattr(bounds, "crea_" + parameters["method"])
             self.save_function = getattr(bounds, "save_" + parameters["method"])
@@ -134,7 +137,7 @@ class BDDE:
             del self.root
             self.cont+=1
 
-            if(self.prob and self.bound):
+            if((self.prob and self.bound) or (self.prob and self.crea)):
                 self.update_function(self)
 
         print("Numero foglie: ")
