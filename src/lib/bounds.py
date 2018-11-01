@@ -111,11 +111,33 @@ def crea_creaBestVectorsDistanza2_iterations(self,C, vec):
 
 def save_creaBestVectorsDistanza2_iterations(self):
     if self.onlyCount:
+        cont = 0
+        for index in range(len(self.contatori) - 2, -1, -1):
+            for v in self.genes:
+                if self.max_counts[index][v] < self.max_counts[index + 1][v]:
+                    self.max_counts[index][v] = self.max_counts[index + 1][v]
+                    cont=cont+1
+        print("cont: "+str(cont))
+
         import pickle
         f = open("BestVectorsDistanza2_max_counts", "wb")
         pickle.dump(self.max_counts, f)
         f.close()
     else:
+        #cont=0
+        for v in self.genes:
+            for index in range(len(self.contatori) - 2, -1, -1):
+                a=self.best_vectors[index][v][1]
+                my_values=self.best_vectors[index+1][v][1]
+                idx=np.searchsorted(a, my_values)
+                num = np.count_nonzero( idx >= len(a))
+                #if num >0:
+                #    cont=cont+1
+                b=np.insert(a, idx, my_values)
+                b=b[0:self.max_counts[index][v]]
+                self.best_vectors[index][v][1]=b
+        #print("cont: " + str(cont))
+
         import pickle
         f=open("BestVectorsDistanza2","wb")
         pickle.dump(self.best_vectors,f)

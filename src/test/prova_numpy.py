@@ -1,5 +1,12 @@
 import numpy as np
 
+a=[]
+my_values=[]
+b=np.searchsorted(a, my_values)
+print(b)
+
+
+
 """
 vec=np.random.rand(100)*100
 print(vec)
