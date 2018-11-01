@@ -21,7 +21,7 @@ from lib.auxiliary_functions import *
 def pre_creaBestVectorsDistanza_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
-    self.best_vectors = [ [ [[] for n in self.k] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
+    self.best_vectors = [ [ [[] for n in range(self.k)] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
     creaBestVectors1_iterations(self)
 
     import pickle
