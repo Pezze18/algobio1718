@@ -9,7 +9,9 @@ from lib.auxiliary_functions import *
 
 
 
-
+#################################################################################
+###########BEST VECTORS DISTANZE SUPERIORI(TO FIX)########################
+#################################################################################
 def pre_creaBestVectorsDistanzeSuperiori(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
@@ -58,7 +60,8 @@ def pre_creaBestVectorsDistanza1_iterations_percentiles(self):
     #print(self.best_vectors[3][4322])
 
     import pickle
-    f=open("BestVectorsDistanza1","wb")
+    filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza1"
+    f=open(filename,"wb")
     pickle.dump(self.best_vectors,f)
     f.close()
     raise ValueError
@@ -162,7 +165,8 @@ def pre_creaBestVectorsDistanza_iterations_percentiles(self):
 
     #Importo best_vectors per distanza 1
     import pickle
-    f=open("BestVectorsDistanza1","rb")
+    filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza"+str(self.k-1)
+    f=open(filename,"rb")
     self.best_vectors = pickle.load(f)
     f.close()
 
@@ -180,7 +184,8 @@ def pre_creaBestVectorsDistanza_iterations_percentiles(self):
         self.max_counts_percentiles = [[ [0 for s in range(len(self.thresholds)-1)] for i in range(self.max_node + 1)] for j in range(len(self.contatori))]
     else:
         #Importo max_counts e max_counts_percentiles per creare best_vectors a distanza 2
-        f=open("BestVectorsDistanza2_max_counts","rb")
+        filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza"+str(self.k)+"_max_counts"
+        f=open(filename,"rb")
         self.max_counts=pickle.load(f)
         self.max_counts_percentiles=pickle.load(f)
         f.close()
@@ -263,7 +268,8 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
         print("azzerati: "+str(azzerati))
 
         import pickle
-        f = open("BestVectorsDistanza2_max_counts", "wb")
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k) + "_max_counts"
+        f = open(filename, "wb")
         pickle.dump(self.max_counts, f)
         pickle.dump(self.max_counts_percentiles, f)
         f.close()
@@ -302,7 +308,8 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
 
 
         import pickle
-        f=open("BestVectorsDistanza2","wb")
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k)
+        f=open(filename,"wb")
         pickle.dump(self.best_vectors,f)
         f.close()
 
