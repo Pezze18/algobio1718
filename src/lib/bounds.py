@@ -24,6 +24,9 @@ def pre_creaBestVectorsDistanza1_iterations_percentiles(self):
     self.best_vectors = [ [ [[] for n in range(self.k)] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
     creaBestVectors1_iterations_percentiles(self)
 
+    #print(self.best_vectors[0][4322])
+    #print(self.best_vectors[3][4322])
+
     import pickle
     f=open("BestVectorsDistanza1","wb")
     pickle.dump(self.best_vectors,f)
@@ -43,6 +46,7 @@ def creaBestVectors1_iterations_percentiles(self):
     values=[0]+values+[1]
     self.thresholds=values
     thresholds=self.thresholds
+    print("thresholds: "+str(thresholds))
 
     #Calcolo di max_counts_percentiles per ogni nodo/vettore
     self.max_counts_percentiles = [ [0 for j in range(len(thresholds)-1)] for i in range(self.max_node+1)]
@@ -57,12 +61,13 @@ def creaBestVectors1_iterations_percentiles(self):
 
     #Calcolo di best vectors a distanza 1 per index 0
     M=self.G.copy()
-    index = 0
+    self.index = 0
     for v in self.G:
-        self.best_vectors[index][v][0] = updateBestVector_iterations_percentiles(self,self.G, v)
+        self.best_vectors[self.index][v][0] = updateBestVector_iterations_percentiles(self,self.G, v)
 
     # Calcolo di best vectors a distanza 1 per index > 0
     for index in range(1,len(self.contatori)):
+        self.index=index
         neighbors=set()
         for v in self.sorted_vertices[self.contatori[index-1]:self.contatori[index]] :
             neighbors.update(self.G.neighbors(v))
@@ -101,6 +106,9 @@ def updateBestVector_iterations_percentiles(self,G, v):
             ordered_percentiles[i] = ordered_percentiles[i][0:length]
             ordered_percentiles[i] = np.sort(ordered_percentiles[i])
 
+    #if v==4322:
+    #    print("max_counts: "+str(max)+"  index: "+str(self.index))
+
     remains = max
     index_perc=0
     best_vector=np.asarray([])
@@ -135,6 +143,7 @@ def pre_creaBestVectorsDistanza_iterations_percentiles(self):
     indici, values = calculatePercentiles(self, a, percentiles)
     values=[0]+values+[1]
     self.thresholds=values
+    print("thresholds: " + str(self.thresholds))
 
     if self.onlyCount:
         self.max_counts =[ [0 for i in range(self.max_node+1)]  for j in range(len(self.contatori))]
@@ -183,12 +192,13 @@ def crea_creaBestVectorsDistanza_iterations_percentiles(self,C, vec):
         neighbors = set()
         for c in C:
             neighbors.update(self.G.neighbors(c))
+
         for u in neighbors:
             if self.max_counts[self.index][u] < max:
                 self.max_counts[self.index][u] = max
             for i in range(len(self.thresholds) - 1):
-                if max_percentiles[i] > self.max_counts_percentiles[self.index][c][i]:
-                    self.max_counts_percentiles[self.index][c][i] = max_percentiles[i]
+                if max_percentiles[i] > self.max_counts_percentiles[self.index][u][i]:
+                    self.max_counts_percentiles[self.index][u][i] = max_percentiles[i]
 
 
 
@@ -202,7 +212,7 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
                     cont=cont+1
                 for i in range(len(self.thresholds) - 1):
                     if  self.max_counts_percentiles[index][v][i] < self.max_counts_percentiles[index+1][v][i]:
-                        self.max_counts_percentiles[self.index][v][i] = self.max_counts_percentiles[index+1][v][i]
+                        self.max_counts_percentiles[index][v][i] = self.max_counts_percentiles[index+1][v][i]
                         cont = cont + 1
         print("cont: "+str(cont))
 
@@ -242,8 +252,8 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
                             cont=cont+1
                             b = np.insert(a, idx, my_values)
                             b = b[0:self.max_counts_percentiles[index][v][i]]
-                            if (len(b) > 0):#dato che num<len(my_values) quest'altra condizione non servirebbe ma giusto per essere sicuri
-                                self.ordered_percentiles[index][v][i] = b
+                            #if (len(b) > 0):#dato che num<len(my_values) quest'altra condizione non servirebbe ma giusto per essere sicuri
+                            self.ordered_percentiles[index][v][i] = b
         print("cont: " + str(cont))
 
         #Dai ordered_percentiles creo best_vectors
@@ -251,12 +261,12 @@ def save_creaBestVectorsDistanza_iterations_percentiles(self):
             for v in self.genes:
                 b_v = np.asarray([])
                 for i in range(len(self.thresholds) - 1):
-                    # if len(b_v)==self.max_counts[self.index][v]:
+                    # if len(b_v)==self.max_counts[index][v]:
                     # break
-                    if self.max_counts_percentiles[self.index][v][i] > 0:
-                        #[:self.max_counts_percentiles[self.index][v][i] è ripetitivo ma giusto per sicurezza (questa parte non è expensive comunque)
-                        b_v = np.concatenate((b_v, self.ordered_percentiles[self.index][v][i][
-                                                   0:self.max_counts_percentiles[self.index][v][i]]))
+                    if self.max_counts_percentiles[index][v][i] > 0:
+                        #[:self.max_counts_percentiles[index][v][i] è ripetitivo ma giusto per sicurezza (questa parte non è expensive comunque)
+                        b_v = np.concatenate((b_v, self.ordered_percentiles[index][v][i][
+                                                   0:self.max_counts_percentiles[index][v][i]]))
                 self.best_vectors[index][v][self.k-1] = b_v
         del self.ordered_percentiles
 
@@ -272,8 +282,9 @@ def update_creaBestVectorsDistanza_iterations_percentiles(self):
         if self.cont>=self.contatori[i]:
             index=i
     if index!=self.index:
+        self.index = index
         print(self.index)
-        self.index=index
+
 
 ########################################################
 ###########BOUND ORDER IMPROVED#########################
