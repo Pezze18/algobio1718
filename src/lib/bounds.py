@@ -10,6 +10,36 @@ from lib.auxiliary_functions import *
 
 
 
+def pre_creaBestVectorsDistanzeSuperiori(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+
+    #Creo tabella iniziale, ogni paziente ha una lista di tuple,
+    #  dove ogni tupla è formata da (gene,valore)
+    tabella=[ [] for j in range(len(self.samples))]
+    for g in self.genes:
+        for j in range(len(self.samples)):
+            if  self.matrix[g][j]!=1:
+                tabella[j].append((g, self.matrix[g][j]))
+    for j in range(len(self.samples)):#gli ordino in modo da prenderli ed eliminarli facilmente
+        tabella[j].sort(key=lambda x:x[1])
+
+    self.best_vectors=[[] for u in range(5783)]# numero di iterazioni
+    dist=self.k
+
+    self.cont=0
+    for v in self.sorted_vertices:
+        deleteFromTable(self, tabella, v)
+        b=updateBestVectorTable(self, tabella, dist)
+        self.best_vectors[self.cont]=b
+        self.cont += 1
+
+    import pickle
+    f=open("BestVectorsDistanzeSuperiori","wb")
+    pickle.dump(self.best_vectors,f)
+    f.close()
+    raise ValueError
+
 
 
 
@@ -335,8 +365,12 @@ def pre_bound_order_improved_iterations_percentiles(self):
     self.best_vectors = pickle.load(f)
     f.close()
 
-    print(self.best_vectors[0][4322])
-    print(self.best_vectors[3][4322])
+    f=open("BestVectorsDistanzeSuperiori","rb")
+    self.best_vectors_distanze_superiori = pickle.load(f)
+    f.close()
+
+    #print(self.best_vectors[0][4322])
+    #print(self.best_vectors[3][4322])
 
 
 def bound_order_improved_iterations_percentiles(self,C,vecC):
@@ -344,9 +378,12 @@ def bound_order_improved_iterations_percentiles(self,C,vecC):
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1 or dist==2):
+    if(dist==1 or dist==2 or dist==3):
         v=C[len(C)-1]
-        best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
+        if dist==3:
+            best_vector=self.best_vectors_distanze_superiori[self.cont]
+        else:
+            best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
             dec=np.sort(dec)
             dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente

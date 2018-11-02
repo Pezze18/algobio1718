@@ -263,49 +263,6 @@ def how_many_diff_old(L):# metodo ausiliario di bound_min(deprecated)
     return lista
 
 
-def updateBestVector(self, v):
-    G=self.G
-    max=0
-
-    max_percentiles=[0 for i in range(len(self.thresholds))]
-    ordered_percentiles = [[] for i in range(len(self.thresholds))]
-
-    for u in G.neighbors(v):
-        if max < self.max_counts[u]:
-            max=self.max_counts[u]
-        indices = np.digitize(self.orderedMatrix[u], self.thresholds) - 1
-
-        for i in range(len(self.thresholds)-1):
-            if max_percentiles[i] < self.max_counts_percentiles[u][i]:
-                max_percentiles[i] = self.max_counts_percentiles[u][i]
-            ordered_percentiles[i]=np.concatenate((ordered_percentiles[i],self.orderedMatrix[u][indices == i]))
-
-    for i in range(len(self.thresholds)-1):
-        length=min(len(ordered_percentiles[i]), max_percentiles[i])
-        if length==0:
-            ordered_percentiles[i]=[]
-        else:
-            ordered_percentiles[i] = bottle.partition(ordered_percentiles[i], length - 1)
-            ordered_percentiles[i] = ordered_percentiles[i][0:length]
-
-    remains = max
-    index_perc=0
-
-    #print("max: "+str(max))
-    #print("max_percentiles"+str(max_percentiles))
-    #print("ordered_percentiles: "+str(ordered_percentiles))
-
-    best_vector=np.asarray([])
-    while (remains > 0):
-        #print(remains)
-        if remains > len(ordered_percentiles[index_perc]):
-            best_vector = np.concatenate((best_vector, ordered_percentiles[index_perc]))
-            remains -= len(ordered_percentiles[index_perc])
-        else:
-            best_vector = np.concatenate((best_vector, ordered_percentiles[index_perc][0:remains]))
-            remains=0
-        index_perc+=1
-    return best_vector
 
 
 #freq indica l'array e percentiles sono tra 0 e 1
@@ -330,5 +287,39 @@ def calculatePercentiles(self, freq, percentiles):#Se true effettua cumsum
     #print("contatori: " + str(contatori))
     #print("values: "+str(values))
     return contatori,values
+
+
+def deleteFromTable(self, tabella, v):
+    for j in range(len(self.samples)):
+        indice=-1
+        for i in range(len(tabella[j])):
+            if tabella[j][i][0] ==v:
+                indice=i
+        if indice>=0:
+            tabella[j].pop(indice)
+
+def updateBestVectorTable(self, tabella, dist):
+    min_values=[1 for j in range(len(self.samples))]
+    for j in range(len(self.samples)):
+        length=min(len(tabella[j]), dist)
+        prod=1
+        for i in range(length):
+            prod*=tabella[j][i][1]
+        min_values[j]=prod
+
+        cont=self.cont
+        max=0
+        for i in range(cont+1, min(len(self.sorted_vertices), cont+1+dist) ):
+            max+=self.max_counts[ self.sorted_vertices[i] ]
+            #print(i)
+        #print("max: "+str(max))
+        #print("length values: "+str(len(min_values)))
+        #print("_________")
+        min_values=which_diff(min_values)
+
+        a=np.sort(min_values)[0:max]
+        return a
+
+
 
 
