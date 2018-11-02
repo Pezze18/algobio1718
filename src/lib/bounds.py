@@ -350,12 +350,9 @@ def pre_bound_order_improved_iterations_percentiles(self):
     ordinamentoVertici_bound_order_improved(self)
 
     import pickle
-    f=open("BestVectorsDistanza2","rb")
+    filename=self.parameters["bestVectors"]
+    f=open(filename ,"rb")
     self.best_vectors = pickle.load(f)
-    f.close()
-
-    f=open("BestVectorsDistanzeSuperiori","rb")
-    self.best_vectors_distanze_superiori = pickle.load(f)
     f.close()
 
     #print(self.best_vectors[0][4322])
@@ -370,7 +367,7 @@ def bound_order_improved_iterations_percentiles(self,C,vecC):
     if(dist==1 or dist==2 or dist==3):
         v=C[len(C)-1]
         if dist==3:
-            best_vector=self.best_vectors_distanze_superiori[self.cont]
+            best_vector=self.best_vectors[self.index][0][dist-1]
         else:
             best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
