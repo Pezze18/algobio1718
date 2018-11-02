@@ -171,7 +171,8 @@ def pre_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     f.close()
 
     #Calcolo percentili per distanza 2 usando il miglior vettore trovato a distanza 2(euristica)
-    best_set= [6780, 8821]
+    best_solutions=[ [], [6780], [6780, 8821], [6780, 8821, 7031] ]
+    best_set=best_solutions[self.k]
     a=np.sort(which_diff(vectorization_solution(self,best_set)))
     percentiles = [i * 0.1 for i in range(0, 10)]
     indici, values = calculatePercentiles(self, a, percentiles)
