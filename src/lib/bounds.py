@@ -10,7 +10,7 @@ from lib.auxiliary_functions import *
 
 
 #################################################################################
-###########BEST VECTORS DISTANZE SUPERIORI(TO FIX)########################
+###########BEST VECTORS DISTANZE SUPERIORI#######################################
 #################################################################################
 def pre_creaBestVectorsDistanzeSuperiori(self):
     self.matrix = toMatrix(self, self.G.nodes)
@@ -163,9 +163,9 @@ def updateBestVector_iterations_percentiles(self,G, v):
     return best_vector
 
 
-########################################################
-###########BEST VECTORS DISTANZA 2######################
-########################################################
+##########################################################################################
+###########BEST VECTORS DISTANZA 2 ITERATIONS PERCENTILES SINGOLO#########################
+##########################################################################################
 def pre_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
@@ -312,6 +312,312 @@ def update_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
         self.index = index
         print(self.index)
 
+###############################################################################
+###########BEST VECTORS DISTANZA 2 ITERATIONS PERCENTILES######################
+###############################################################################
+def pre_creaBestVectorsDistanza_iterations_percentiles(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+
+    #Importo best_vectors per distanza 1
+    import pickle
+    filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza"+str(self.k-1)
+    f=open(filename,"rb")
+    self.best_vectors = pickle.load(f)
+    f.close()
+
+    #Calcolo percentili per distanza 2 usando il miglior vettore trovato a distanza 2(euristica)
+    best_set= [6780, 8821]
+    a=np.sort(which_diff(vectorization_solution(self,best_set)))
+    percentiles = [i * 0.1 for i in range(0, 10)]
+    indici, values = calculatePercentiles(self, a, percentiles)
+    values=[0]+values+[1]
+    self.thresholds=values
+    print("thresholds: " + str(self.thresholds))
+
+    if self.onlyCount:
+        self.max_counts =[ [0 for i in range(self.max_node+1)]  for j in range(len(self.contatori))]
+        self.max_counts_percentiles = [[ [0 for s in range(len(self.thresholds)-1)] for i in range(self.max_node + 1)] for j in range(len(self.contatori))]
+    else:
+        #Importo max_counts e max_counts_percentiles per creare best_vectors a distanza 2
+        filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza"+str(self.k)+"_max_counts"
+        f=open(filename,"rb")
+        self.max_counts=pickle.load(f)
+        self.max_counts_percentiles=pickle.load(f)
+        f.close()
+
+        self.ordered_percentiles = [[[[] for s in range(len(self.thresholds) - 1)] for i in range(self.max_node + 1)]
+                                       for j in range(len(self.contatori))]
+
+    self.index=0
+
+
+def crea_creaBestVectorsDistanza_iterations_percentiles(self,C, vec):
+    if self.onlyCount==False:
+        diff = which_diff(vec)
+        indices = np.digitize(diff, self.thresholds) - 1
+
+        neighbors = set()
+        for c in C:
+            neighbors.update(self.G.neighbors(c))
+
+        for u in neighbors:
+            for i in range(len(self.thresholds) - 1):
+                b=self.ordered_percentiles[self.index][u][i]
+                if self.max_counts_percentiles[self.index][u][i]>0:
+                    ord=np.sort(diff[indices==i])
+                    ord = ord[0:self.max_counts_percentiles[self.index][u][i]]
+                    idx=np.searchsorted(b, ord )
+                    b=np.insert(b, idx, ord)[0:self.max_counts_percentiles[self.index][u][i]]
+                    self.ordered_percentiles[self.index][u][i] = b
+    else:
+        diff = which_diff(vec)
+        max = len(diff)
+        indices = np.digitize(diff, self.thresholds) - 1
+        max_percentiles = [0 for i in range(len(self.thresholds) - 1)]
+        unique, counts = np.unique(indices, return_counts=True)
+        for i in range(len(unique)):
+            u = unique[i]
+            max_percentiles[u] = counts[i]
+
+        neighbors = set()
+        for c in C:
+            neighbors.update(self.G.neighbors(c))
+
+        for u in neighbors:
+            if self.max_counts[self.index][u] < max:
+                self.max_counts[self.index][u] = max
+            for i in range(len(self.thresholds) - 1):
+                if max_percentiles[i] > self.max_counts_percentiles[self.index][u][i]:
+                    self.max_counts_percentiles[self.index][u][i] = max_percentiles[i]
+
+
+
+def save_creaBestVectorsDistanza_iterations_percentiles(self):
+    if self.onlyCount:
+        cont = 0
+        for index in range(len(self.contatori) - 2, -1, -1):
+            for v in self.genes:
+                if self.max_counts[index][v] < self.max_counts[index + 1][v]:
+                    self.max_counts[index][v] = self.max_counts[index + 1][v]
+                    cont=cont+1
+                for i in range(len(self.thresholds) - 1):
+                    if  self.max_counts_percentiles[index][v][i] < self.max_counts_percentiles[index+1][v][i]:
+                        self.max_counts_percentiles[index][v][i] = self.max_counts_percentiles[index+1][v][i]
+                        cont = cont + 1
+        print("cont: "+str(cont))
+
+        azzerati=0
+        for index in range(len(self.contatori) - 1, -1, -1):
+            for v in self.genes:
+                remains = self.max_counts[index][v]
+                for i in range(len(self.thresholds) - 1):
+                    if remains > 0:
+                        if remains > self.max_counts_percentiles[index][v][i]:
+                            remains -= self.max_counts_percentiles[index][v][i]
+                        else:
+                            self.max_counts_percentiles[index][v][i] = remains
+                            remains = 0
+                    else:
+                        self.max_counts_percentiles[index][v][i] = 0
+                        azzerati += 1
+        print("azzerati: "+str(azzerati))
+
+        import pickle
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k) + "_max_counts"
+        f = open(filename, "wb")
+        pickle.dump(self.max_counts, f)
+        pickle.dump(self.max_counts_percentiles, f)
+        f.close()
+    else:
+        #Devo aggiornare ordered_percentiles
+        cont=0
+        for v in self.genes:
+            for index in range(len(self.contatori) - 2, -1, -1):
+                for i in range(len(self.thresholds) - 1):
+                    a = self.ordered_percentiles[index][v][i]
+                    my_values = self.ordered_percentiles[index+1][v][i]
+                    if len(my_values)>0:#continua, altrimenti non c'è niente da aggiungere
+                        idx = np.searchsorted(a, my_values)
+                        num = np.count_nonzero(idx >= len(a))
+                        if num<len(my_values):#allora almeno un valore va inserito
+                            cont=cont+1
+                            b = np.insert(a, idx, my_values)
+                            b = b[0:self.max_counts_percentiles[index][v][i]]
+                            #if (len(b) > 0):#dato che num<len(my_values) quest'altra condizione non servirebbe ma giusto per essere sicuri
+                            self.ordered_percentiles[index][v][i] = b
+        print("cont: " + str(cont))
+
+        #Dai ordered_percentiles creo best_vectors
+        for index in range(len(self.contatori)):
+            for v in self.genes:
+                b_v = np.asarray([])
+                for i in range(len(self.thresholds) - 1):
+                    # if len(b_v)==self.max_counts[index][v]:
+                    # break
+                    if self.max_counts_percentiles[index][v][i] > 0:
+                        #[:self.max_counts_percentiles[index][v][i] è ripetitivo ma giusto per sicurezza (questa parte non è expensive comunque)
+                        b_v = np.concatenate((b_v, self.ordered_percentiles[index][v][i][
+                                                   0:self.max_counts_percentiles[index][v][i]]))
+                self.best_vectors[index][v][self.k-1] = b_v
+        del self.ordered_percentiles
+
+
+        import pickle
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k)
+        f=open(filename,"wb")
+        pickle.dump(self.best_vectors,f)
+        f.close()
+
+def update_creaBestVectorsDistanza_iterations_percentiles(self):
+    index=self.index
+    for i in range(len(self.contatori)):
+        if self.cont>=self.contatori[i]:
+            index=i
+    if index!=self.index:
+        self.index = index
+        print(self.index)
+
+
+#####################################################################
+###########BEST VECTORS DISTANZA 1 ITERATIONS########################
+#####################################################################
+
+def pre_creaBestVectorsDistanza_iterations(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+    self.best_vectors = [ [ [[] for n in range(self.k)] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
+    creaBestVectors1_iterations(self)
+
+    import pickle
+    filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza1"
+    f=open(filename,"wb")
+    pickle.dump(self.best_vectors,f)
+    f.close()
+    raise ValueError
+
+def creaBestVectors1_iterations(self):
+    M=self.G.copy()
+    for v in self.G.nodes:
+        self.best_vectors[0][v][0]=updateBestVector_iterations(self,self.G,v)
+
+    for index in range(1,len(self.contatori)):
+        neighbors=set()
+        for v in self.sorted_vertices[self.contatori[index-1]:self.contatori[index]] :
+            neighbors.update(self.G.neighbors(v))
+        self.G.remove_nodes_from(self.sorted_vertices[self.contatori[index-1]:self.contatori[index]])
+        for v in self.G:
+            if v in neighbors:
+                self.best_vectors[index][v][0]=updateBestVector_iterations(self,self.G, v)
+            else:
+                self.best_vectors[index][v][0]=self.best_vectors[index-1][v][0]
+    self.G=M
+
+def updateBestVector_iterations(self,G,v):
+    b = []
+    neighbors=self.G.neighbors(v)
+    lista = [self.max_counts[u] for u in neighbors]
+    if len(lista)==0:
+        max_count=0
+    else:
+        max_count = np.max(lista)
+    neighbors = self.G.neighbors(v)
+    for u in neighbors:
+        ord = np.sort(self.orderedMatrix[u])
+        idx = np.searchsorted(b, ord)
+        b = np.insert(b, idx, ord)
+    b = which_diff(b)[0:max_count]#len(self.samples)
+    return b
+
+######################################################################
+###########BEST VECTORS DISTANZA 2 ITERATIONS#########################
+######################################################################
+def pre_creaBestVectorsDistanza_iterations(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+
+    import pickle
+    filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k - 1)
+    f=open(filename,"rb")
+    self.best_vectors = pickle.load(f)
+    f.close()
+
+    if self.onlyCount:
+        self.max_counts =[ [0 for i in range(self.max_node+1)]  for j in range(len(self.contatori))]
+    else:
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k) + "_max_counts"
+        f=open(filename,"rb")
+        self.max_counts=pickle.load(f)
+        f.close()
+
+    self.index=0
+
+
+def crea_creaBestVectorsDistanza_iterations(self,C, vec):
+    if self.onlyCount==False:
+        diff = which_diff(vec)
+        neighbors = set()
+        for c in C:
+            neighbors.update(self.G.neighbors(c))
+        for u in neighbors:
+            b = self.best_vectors[self.index][u][self.k-1]
+            ord = np.sort(diff)
+            ord = ord[0:self.max_counts[self.index][u]]
+            idx = np.searchsorted(b, ord)
+            b = np.insert(b, idx, ord)[0:self.max_counts[self.index][u]]
+            self.best_vectors[self.index][u][self.k-1] = b
+    else:
+        diff = which_diff(vec)
+        max = len(diff)
+        neighbors = set()
+        for c in C:
+            neighbors.update(self.G.neighbors(c))
+        for u in neighbors:
+            if self.max_counts[self.index][u] < max:
+                self.max_counts[self.index][u] = max
+
+
+def save_creaBestVectorsDistanza_iterations(self):
+    if self.onlyCount:
+        cont = 0
+        for index in range(len(self.contatori) - 2, -1, -1):
+            for v in self.genes:
+                if self.max_counts[index][v] < self.max_counts[index + 1][v]:
+                    self.max_counts[index][v] = self.max_counts[index + 1][v]
+                    cont=cont+1
+        print("cont: "+str(cont))
+
+        import pickle
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k) + "_max_counts"
+        f = open(filename, "wb")
+        pickle.dump(self.max_counts, f)
+        f.close()
+    else:
+        #cont=0
+        for v in self.genes:
+            for index in range(len(self.contatori) - 2, -1, -1):
+                a=self.best_vectors[index][v][self.k-1]
+                my_values=self.best_vectors[index+1][v][self.k-1]
+                idx=np.searchsorted(a, my_values)
+                num = np.count_nonzero( idx >= len(a))
+                #if num >0:
+                #    cont=cont+1
+                b=np.insert(a, idx, my_values)
+                b=b[0:self.max_counts[index][v]]
+                if(len(b)>0):
+                    self.best_vectors[index][v][self.k-1]=b
+        #print("cont: " + str(cont))
+
+        import pickle
+        filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k)
+        f=open(filename,"wb")
+        pickle.dump(self.best_vectors,f)
+        f.close()
+
+def update_creaBestVectorsDistanza_iterations(self):
+    for i in range(len(self.contatori)):
+        if self.cont>=self.contatori[i]:
+            self.index=i
 
 ########################################################
 ###########BOUND ORDER IMPROVED#########################
@@ -363,22 +669,37 @@ def pre_bound_order_improved_iterations_percentiles(self):
     self.best_vectors = pickle.load(f)
     f.close()
 
-    #print(self.best_vectors[0][4322])
-    #print(self.best_vectors[3][4322])
+    """
+    self.methods=["normal", "iterations", "iterations_singolo","iterations_superiore","iterations_superiore"]
+    diz={"normal":0, "iterations":1, "iterations_singolo":2, "iterations_superiore":3}
+    self.max_dist=len(methods)
+    for i in range(self.max_dist):
+        self.methods[i]=diz[self.methods[i]]
+    """
 
+    """
+    if dist==3:
+        best_vector = self.best_vectors[0][self.cont][dist - 1]
+        #best_vector=self.best_vectors[self.index][0][dist-1]
+    else:
+        best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
+    """
 
 def bound_order_improved_iterations_percentiles(self,C,vecC):
     dist=self.k-len(C)
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1 or dist==2):
+    if(dist<=7):
         v=C[len(C)-1]
-        if dist==3:
-            best_vector = self.best_vectors[0][self.cont][dist - 1]
-            #best_vector=self.best_vectors[self.index][0][dist-1]
+        if dist<=2:
+            best_vector = self.best_vectors[self.index][v][dist - 1]#iterations e iterations_percentiles
         else:
-            best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
+            if dist==3:
+                best_vector = self.best_vectors[self.index][0][dist - 1]#iterations_percentiles_singolo
+            else:
+                best_vector = self.best_vectors[0][self.cont][dist - 1]#Distanze superiori
+
         if((len(dec)+len(best_vector) >len(self.samples))):
             dec=np.sort(dec)
             dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
@@ -396,8 +717,12 @@ def bound_order_improved_iterations_percentiles(self,C,vecC):
 
 
 def update_bound_order_improved_iterations_percentiles(self):
+    index=self.index
     for i in range(len(self.contatori)):
         if self.cont>=self.contatori[i]:
-            self.index=i
+            index=i
+    if index!=self.index:
+        self.index = index
+        print(self.index)
 
 
