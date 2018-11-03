@@ -297,28 +297,46 @@ def deleteFromTable(self, tabella, v):
                 indice=i
         if indice>=0:
             tabella[j].pop(indice)
+        """if (j == 10):
+            print("cont: " + str(self.cont))
+            print(v)
+            print(tabella[j])
+            print("_______________")
+        """
+
+
 
 def updateBestVectorTable(self, tabella, dist):
     min_values=[1 for j in range(len(self.samples))]
     for j in range(len(self.samples)):
         length=min(len(tabella[j]), dist)
+        #print(j)
+        #if (j == 10):
+        #    print("cont: " + str(self.cont) + " min_values: " + str(min_values))
+        #    print(tabella[j])
         prod=1
         for i in range(length):
             prod*=tabella[j][i][1]
         min_values[j]=prod
+        #if (j == 10):
+        #    print("prodotto: "+str(prod))
+        #    print("_______________")
 
-        cont=self.cont
-        max=0
-        for i in range(cont+1, min(len(self.sorted_vertices), cont+1+dist) ):
-            max+=self.max_counts[ self.sorted_vertices[i] ]
-            #print(i)
-        #print("max: "+str(max))
-        #print("length values: "+str(len(min_values)))
-        #print("_________")
+    cont=self.cont
+    a=min_values
+    if(cont < len(self.sorted_vertices)-dist-1):
+        max=self.max_counts[ self.sorted_vertices[cont+1] ]+self.max_counts[ self.sorted_vertices[cont+2] ]+self.max_counts[ self.sorted_vertices[cont+3] ]
         min_values=which_diff(min_values)
-
+        #print("cont: "+str(self.cont)+" min_values: "+str(min_values))
         a=np.sort(min_values)[0:max]
-        return a
+    #for i in range(cont+1, min(len(self.sorted_vertices), cont+1+dist) ):
+    #max+=self.max_counts[ self.sorted_vertices[i] ]
+        #print(i)
+    #print("max: "+str(max))
+    #print("length values: "+str(len(min_values)))
+    #print("_________")
+
+    return a
 
 
 

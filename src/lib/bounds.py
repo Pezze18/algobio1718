@@ -25,19 +25,26 @@ def pre_creaBestVectorsDistanzeSuperiori(self):
                 tabella[j].append((g, self.matrix[g][j]))
     for j in range(len(self.samples)):#gli ordino in modo da prenderli ed eliminarli facilmente
         tabella[j].sort(key=lambda x:x[1])
+        #print(tabella[j])
 
-    self.best_vectors=[[] for u in range(5783)]# numero di iterazioni
+    #Importo best_vectors per distanza 1
+    import pickle
+    filename=self.parameters["bestVectors"]+"/"+"BestVectorsDistanza"+str(self.k-1)
+    f=open(filename,"rb")
+    self.best_vectors = pickle.load(f)
+    f.close()
     dist=self.k
 
     self.cont=0
     for v in self.sorted_vertices:
         deleteFromTable(self, tabella, v)
         b=updateBestVectorTable(self, tabella, dist)
-        self.best_vectors[self.cont]=b
+        self.best_vectors[0][self.cont][dist-1]=b
         self.cont += 1
 
     import pickle
-    f=open("BestVectorsDistanzeSuperiori","wb")
+    filename = self.parameters["bestVectors"] + "/" + "BestVectorsDistanza" + str(self.k )
+    f = open(filename, "wb")
     pickle.dump(self.best_vectors,f)
     f.close()
     raise ValueError
@@ -365,10 +372,11 @@ def bound_order_improved_iterations_percentiles(self,C,vecC):
     lista=which_diff(vecC)
     dec=np.asarray(lista)
     bests=[]
-    if(dist==1 or dist==2 or dist==3):
+    if(dist==1 or dist==2):
         v=C[len(C)-1]
         if dist==3:
-            best_vector=self.best_vectors[self.index][0][dist-1]
+            best_vector = self.best_vectors[0][self.cont][dist - 1]
+            #best_vector=self.best_vectors[self.index][0][dist-1]
         else:
             best_vector=self.best_vectors[self.index][v][dist-1]#già ordinato in ordine crescente
         if((len(dec)+len(best_vector) >len(self.samples))):
