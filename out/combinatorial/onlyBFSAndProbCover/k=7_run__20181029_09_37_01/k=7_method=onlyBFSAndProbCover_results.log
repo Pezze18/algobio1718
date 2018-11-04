@@ -1,0 +1,54 @@
+Samples size: 391
+Number nodes: 9859
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 6780, 8821, 9101, 2622, 6278]
+Current score(min_version): 293.919684349
+_________________
+
+Best solution updated!
+Current C (ids):  [11, 3043, 6780, 9101, 8821, 2622, 6278]
+Current score(min_version): 293.697612677
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 6780, 9101, 8821, 2622, 457, 6278]
+Current score(min_version): 290.30246796
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 6780, 9101, 8821, 2622, 6278, 8105]
+Current score(min_version): 286.406070335
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821, 2622, 6273, 6278, 6780, 9101]
+Current score(min_version): 279.195829744
+_________________
+
+Best solution updated!
+Current C (ids):  [583, 8821, 6780, 6273, 37, 6278, 2622]
+Current score(min_version): 278.873093913
+_________________
+
+Best solution updated!
+Current C (ids):  [808, 8821, 6278, 2622, 6273, 6780, 9101]
+Current score(min_version): 278.697860865
+_________________
+
+Best solution updated!
+Current C (ids):  [2291, 8821, 6780, 6273, 6278, 2814, 2622]
+Current score(min_version): 276.075026798
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105]
+Current score(min_version): 273.62112043
+_________________
+Final solution (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105]
+Final solution (genes' names):  ['PTK2', 'PTEN', 'TP53', 'EGFR', 'PIK3CA', 'PIK3R1', 'SPEN']
+Final solution score:  273.62112043
+Final solution score(max version):  117.37887957
+Elapsed time:  01:49:30
+_________________

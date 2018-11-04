@@ -1,0 +1,54 @@
+Samples size: 391
+Number nodes: 9859
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 6780, 8821, 2592]
+Current score(min_version): 323.0506723247294
+_________________
+
+Best solution updated!
+Current C (ids):  [8, 8632, 6780, 8821, 2592]
+Current score(min_version): 322.3108566236256
+_________________
+
+Best solution updated!
+Current C (ids):  [9, 9485, 6780, 8821, 2622]
+Current score(min_version): 308.59853955123475
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 6780, 9101, 8821, 2622]
+Current score(min_version): 306.14582449471015
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 6780, 9101, 8821, 2622]
+Current score(min_version): 305.56435932086214
+_________________
+
+Best solution updated!
+Current C (ids):  [1291, 6780, 9101, 8821, 2622]
+Current score(min_version): 304.22759145324727
+_________________
+
+Best solution updated!
+Current C (ids):  [2291, 8821, 6780, 6273, 6278]
+Current score(min_version): 296.06530349632345
+_________________
+
+Best solution updated!
+Current C (ids):  [5864, 8821, 6780, 2622, 6278]
+Current score(min_version): 295.08087339397247
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 6780, 8821, 2622, 6278]
+Current score(min_version): 294.3347416898786
+_________________
+Final solution (ids):  [6793, 6780, 8821, 2622, 6278]
+Final solution (genes' names):  ['PTK2', 'PTEN', 'TP53', 'EGFR', 'PIK3R1']
+Final solution score:  294.3347416898786
+Final solution score(max version):  96.66525831012137
+Elapsed time:  04:23:46
+_________________

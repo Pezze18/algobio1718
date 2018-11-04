@@ -1,0 +1,49 @@
+Samples size: 391
+Number nodes: 9859
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632]
+Current score(min_version): 388.827476445
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 8965]
+Current score(min_version): 383.969015954
+_________________
+
+Best solution updated!
+Current C (ids):  [12, 7030]
+Current score(min_version): 376.904738798
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278]
+Current score(min_version): 371.95923841
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821]
+Current score(min_version): 358.196546393
+_________________
+
+Best solution updated!
+Current C (ids):  [244, 6780]
+Current score(min_version): 352.540798473
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278]
+Current score(min_version): 350.077882751
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821]
+Current score(min_version): 328.170562682
+_________________
+Final solution (ids):  [6780, 8821]
+Final solution (genes' names):  ['PTEN', 'TP53']
+Final solution score:  328.170562682
+Final solution score(max version):  62.8294373178
+Elapsed time:  00:02:10
+_________________
