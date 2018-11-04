@@ -485,7 +485,7 @@ def update_creaBestVectorsDistanza_iterations_percentiles(self):
 ###########BEST VECTORS DISTANZA 1 ITERATIONS########################
 #####################################################################
 
-def pre_creaBestVectorsDistanza_iterations(self):
+def pre_creaBestVectorsDistanza1_iterations(self):
     self.matrix = toMatrix(self, self.G.nodes)
     ordinamentoVertici_bound_order_improved(self)
     self.best_vectors = [ [ [[] for n in range(self.k)] for j in range(self.max_node + 1)]  for i in range(len(self.contatori))]
