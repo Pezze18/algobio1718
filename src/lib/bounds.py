@@ -178,7 +178,7 @@ def pre_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     f.close()
 
     #Calcolo percentili per distanza 2 usando il miglior vettore trovato a distanza 2(euristica)
-    best_solutions=[ [], [6780], [6780, 8821], [6780, 8821, 7031] ]
+    best_solutions=[ [], [6780], [6780, 8821], [6780, 8821, 7031], [2622, 6793, 6780, 8821] ]
     best_set=best_solutions[self.k]
     a=np.sort(which_diff(vectorization_solution(self,best_set)))
     percentiles = [i * 0.1 for i in range(0, 10)]
@@ -311,6 +311,8 @@ def update_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     if index!=self.index:
         self.index = index
         print(self.index)
+    print(self.cont)
+    print(self.levels)
 
 ###############################################################################
 ###########BEST VECTORS DISTANZA 2 ITERATIONS PERCENTILES######################
@@ -695,7 +697,7 @@ def bound_order_improved_iterations_percentiles(self,C,vecC):
         if dist<=2:
             best_vector = self.best_vectors[self.index][v][dist - 1]#iterations e iterations_percentiles
         else:
-            if dist==3:
+            if dist<=3:
                 best_vector = self.best_vectors[self.index][0][dist - 1]#iterations_percentiles_singolo
             else:
                 best_vector = self.best_vectors[0][self.cont][dist - 1]#Distanze superiori
@@ -724,5 +726,6 @@ def update_bound_order_improved_iterations_percentiles(self):
     if index!=self.index:
         self.index = index
         print(self.index)
-
+    print(self.cont)
+    print(self.levels)
 
