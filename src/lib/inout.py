@@ -41,7 +41,7 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k':6,
+    'k':4,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
@@ -50,11 +50,11 @@ parameters = {
     'prob': True,
     'strategy': 'enumerate',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
-    'bound': True,          #creaBestVectorsDistanza1_iterations_percentiles
-    'method': "bound_order_improved_iterations_percentiles",#bound_order_improved_iterations_percentiles
-    'bestVectors':"../data/BestVectors/BestVectorsDistanza7",#/BestVectorsDistanza3
-    "crea":False,
-    "onlyCount":False
+    'bound': False,          #creaBestVectorsDistanza1_iterations_percentiles
+    'method': "creaBestVectorsDistanza_iterations_percentiles_singolo",#bound_order_improved_iterations_percentiles
+    'bestVectors':"../data/BestVectors",#/BestVectorsDistanza3
+    "crea":True,
+    "onlyCount":True
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
 # bound_fast, bound_kantorovich, bound_means, bound_means_iterations
@@ -109,6 +109,10 @@ def handleParser():
     parser.add_argument('--scoring_function', type=str, help='Scoring function to use inside BDDE ')
     parser.add_argument('--bestVectors', type=str, help='bestVectors path for bound_order ')
     parser.add_argument('--levelsVec', action="store_true", help='Type --levelsVec if you want to use levelsVec')
+
+    parser.add_argument('--crea', action="store_true", help='Type --crea if you want create BestVectors')
+    parser.add_argument('--onlyCount', action="store_true", help='Type --onlyCount if you only want create max_counts(you must do it before to create BestVectors')
+
     return parser.parse_args()
 
 
@@ -118,6 +122,12 @@ def update_parameters(args,parameters):
 
     if args.bound:
         parameters['bound'] = True
+
+    if args.crea:
+        parameters['crea'] = True
+
+    if args.onlyCount:
+        parameters['onlyCount'] = True
 
     if args.best_score:
         parameters['best_score'] = float(args.best_score)

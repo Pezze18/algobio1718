@@ -77,7 +77,7 @@ for file in files:
 
 def cluster_script(parameters):
     print("Excecuting...")
-    ks = [6]
+    ks = [4]
 
     waitingFor=open("../out/waitingFor.txt","a")
     waitingFor.write("\n")
@@ -120,12 +120,16 @@ def cluster_script(parameters):
             instruction = "time python3 " + remote_path + "src/main.py"
             # Options to be added:
             for k in parameters:
-                if k != "prob" and k != "bound":
+                if k != "prob" and k != "bound" and k!="crea" and k!="onlyCount":
                     instruction += " --" + k + " " + str(parameters[k])
             if parameters["prob"]:
                 instruction += " --prob "
                 if parameters["bound"]:
                     instruction += " --bound"
+            if parameters["crea"]:
+                instruction += " --crea "
+            if parameters["onlyCount"]:
+                instruction += " --onlyCount "
 
             # Saving the output to a log file:
             output_logfilename = 'k=' + str(parameters['k']) + '_' + 'method=' + parameters['method']

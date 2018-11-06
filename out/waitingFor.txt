@@ -38,3 +38,9 @@ combinatorial BFSAndLevelsVec k=8_run__20181030_20:27:57 idJob: 1999375
 enumerate bound_order_improved k=6_run__20181031_15:39:39 idJob: 2000832 
 
 enumerate bound_order_improved k=6_run__20181031_16:09:52 idJob: 2000834 
+
+enumerate creaBestVectorsDistanza_iterations_percentiles_singolo k=4_run__20181106_11:15:33 idJob: 2015439 
+
+enumerate creaBestVectorsDistanza_iterations_percentiles_singolo k=4_run__20181106_11:20:31 idJob: 2015442 
+
+enumerate creaBestVectorsDistanza_iterations_percentiles_singolo k=4_run__20181106_10:57:36 idJob: 2015444 
