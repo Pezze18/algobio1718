@@ -77,7 +77,7 @@ def creaBestVectors1_iterations_percentiles(self):
     M=self.G.copy()
 
     #Calcolo thresholds da usare
-    percentiles = [i * 0.1 for i in range(0, 10)]
+    percentiles = [i * 0.01 for i in range(0, 100)]
     totale = []
     for g in self.G.nodes:
         totale += list(self.matrix[g][self.matrix[g] < 1])
@@ -181,7 +181,7 @@ def pre_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     best_solutions=[ [], [6780], [6780, 8821], [6780, 8821, 7031], [2622, 6793, 6780, 8821] ]
     best_set=best_solutions[self.k]
     a=np.sort(which_diff(vectorization_solution(self,best_set)))
-    percentiles = [i * 0.1 for i in range(0, 10)]
+    percentiles = [i * 0.05 for i in range(0, 20)]
     indici, values = calculatePercentiles(self, a, percentiles)
     values=[0]+values+[1]
     self.thresholds=values
@@ -331,7 +331,7 @@ def pre_creaBestVectorsDistanza_iterations_percentiles(self):
     #Calcolo percentili per distanza 2 usando il miglior vettore trovato a distanza 2(euristica)
     best_set= [6780, 8821]
     a=np.sort(which_diff(vectorization_solution(self,best_set)))
-    percentiles = [i * 0.1 for i in range(0, 10)]
+    percentiles = [i * 0.05 for i in range(0, 20)]
     indici, values = calculatePercentiles(self, a, percentiles)
     values=[0]+values+[1]
     self.thresholds=values
@@ -649,14 +649,14 @@ def ordinamentoVertici_bound_order_improved(self):
 
     #Per ora in standby
     freq = [c[1] for c in cont]
-
-    percentiles=np.asarray([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-    thresholds=percentiles
-    indici,values=calculatePercentiles(self, freq, thresholds)
-    print("contatori: "+str(indici))
+    unique, counts = np.unique(freq, return_counts=True)
+    counts=counts[::-1]
+    counts=np.cumsum(counts)-1
+    counts=counts[0:len(counts)-1]
+    print("contatori: "+str(counts))
 
     self.index=0
-    self.contatori = indici
+    self.contatori = counts
     self.sorted_vertices = sorted_vertices
     self.orderedMatrix = orderedMatrix
     print("Fine Ordinamento")
@@ -726,6 +726,6 @@ def update_bound_order_improved_iterations_percentiles(self):
     if index!=self.index:
         self.index = index
         print(self.index)
-    print(self.cont)
-    print(self.levels)
+    #print(self.cont)
+    #print(self.levels)
 
