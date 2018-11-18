@@ -44,3 +44,28 @@ enumerate det_numpy k=1_run__20181114_22:43:09 idJob: 2021138
 enumerate det_numpy k=2_run__20181114_22:43:10 idJob: 2021139 
 enumerate det_numpy k=3_run__20181114_22:43:11 idJob: 2021140 
 enumerate det_numpy k=4_run__20181114_22:43:12 idJob: 2021141 
+
+enumerate det_old k=1_run__20181118_10:46:10 idJob: 2024611 
+enumerate det_old k=2_run__20181118_10:46:10 idJob: 2024612 
+enumerate det_old k=3_run__20181118_10:46:12 idJob: 2024613 
+enumerate det_old k=4_run__20181118_10:46:14 idJob: 2024614 
+
+enumerate det_numpy k=2_run__20181118_10:49:53 idJob: 2024615 
+
+enumerate det_numpy k=2_run__20181118_10:53:21 idJob: 2024616 
+
+enumerate det_numpy k=2_run__20181118_10:56:57 idJob: 2024617 
+
+enumerate det_numpy k=2_run__20181118_11:00:42 idJob: 2024618 
+
+enumerate det_numpy k=2_run__20181118_11:20:47 idJob: 2024619 
+
+enumerate det_numpy k=1_run__20181118_11:21:34 idJob: 2024620 
+enumerate det_numpy k=2_run__20181118_11:21:35 idJob: 2024621 
+enumerate det_numpy k=3_run__20181118_11:21:35 idJob: 2024622 
+enumerate det_numpy k=4_run__20181118_11:21:36 idJob: 2024623 
+
+enumerate det_LevelsVec k=1_run__20181118_11:34:04 idJob: 2024624 
+enumerate det_LevelsVec k=2_run__20181118_11:34:05 idJob: 2024625 
+enumerate det_LevelsVec k=3_run__20181118_11:34:05 idJob: 2024626 
+enumerate det_LevelsVec k=4_run__20181118_11:34:06 idJob: 2024627 

@@ -60,7 +60,7 @@ local_path = os.path.dirname(os.getcwd()) + "/"
 
 # Files to be uploaded
 print("Copying files")
-files = ['src/main.py', 'src/lib/core.py', 'src/lib/inout.py', 'src/lib/bounds.py', 'src/lib/combinatorial.py']
+files = ['src/main.py', 'src/lib/core.py', 'src/lib/inout.py', 'src/lib/bounds.py', 'src/lib/combinatorial.py', 'src/lib/auxiliary_functions.py']
 for file in files:
     file_remote = remote_path + file
     file_local = local_path + file

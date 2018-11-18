@@ -47,7 +47,7 @@ class BDDE:
         self.pre(self)
 
 
-    def inspectNode_prob(self, C):
+    def inspectNode_prob(self, C):#probabilistico
         size=len(C)
         if size>self.k:
             # Prune it if it's too big: this will never actually happen, since we prune whenever len(C)==k
@@ -94,7 +94,7 @@ class BDDE:
             # No need to go further.
             return True
 
-    def inspectNode(self, C):
+    def inspectNode(self, C):#determinsitico
         size=len(C)
         if size>self.k:
             return True
