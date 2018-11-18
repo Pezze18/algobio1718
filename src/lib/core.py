@@ -28,8 +28,6 @@ class BDDE:
         self.levelsVecUse=True#parameters["levelsVec"]
         self.max_node=9859
 
-        self.pre=getattr(bounds,"pre_"+parameters["method"])
-        self.pre(self)
 
         if self.prob and self.bound:
             self.bound_function = getattr(bounds, parameters["method"])
@@ -42,11 +40,14 @@ class BDDE:
             else:
                 self.scoring_function = getattr(bounds, "prob_cover")
         else:
-            self.scoring_function = getattr(bounds, "score_cover")
-            self.best_score=0#Ricordati di cambiare < con > !
+            self.scoring_function = getattr(bounds, "score_cover_old")
+            self.best_score=0#Ricordati di rinominare inspectNode_det come inspectNode e inspectNode con inspectNode_prob
+
+        self.pre=getattr(bounds,"pre_"+parameters["method"])
+        self.pre(self)
 
 
-    def inspectNode(self, C):
+    def inspectNode_prob(self, C):
         size=len(C)
         if size>self.k:
             # Prune it if it's too big: this will never actually happen, since we prune whenever len(C)==k
@@ -83,6 +84,39 @@ class BDDE:
             else:
                 score= self.scoring_function(self, C)#scoring_function per prob_cover senza levelsVec
             if score<self.best_score:
+                self.best_score = score
+                self.best_subgraph = C
+                print("_________________")
+                print()
+                print("Best solution updated!")
+                print("Current C (ids): ", self.best_subgraph)
+                print("Current P_C (cardinality):", self.best_score)
+            # No need to go further.
+            return True
+
+    def inspectNode(self, C):
+        size=len(C)
+        if size>self.k:
+            return True
+        elif size<self.k:
+            self.levels[size] += 1
+            if self.levelsVecUse:
+                if (size == 1):
+                    self.levelsVec[1] = self.matrix[C[0]]
+                else:
+                    self.levelsVec[size] = self.levelsVec[size - 1]+ self.matrix[C[size - 1]]
+        else:
+            self.levels[size] += 1
+            if(self.levelsVecUse):
+                if (size == 1):
+                    self.levelsVec[1] = self.matrix[C[0]]
+                else:
+                    self.levelsVec[size] = self.levelsVec[size - 1] + self.matrix[C[size - 1]]
+                score = self.scoring_function(self,self.levelsVec[size])
+            else:
+                score= self.scoring_function(self, C)#scoring_function per prob_cover senza levelsVec
+                #print(score)
+            if score>self.best_score:
                 self.best_score = score
                 self.best_subgraph = C
                 print("_________________")

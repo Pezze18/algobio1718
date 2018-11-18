@@ -103,7 +103,7 @@ def pre_bound_log(self):
     print(self.sum)
 
 
-def bound_log(self,C):#DA COMPLETARE ANCHE SE INUTILE
+def bound_log(self,C):
     return False
     dist=self.k-len(C)
     if(dist==1):

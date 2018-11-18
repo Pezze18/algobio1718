@@ -1,5 +1,9 @@
 import numpy as np
 
+a=np.asarray([3,5,7,9,10])
+b=np.asarray([5,5,18,21,20])
+c=np.sum([a,b],axis=0)
+print(c)
 """
 vec=np.random.rand(100)*100
 print(vec)

@@ -80,8 +80,8 @@ def score_cover(self,C):#max_version
     vecC=vectorization_solution_det(self,C)
     return (vecC>=1).sum() #conto quanti valori sono >=1
 
-def score_cover_vec(self,vecC):#max_version
-    return (vecC >= 1).sum()  # conto quanti valori sono >=1
+def score_cover_vec(self, vecC):#max_version
+    return (vecC>=1).sum() #conto quanti valori sono >=1
 
 def set_cover(self,C):#max_version
     samples = self.samples
@@ -98,7 +98,7 @@ def vectorization_solution_det(self,C):
 
 def toMatrix_det(self,genes):
     samples=self.samples
-    matrix = [[1 for j in range(len(self.samples))] for i in range(10000)]  # 10000 is number maximum of nodes
+    matrix = [[0 for j in range(len(self.samples))] for i in range(10000)]  # 10000 is number maximum of nodes
     for g in genes:
         index=0
         for s in samples:
@@ -106,6 +106,7 @@ def toMatrix_det(self,genes):
                 matrix[g][index]=1
             index+=1
         matrix[g]=np.asarray(matrix[g])
+    return matrix
 
 
 ####################################

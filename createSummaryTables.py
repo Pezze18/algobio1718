@@ -12,23 +12,33 @@ import warnings
 strategy = "combinatorial"
 transform = True
 ordina = False
-# "oldVersion",
-names_order = [
-    "noboundMatrix",
-    "noboundLevelsVec",
-    "bound_min",
-    "bound_min_migliorato",
-    "bound_min_migliorato_optimized",
-    "bound_min_migliorato_iterations",
-    "bound_min_migliorato_iterations_optimized",
-    "bound_order",
-    "bound_order_optimized",
-    "bound_means",
-    "bound_means_optimized",
-    "bound_means_iterations",
-    "bound_means_iterations_optimized"
-]
-# names_order=["onlyBFS","onlyBFSAndProbCover","onlyBFSAndComplement","BFSAndProbCoverAndComplement","BFSAndLevesVec"]
+if(strategy=="enumerate"):
+    names_order = [
+        "oldVersion",
+        "noboundMatrix",
+        "noboundLevelsVec",
+        "nobound_migliorato",
+        "bound_min",
+        "bound_min_migliorato",
+        "bound_min_migliorato_optimized",
+        "bound_min_migliorato_iterations",
+        "bound_min_migliorato_iterations_optimized",
+        "bound_order",
+        "bound_order_optimized",
+        "bound_order_improved_iterations_percentiles",
+        "bound_means",
+        "bound_means_optimized",
+        "bound_means_iterations",
+        "bound_means_iterations_optimized"
+    ]
+else:
+    names_order=[
+                 "oldVersion",
+                 "onlyBFS",
+                 "onlyBFSAndProbCover",
+                 #"onlyBFSAndComplement",
+                 "BFSAndProbCoverAndComplement",
+                 "BFSAndLevelsVec"]
 
 
 def prepareNumber(value):
@@ -137,7 +147,7 @@ for method in os.listdir("out/" + strategy):
     rigaSolutions[0] = method
 
     for directory in os.listdir("out/" + strategy + "/" + method):
-        print(directory)
+        #print(directory)
         if directory.startswith("k="):
             end = directory.find("_")
             if (end == -1):
@@ -222,7 +232,7 @@ if (ordina):
             names.append(row[0])
         # print(names)
         for name in names_order:
-            # print(name)
+            #print(name)
             indexes_order.append(names.index(name))
 
         lista_rows = []

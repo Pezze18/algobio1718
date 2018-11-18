@@ -5,7 +5,32 @@ import numpy as np
 import bottleneck as bottle
 import math
 from lib.auxiliary_functions import *
+import lib.auxiliary_functions as aux
 #import tensorflow as tf
+
+
+
+def pre_det_numpy(self):
+    self.levelsVecUse = False
+    self.matrix = toMatrix_det(self, self.G.nodes)
+    self.scoring_function = getattr(aux, "score_cover")
+    self.sorted_vertices=list(self.G.nodes).copy()
+    self.best_score=0
+
+def pre_det_old(self):
+    self.levelsVecUse = False
+    self.scoring_function = getattr(aux, "score_cover_old")
+    self.best_score = 0
+    self.sorted_vertices = list(self.G.nodes).copy()
+    #print( self.levelsVecUse)
+
+def pre_det_LevelsVec(self):
+    self.levelsVecUse = True
+    self.levelsVec = [1 for i in range(self.k + 1)]
+    self.matrix = toMatrix_det(self, self.G.nodes)
+    self.scoring_function = getattr(aux, "score_cover_vec")
+    self.best_score = 0
+    self.sorted_vertices = list(self.G.nodes).copy()
 
 
 
@@ -1125,12 +1150,6 @@ def ordinamentoVertici_nobound_migliorato(self):
             sorted_vertices.append(cont[i][0])
     return sorted_vertices
 
-###################################
-########### DET #############
-###################################
-def pre_det(self):
-    #Ordinamento Vertici
-    self.sorted_vertices = list(self.G.nodes).copy()
 
 
 

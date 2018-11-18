@@ -34,3 +34,13 @@ combinatorial BFSAndLevelsVec k=5_run__20181030_20:27:54 idJob: 1999372
 combinatorial BFSAndLevelsVec k=6_run__20181030_20:27:55 idJob: 1999373 
 combinatorial BFSAndLevelsVec k=7_run__20181030_20:27:56 idJob: 1999374 
 combinatorial BFSAndLevelsVec k=8_run__20181030_20:27:57 idJob: 1999375 
+
+enumerate det_LevelsVec k=1_run__20181114_22:40:51 idJob: 2021134 
+enumerate det_LevelsVec k=2_run__20181114_22:40:52 idJob: 2021135 
+enumerate det_LevelsVec k=3_run__20181114_22:40:53 idJob: 2021136 
+enumerate det_LevelsVec k=4_run__20181114_22:40:54 idJob: 2021137 
+
+enumerate det_numpy k=1_run__20181114_22:43:09 idJob: 2021138 
+enumerate det_numpy k=2_run__20181114_22:43:10 idJob: 2021139 
+enumerate det_numpy k=3_run__20181114_22:43:11 idJob: 2021140 
+enumerate det_numpy k=4_run__20181114_22:43:12 idJob: 2021141 
