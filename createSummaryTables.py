@@ -120,7 +120,12 @@ def sortSolution(sol):
     sol = sol[1:len(sol) - 1]
     sol = sol.replace("'", "").replace("[", "").replace("]", "")
     sol = sol.split(",")
+    #print("Before:")
+    #print(sol)
     sol.sort()
+    #print("After:")
+    #print(sol)
+    #print("________________")
     return str(sol).replace("'", "")
 
 
@@ -197,7 +202,7 @@ for method in os.listdir("out/" + strategy):
 
                         FinalsolutionNames = FinalsolutionNames.split(":")[1].replace(" ", "")
                         if (transform):
-                            sortSolution(FinalsolutionNames)
+                            FinalsolutionNames = sortSolution(FinalsolutionNames)
                         rigaSolutions[k] = FinalsolutionNames
 
                         f.close()

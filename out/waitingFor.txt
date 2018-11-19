@@ -69,3 +69,33 @@ enumerate det_LevelsVec k=1_run__20181118_11:34:04 idJob: 2024624
 enumerate det_LevelsVec k=2_run__20181118_11:34:05 idJob: 2024625 
 enumerate det_LevelsVec k=3_run__20181118_11:34:05 idJob: 2024626 
 enumerate det_LevelsVec k=4_run__20181118_11:34:06 idJob: 2024627 
+
+combinatorial onlyBFSAndComplement k=1_run__20181118_16:19:49 idJob: 2024632 
+combinatorial onlyBFSAndComplement k=2_run__20181118_16:19:50 idJob: 2024633 
+combinatorial onlyBFSAndComplement k=3_run__20181118_16:19:51 idJob: 2024634 
+combinatorial onlyBFSAndComplement k=4_run__20181118_16:19:51 idJob: 2024635 
+combinatorial onlyBFSAndComplement k=5_run__20181118_16:19:53 idJob: 2024636 
+combinatorial onlyBFSAndComplement k=6_run__20181118_16:19:54 idJob: 2024637 
+combinatorial onlyBFSAndComplement k=7_run__20181118_16:19:55 idJob: 2024638 
+combinatorial onlyBFSAndComplement k=8_run__20181118_16:19:56 idJob: 2024639 
+
+oldVersion onlyBFSAndComplement k=1_run__20181118_16:20:56 idJob: 2024640 
+oldVersion onlyBFSAndComplement k=2_run__20181118_16:20:57 idJob: 2024641 
+oldVersion onlyBFSAndComplement k=3_run__20181118_16:20:57 idJob: 2024642 
+oldVersion onlyBFSAndComplement k=4_run__20181118_16:20:58 idJob: 2024643 
+oldVersion onlyBFSAndComplement k=5_run__20181118_16:20:59 idJob: 2024644 
+oldVersion onlyBFSAndComplement k=6_run__20181118_16:21:00 idJob: 2024645 
+oldVersion onlyBFSAndComplement k=7_run__20181118_16:21:01 idJob: 2024646 
+oldVersion onlyBFSAndComplement k=8_run__20181118_16:21:02 idJob: 2024647 
+
+combinatorial oldVersion k=1_run__20181118_16:22:52 idJob: 2024648 
+combinatorial oldVersion k=2_run__20181118_16:22:53 idJob: 2024649 
+combinatorial oldVersion k=3_run__20181118_16:22:58 idJob: 2024650 
+combinatorial oldVersion k=4_run__20181118_16:22:59 idJob: 2024651 
+combinatorial oldVersion k=5_run__20181118_16:22:59 idJob: 2024652 
+combinatorial oldVersion k=6_run__20181118_16:23:00 idJob: 2024653 
+combinatorial oldVersion k=7_run__20181118_16:23:01 idJob: 2024654 
+combinatorial oldVersion k=8_run__20181118_16:23:02 idJob: 2024655 
+
+combinatorial BFSAndLevelsVec k=9_run__20181118_18:32:02 idJob: 2024898 
+combinatorial BFSAndLevelsVec k=10_run__20181118_18:32:04 idJob: 2024899 

@@ -47,11 +47,11 @@ parameters = {
     'genes_input': "../data/hint+hi2012_edge_file.txt",
     'filter_input': '../data/mutated_expressed_genes.txt',
     'delta': 0.8,
-    'prob': False,
-    'strategy': 'enumerate',  # options: enumerate,combinatorial
+    'prob': True,
+    'strategy': 'combinatorial',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': False,
-    'method': "det_LevelsVec",#bound_order_improved
+    'method': "BFSAndLevelsVec",#bound_order_improved
     'bestVectors':"../data/BestVectors/IterationsPercentilesDistanza7/BestVectorsDistanza7"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
