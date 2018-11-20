@@ -127,7 +127,10 @@ def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=
         self.pred= pred
     if creaVec:
         shortestVec = [0 for i in range(10000)]
-        shortestVec[radice] = np.ones(len(self.samples))
+        if self.prob:
+            shortestVec[radice] = np.ones(len(self.samples))
+        else:
+            shortestVec[radice] = np.zeros(len(self.samples))
         self.shortestVec=shortestVec
     if creaEtichetta:
         labels=[False for i in range(10000)]
@@ -156,14 +159,13 @@ def BFS_complete_node(self,radice,creaLevels=True,creaPredecessori=True,creaVec=
                     if creaPredecessori:
                         self.pred[u] = g
                     if creaVec:
-                        shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+                        if self.prob:
+                            shortestVec[u] = np.multiply(shortestVec[g], self.matrix[u])
+                        else:
+                            shortestVec[u] = shortestVec[g] + self.matrix[u]
                     if creaRami:
                         #richiede che creaPredecessori sia a True
                         branches[u]=[u]+branches[pred[u]]
-        #if creaLevels==False:
-        #    L[k-1]=0
-    #if creaLevels == False:
-    #    del self.L
 
 def findAncestor(self,v,s):#newC è l'insieme complemento e father è l'ancestor comune(nel caso peggiore == radice)
     newC=[s]

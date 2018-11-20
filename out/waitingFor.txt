@@ -99,3 +99,13 @@ combinatorial oldVersion k=8_run__20181118_16:23:02 idJob: 2024655
 
 combinatorial BFSAndLevelsVec k=9_run__20181118_18:32:02 idJob: 2024898 
 combinatorial BFSAndLevelsVec k=10_run__20181118_18:32:04 idJob: 2024899 
+
+combinatorial BFSAndNumpyAndComplement k=1_run__20181120_12:23:13 idJob: 2027485 
+combinatorial BFSAndNumpyAndComplement k=2_run__20181120_12:23:14 idJob: 2027486 
+combinatorial BFSAndNumpyAndComplement k=3_run__20181120_12:23:15 idJob: 2027487 
+combinatorial BFSAndNumpyAndComplement k=4_run__20181120_12:23:16 idJob: 2027488 
+
+combinatorial onlyBFSAndNumpy k=1_run__20181120_12:24:27 idJob: 2027489 
+combinatorial onlyBFSAndNumpy k=2_run__20181120_12:24:28 idJob: 2027490 
+combinatorial onlyBFSAndNumpy k=3_run__20181120_12:24:28 idJob: 2027491 
+combinatorial onlyBFSAndNumpy k=4_run__20181120_12:24:29 idJob: 2027492 

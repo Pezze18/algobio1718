@@ -9,7 +9,7 @@ import warnings
 # possibilmente lo stesso valore k per un metodo ci sia una volta sola
 ######################################################################
 
-strategy = "combinatorial"
+strategy = "enumerate"
 transform = True
 ordina = False
 if(strategy=="enumerate"):
@@ -176,6 +176,8 @@ for method in os.listdir("out/" + strategy):
                                 ultimo_index = index
                             index += 1
                         # print(ultimo_index)
+                        #print(path)
+                        #print(lines)
 
                         FinalsolutionID = lines[ultimo_index - 5]
                         FinalsolutionNames = lines[ultimo_index - 4]

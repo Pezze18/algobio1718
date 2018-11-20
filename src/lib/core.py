@@ -261,14 +261,27 @@ class Combinatorial:
         if (self.prob and self.bound):
             self.bound_function=getattr(bounds,parameters["method"])
             self.pre_function=getattr(bounds,"pre_"+parameters["method"])
+        if self.prob==False:
+            self.comb_alg = getattr(combinatorial, "combinatorial_algorithm_det_" + parameters["method"])
 
     def combinatorial_algorithm(self):
+        s="Combinatorial "
+        if self.prob:
+            s=s+" probabilistic"
+        else:
+            s=s+" deterministic"
+        s=s+" with method "+self.parameters["method"]
+        s=s+" starts now"
+        print(s)
+
         if(self.prob and self.bound==False):
             return self.comb_alg(self)
         if (self.prob and self.bound):
             self.pre_function(self)
             return combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self)
-        return combinatorial_algorithm_det(self)
+        if self.prob == False:
+            return self.comb_alg(self)
+        raise ValueError("Impossibile combinatorial algorithm")
 
 
 class FloydWarshall:
