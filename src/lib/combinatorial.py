@@ -178,7 +178,7 @@ def combinatorial_algorithm_det_BFSAndNumpyAndComplement(self):  # Complementary
             print("Current score(min_version):", score_C)
     return self.best_subgraph, self.best_score
 
-def combinatorial_algorithm_det_BFSAndLevelsVec(self):  # Complementary incluso
+def combinatorial_algorithm_det_BFSAndLevelsVec(self):
     G=self.G
     k=self.k
     patients=self.samples
@@ -186,49 +186,59 @@ def combinatorial_algorithm_det_BFSAndLevelsVec(self):  # Complementary incluso
 
     C = []
     score_C = -1000
-    for v in G.nodes():
+    for v in G.nodes():#[8821]:#
         C_v = [v]
-        score_C_v = score_cover(self,C_v)
+        vecC_v = self.matrix[v]
+        score_C_v= score_cover_vec(self, vecC_v)
 
-        #Creo albero per nodo v
-        self.creaRami=True
-        BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,
-                          creaDepths=False, creaRami=self.creaRami)
+        BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=False,creaRami=False)
 
         while len(C_v) < self.k:
             maximum_rapporto = -1
-            max_set = []  # nodi da aggiungere a C_v ovvero l_v(u)\C_v
-            score_max = -1  # indica lo score massimo ottenuto da C_v U l_v(u)
+            max_set = []#nodi da aggiungere a C_v ovvero l_v(u)\C_v
+            score_max=-1#indica lo score massimo ottenuto da C_v U l_v(u)
+            vec_max=[]#Indica il nuovo vettore ottimo ottenuto da C_v U l_v(u)
+                      #dove l_v(u) è l_v(u) che massimizza il rapporto
 
-            for k in range(2, self.k + 1):
-                # print(k)
+            for k in range(2,self.k+1):
+                #print(k)
                 for s in self.L[k]:
-                    if (self.labels[s]):
+                    if(self.labels[s]):
                         continue
+                    #print(s)
+                    newC, father=findAncestor(self,v,s)
+                    if len(newC)+len(C_v)<=self.k:
+                        if father != v:
+                            vec_complementare = self.shortestVec[s] - self.shortestVec[father]
+                        else:
+                            #in BFS_complete_nodo la radice ha vettore associato a tutti 0
+                            vec_complementare = self.shortestVec[s]
 
-                    if(self.creaRami):
-                        ramo = self.branches[s]
-                    else:
-                        ramo=findRamo(self,v,s)
+                        vec_union=vecC_v + vec_complementare
+                        score_union=score_cover_vec(self, vec_union)
 
-                    union = set(ramo)
-                    newC = list(union.difference(C_v))
-                    union = newC+ C_v
+                        rapporto = ( score_union-score_C_v )/ len(newC)
 
-                    if len(newC) + len(C_v) <= self.k:
-                        score_union = score_cover(self, union)
-                        rapporto = (score_union - score_C_v) / len(newC)
+                        """if(newC[0]==6780):
+                            print(self.shortestVec[s])
+                            print(self.matrix[6780])
+                            print(self.matrix[father])
+                            print(vec_complementare)
+                            print(score_union)
+                            print("____________________-")"""
 
                         if maximum_rapporto < rapporto:
                             maximum_rapporto = rapporto
                             max_set = newC
                             score_max = score_union
+                            vec_max = vec_union
 
-            # print("Aggiorno C_v: "+str(C_v)+" con: "+str(max_set))
-            C_v += max_set
+            #print("Aggiorno C_v: "+str(C_v)+" con: "+str(max_set))
+            C_v+=max_set
             score_C_v = score_max
             for c in max_set:
-                self.labels[c] = True
+                self.labels[c]=True
+            vecC_v=vec_max
 
         if score_C_v > score_C:  # if we've found a better solution, update it and let us know
             C = C_v
@@ -237,9 +247,9 @@ def combinatorial_algorithm_det_BFSAndLevelsVec(self):  # Complementary incluso
             print()
             print("Best solution updated!")
             print("Current C (ids): ", C)
-            self.best_score = score_C_v
-            self.best_subgraph = C_v
-            print("Current score(min_version):", score_C)
+            self.best_score=score_C_v
+            self.best_subgraph=C_v
+            print("Current score(min_version):",  score_C)
     return self.best_subgraph, self.best_score
 
 def combinatorial_algorithm_prob_oldVersion(self):

@@ -109,3 +109,13 @@ combinatorial onlyBFSAndNumpy k=1_run__20181120_12:24:27 idJob: 2027489
 combinatorial onlyBFSAndNumpy k=2_run__20181120_12:24:28 idJob: 2027490 
 combinatorial onlyBFSAndNumpy k=3_run__20181120_12:24:28 idJob: 2027491 
 combinatorial onlyBFSAndNumpy k=4_run__20181120_12:24:29 idJob: 2027492 
+
+combinatorial onlyBFSAndNumpy k=5_run__20181120_12:52:18 idJob: 2027493 
+combinatorial onlyBFSAndNumpy k=6_run__20181120_12:52:19 idJob: 2027494 
+combinatorial onlyBFSAndNumpy k=7_run__20181120_12:52:20 idJob: 2027495 
+combinatorial onlyBFSAndNumpy k=8_run__20181120_12:52:20 idJob: 2027496 
+
+combinatorial BFSAndNumpyAndComplement k=5_run__20181120_12:52:49 idJob: 2027497 
+combinatorial BFSAndNumpyAndComplement k=6_run__20181120_12:52:49 idJob: 2027498 
+combinatorial BFSAndNumpyAndComplement k=7_run__20181120_12:52:49 idJob: 2027499 
+combinatorial BFSAndNumpyAndComplement k=8_run__20181120_12:52:51 idJob: 2027500 
