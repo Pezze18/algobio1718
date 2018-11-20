@@ -77,7 +77,7 @@ for file in files:
 
 def cluster_script(parameters):
     print("Excecuting...")
-    ks = [5,6,7,8]
+    ks = [1]
 
     waitingFor=open("../out/waitingFor.txt","a")
     waitingFor.write("\n")
@@ -159,7 +159,11 @@ def cluster_script(parameters):
         idJob=line[start+1:end]
         k=parameters["k"]
 
-        line2=parameters["strategy"]+" "+parameters["method"]+" k="+str(k)+"_run__"+timestamp+" idJob:"+idJob+"\n"
+        prob="det"
+        if parameters["prob"]:
+            prob="prob"
+
+        line2=parameters["strategy"]+" "+prob+" "+parameters["method"]+" k="+str(k)+"_run__"+timestamp+" idJob:"+idJob+"\n"
         waitingFor.write(line2)
         print(line2)
         print(line)

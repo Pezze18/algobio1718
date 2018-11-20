@@ -119,3 +119,15 @@ combinatorial BFSAndNumpyAndComplement k=5_run__20181120_12:52:49 idJob: 2027497
 combinatorial BFSAndNumpyAndComplement k=6_run__20181120_12:52:49 idJob: 2027498 
 combinatorial BFSAndNumpyAndComplement k=7_run__20181120_12:52:49 idJob: 2027499 
 combinatorial BFSAndNumpyAndComplement k=8_run__20181120_12:52:51 idJob: 2027500 
+
+combinatorial BFSAndLevelsVec k=1_run__20181120_15:36:12 idJob: 2027987 
+combinatorial BFSAndLevelsVec k=2_run__20181120_15:36:13 idJob: 2027988 
+combinatorial BFSAndLevelsVec k=3_run__20181120_15:36:14 idJob: 2027989 
+combinatorial BFSAndLevelsVec k=4_run__20181120_15:36:14 idJob: 2027990 
+
+combinatorial BFSAndLevelsVec k=5_run__20181120_15:50:27 idJob: 2027993 
+combinatorial BFSAndLevelsVec k=6_run__20181120_15:50:28 idJob: 2027994 
+combinatorial BFSAndLevelsVec k=7_run__20181120_15:50:28 idJob: 2027995 
+combinatorial BFSAndLevelsVec k=8_run__20181120_15:50:29 idJob: 2027996 
+
+combinatorial det BFSAndLevelsVec k=1_run__20181120_15:54:07 idJob: 2027998 

@@ -11,7 +11,7 @@ import warnings
 
 strategy = "enumerate"
 transform = True
-ordina = False
+ordina = True
 if(strategy=="enumerate"):
     names_order = [
         "oldVersion",
@@ -29,7 +29,10 @@ if(strategy=="enumerate"):
         "bound_means",
         "bound_means_optimized",
         "bound_means_iterations",
-        "bound_means_iterations_optimized"
+        "bound_means_iterations_optimized",
+        "det_old",
+        "det_numpy",
+        "det_LevelsVec"
     ]
 else:
     names_order=[

@@ -123,7 +123,8 @@ class BDDE:
                 print()
                 print("Best solution updated!")
                 print("Current C (ids): ", self.best_subgraph)
-                print("Current P_C (cardinality):", self.best_score)
+                print("Current P_C (cardinality)(min version):", len(self.samples)-self.best_score)
+                print("Current P_C (cardinality)(max version):", self.best_score)
             # No need to go further.
             return True
 
