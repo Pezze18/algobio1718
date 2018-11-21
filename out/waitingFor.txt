@@ -131,3 +131,49 @@ combinatorial BFSAndLevelsVec k=7_run__20181120_15:50:28 idJob: 2027995
 combinatorial BFSAndLevelsVec k=8_run__20181120_15:50:29 idJob: 2027996 
 
 combinatorial det BFSAndLevelsVec k=1_run__20181120_15:54:07 idJob: 2027998 
+
+combinatorial prob BFSAndLevelsVec k=9_run__20181120_17:04:18 idJob: 2028005 
+combinatorial prob BFSAndLevelsVec k=10_run__20181120_17:04:19 idJob: 2028006 
+
+combinatorial det onlyBFSAndComplement k=4_run__20181120_20:28:23 idJob: 2028013 
+combinatorial det onlyBFSAndComplement k=6_run__20181120_20:28:24 idJob: 2028014 
+
+combinatorial det onlyBFSAndComplement k=5_run__20181120_20:28:59 idJob: 2028015 
+
+combinatorial det BFSAndNumpyAndComplement k=4_run__20181120_20:32:07 idJob: 2028016 
+combinatorial det BFSAndNumpyAndComplement k=6_run__20181120_20:32:08 idJob: 2028017 
+
+combinatorial det oldVersion k=1_run__20181120_20:37:19 idJob: 2028018 
+combinatorial det oldVersion k=2_run__20181120_20:37:20 idJob: 2028019 
+combinatorial det oldVersion k=3_run__20181120_20:37:21 idJob: 2028020 
+combinatorial det oldVersion k=4_run__20181120_20:37:21 idJob: 2028021 
+combinatorial det oldVersion k=5_run__20181120_20:37:22 idJob: 2028022 
+combinatorial det oldVersion k=6_run__20181120_20:37:23 idJob: 2028023 
+
+combinatorial det oldVersion k=7_run__20181120_20:38:07 idJob: 2028024 
+combinatorial det oldVersion k=8_run__20181120_20:38:07 idJob: 2028025 
+
+combinatorial det onlyBFS k=1_run__20181120_20:42:16 idJob: 2028026 
+combinatorial det onlyBFS k=2_run__20181120_20:42:17 idJob: 2028027 
+combinatorial det onlyBFS k=3_run__20181120_20:42:18 idJob: 2028028 
+combinatorial det onlyBFS k=4_run__20181120_20:42:18 idJob: 2028029 
+combinatorial det onlyBFS k=5_run__20181120_20:42:19 idJob: 2028030 
+combinatorial det onlyBFS k=6_run__20181120_20:42:20 idJob: 2028031 
+combinatorial det onlyBFS k=7_run__20181120_20:42:21 idJob: 2028032 
+combinatorial det onlyBFS k=8_run__20181120_20:42:22 idJob: 2028033 
+
+combinatorial det oldVersion_improved k=1_run__20181120_22:22:09 idJob: 2028244 
+combinatorial det oldVersion_improved k=2_run__20181120_22:22:10 idJob: 2028245 
+combinatorial det oldVersion_improved k=3_run__20181120_22:22:11 idJob: 2028246 
+
+enumerate det det_old k=4_run__20181120_22:33:30 idJob: 2028248 
+
+enumerate prob det_old k=4_run__20181120_22:39:08 idJob: 2028249 
+
+enumerate prob oldVersion k=4_run__20181120_22:42:13 idJob: 2028250 
+
+combinatorial det oldVersion_improved k=4_run__20181121_06:43:30 idJob: 2028255 
+combinatorial det oldVersion_improved k=5_run__20181121_06:43:31 idJob: 2028256 
+combinatorial det oldVersion_improved k=6_run__20181121_06:43:32 idJob: 2028257 
+combinatorial det oldVersion_improved k=7_run__20181121_06:43:33 idJob: 2028258 
+combinatorial det oldVersion_improved k=8_run__20181121_06:43:34 idJob: 2028259 

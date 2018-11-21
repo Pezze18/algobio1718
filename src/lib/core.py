@@ -47,7 +47,7 @@ class BDDE:
         self.pre(self)
 
 
-    def inspectNode_prob(self, C):#probabilistico
+    def inspectNode(self, C):#probabilistico
         size=len(C)
         if size>self.k:
             # Prune it if it's too big: this will never actually happen, since we prune whenever len(C)==k
@@ -94,7 +94,7 @@ class BDDE:
             # No need to go further.
             return True
 
-    def inspectNode(self, C):#determinsitico
+    def inspectNode_det(self, C):#determinsitico
         size=len(C)
         if size>self.k:
             return True
@@ -254,6 +254,8 @@ class Combinatorial:
         self.delta=parameters["delta"]
         self.genes=list(G.nodes)
         self.parameters=parameters
+        self.str_to_id=parameters["str_to_id"]
+        self.id_to_str = parameters["id_to_str"]
 
         if(self.prob):
             self.matrix = toMatrix(self, self.G.nodes)

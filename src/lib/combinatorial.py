@@ -50,6 +50,122 @@ def combinatorial_algorithm_det_oldVersion(self):
             print("Current P_C (cardinality):", len(P_C))
     return C, P_C
 
+
+def combinatorial_algorithm_det_oldVersion_improved(self):  # Complementary incluso
+    G=self.G
+    k=self.k
+    patients=self.samples
+    self.matrix = toMatrix_det(self, self.genes)
+
+    C = []
+    score_C = -1000
+    for v in G.nodes():
+        C_v = {v}
+        score_C_v = score_cover_old(self,C_v)
+
+        p_v = {u: set(nx.shortest_path(G, v, u)) for u in G.nodes() if u is not v}
+
+        while len(C_v) < self.k:
+            maximum_rapporto = -1
+            max_set = []  # nodi da aggiungere a C_v ovvero l_v(u)\C_v
+            score_max = -1  # indica lo score massimo ottenuto da C_v U l_v(u)
+            #C_v=set(C_v)
+
+            for u in G.nodes() - C_v:
+                l_v = p_v[u]
+                union = l_v | C_v
+
+
+                if len(union) <= self.k:
+                    newC = list(union.difference(C_v))
+                    score_union = score_cover_old(self,union)
+                    rapporto = (score_union - score_C_v) / len(newC)
+
+                    if maximum_rapporto < rapporto:
+                        maximum_rapporto = rapporto
+                        max_set = newC
+                        score_max = score_union
+
+            # print("Aggiorno C_v: "+str(C_v)+" con: "+str(max_set))
+            C_v |= set(max_set)
+            score_C_v = score_max
+
+        if score_C_v > score_C:  # if we've found a better solution, update it and let us know
+            C = C_v
+            score_C = score_C_v
+            print("_________________")
+            print()
+            print("Best solution updated!")
+            print("Current C (ids): ", C)
+            self.best_score = score_C_v
+            self.best_subgraph = C_v
+            print("Current score(min_version):", score_C)
+    return self.best_subgraph, self.best_score
+
+def combinatorial_algorithm_det_onlyBFS(self):  # Complementary incluso
+    G=self.G
+    k=self.k
+    patients=self.samples
+    self.matrix = toMatrix_det(self, self.genes)
+
+    C = []
+    score_C = -1000
+    for v in G.nodes():
+        C_v = [v]
+        score_C_v = score_cover_old(self,C_v)
+
+        #Creo albero per nodo v
+        self.creaRami=False
+        BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=False, creaEtichetta=True,
+                          creaDepths=False, creaRami=self.creaRami)
+
+        while len(C_v) < self.k:
+            maximum_rapporto = -1
+            max_set = []  # nodi da aggiungere a C_v ovvero l_v(u)\C_v
+            score_max = -1  # indica lo score massimo ottenuto da C_v U l_v(u)
+
+            for k in range(2, self.k + 1):
+                # print(k)
+                for s in self.L[k]:
+                    if (self.labels[s]):
+                        continue
+
+                    if(self.creaRami):
+                        ramo = self.branches[s]
+                    else:
+                        ramo=findRamo(self,v,s)
+
+                    union = set(ramo)
+                    newC = list(union.difference(C_v))
+                    union = newC+ C_v
+
+                    if len(newC) + len(C_v) <= self.k:
+                        score_union = score_cover_old(self, union)
+                        rapporto = (score_union - score_C_v) / len(newC)
+
+                        if maximum_rapporto < rapporto:
+                            maximum_rapporto = rapporto
+                            max_set = newC
+                            score_max = score_union
+
+            # print("Aggiorno C_v: "+str(C_v)+" con: "+str(max_set))
+            C_v += max_set
+            score_C_v = score_max
+            for c in max_set:
+                self.labels[c] = True
+
+        if score_C_v > score_C:  # if we've found a better solution, update it and let us know
+            C = C_v
+            score_C = score_C_v
+            print("_________________")
+            print()
+            print("Best solution updated!")
+            print("Current C (ids): ", C)
+            self.best_score = score_C_v
+            self.best_subgraph = C_v
+            print("Current score(min_version):", score_C)
+    return self.best_subgraph, self.best_score
+
 def combinatorial_algorithm_det_onlyBFSAndNumpy(self):  # Complementary incluso
     G=self.G
     k=self.k

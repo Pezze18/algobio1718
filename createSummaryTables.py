@@ -9,9 +9,9 @@ import warnings
 # possibilmente lo stesso valore k per un metodo ci sia una volta sola
 ######################################################################
 
-strategy = "enumerate"
+strategy = "combinatorial"
 transform = True
-ordina = True
+ordina = False
 if(strategy=="enumerate"):
     names_order = [
         "oldVersion",

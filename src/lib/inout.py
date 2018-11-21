@@ -51,7 +51,7 @@ parameters = {
     'strategy': 'combinatorial',  # options: enumerate,combinatorial
     'best_score': 10000000,  # maximum for a single gene
     'bound': False,
-    'method': "BFSAndLevelsVec",#bound_order_improved
+    'method': "oldVersion_improved",#bound_order_improved
     'bestVectors':"../data/BestVectors/IterationsPercentilesDistanza7/BestVectorsDistanza7"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
