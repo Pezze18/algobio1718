@@ -177,3 +177,53 @@ combinatorial det oldVersion_improved k=5_run__20181121_06:43:31 idJob: 2028256
 combinatorial det oldVersion_improved k=6_run__20181121_06:43:32 idJob: 2028257 
 combinatorial det oldVersion_improved k=7_run__20181121_06:43:33 idJob: 2028258 
 combinatorial det oldVersion_improved k=8_run__20181121_06:43:34 idJob: 2028259 
+
+%23 ottobre
+combinatorial prob oldVersion k=10_run__20181123_16:49:34 idJob: 2032592 
+
+combinatorial prob oldVersion k=1_run__20181123_16:49:48 idJob: 2032593 
+combinatorial prob oldVersion k=2_run__20181123_16:49:49 idJob: 2032594 
+combinatorial prob oldVersion k=3_run__20181123_16:49:49 idJob: 2032595 
+combinatorial prob oldVersion k=4_run__20181123_16:49:50 idJob: 2032596 
+combinatorial prob oldVersion k=5_run__20181123_16:49:51 idJob: 2032597 
+combinatorial prob oldVersion k=6_run__20181123_16:49:51 idJob: 2032598 
+combinatorial prob oldVersion k=7_run__20181123_16:49:51 idJob: 2032599 
+combinatorial prob oldVersion k=8_run__20181123_16:49:52 idJob: 2032600 
+combinatorial prob oldVersion k=9_run__20181123_16:49:52 idJob: 2032601 
+
+combinatorial prob oldVersion k=10_run__20181123_16:50:42 idJob: 2032602 
+
+combinatorial det BFSAndLevelsVec k=9_run__20181123_17:28:14 idJob: 2032633 
+combinatorial det BFSAndLevelsVec k=10_run__20181123_17:28:14 idJob: 2032634 
+
+combinatorial det onlyBFSAndNumpy k=9_run__20181123_18:19:27 idJob: 2032638 
+combinatorial det onlyBFSAndNumpy k=10_run__20181123_18:19:28 idJob: 2032639 
+
+combinatorial det BFSAndNumpyAndComplement k=9_run__20181123_18:19:39 idJob: 2032640 
+combinatorial det BFSAndNumpyAndComplement k=10_run__20181123_18:19:39 idJob: 2032641 
+
+combinatorial det onlyBFS k=9_run__20181123_18:20:22 idJob: 2032642 
+combinatorial det onlyBFS k=10_run__20181123_18:20:22 idJob: 2032643 
+
+combinatorial det onlyBFS k=8_run__20181123_18:31:01 idJob: 2032644 
+
+combinatorial det oldVersion_improved k=2_run__20181123_18:31:53 idJob: 2032645 
+combinatorial det oldVersion_improved k=3_run__20181123_18:31:54 idJob: 2032646 
+
+enumerate prob bound_order_improved_iterations_percentiles k=8_run__20181124_15:20:27 idJob: 2033274 
+
+enumerate prob bound_order_improved_iterations_percentiles k=8_run__20181124_15:27:26 idJob: 2033275 
+
+enumerate prob bound_order_improved_iterations_percentiles k=2_run__20181124_15:28:11 idJob: 2033276 
+enumerate prob bound_order_improved_iterations_percentiles k=3_run__20181124_15:28:11 idJob: 2033277 
+enumerate prob bound_order_improved_iterations_percentiles k=4_run__20181124_15:28:11 idJob: 2033278 
+enumerate prob bound_order_improved_iterations_percentiles k=5_run__20181124_15:28:12 idJob: 2033279 
+enumerate prob bound_order_improved_iterations_percentiles k=6_run__20181124_15:28:12 idJob: 2033280 
+enumerate prob bound_order_improved_iterations_percentiles k=7_run__20181124_15:28:13 idJob: 2033281 
+
+enumerate prob bound_order_improved_iterations_percentiles k=2_run__20181124_15:37:50 idJob: 2033282 
+enumerate prob bound_order_improved_iterations_percentiles k=3_run__20181124_15:37:52 idJob: 2033283 
+enumerate prob bound_order_improved_iterations_percentiles k=4_run__20181124_15:37:52 idJob: 2033284 
+enumerate prob bound_order_improved_iterations_percentiles k=5_run__20181124_15:37:52 idJob: 2033285 
+enumerate prob bound_order_improved_iterations_percentiles k=6_run__20181124_15:37:53 idJob: 2033286 
+enumerate prob bound_order_improved_iterations_percentiles k=7_run__20181124_15:37:54 idJob: 2033287 

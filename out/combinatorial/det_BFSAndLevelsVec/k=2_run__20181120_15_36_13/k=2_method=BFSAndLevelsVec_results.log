@@ -1,0 +1,50 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndLevelsVec starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632]
+Current score(min_version): 4
+_________________
+
+Best solution updated!
+Current C (ids):  [2, 7588]
+Current score(min_version): 6
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 8965]
+Current score(min_version): 13
+_________________
+
+Best solution updated!
+Current C (ids):  [12, 7030]
+Current score(min_version): 22
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278]
+Current score(min_version): 34
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622]
+Current score(min_version): 69
+_________________
+
+Best solution updated!
+Current C (ids):  [38, 2622]
+Current score(min_version): 75
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278]
+Current score(min_version): 93
+_________________
+Final solution (ids):  [2622, 6278]
+Final solution (genes' names):  ['EGFR', 'PIK3R1']
+Final solution score: empty
+Final solution cardinality:  93
+Elapsed time:  00:00:23
+_________________

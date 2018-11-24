@@ -1,0 +1,44 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndLevelsVec starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 6780, 8821, 1632, 2622, 9101, 6278, 1244, 3177]
+Current score(min_version): 175
+_________________
+
+Best solution updated!
+Current C (ids):  [7, 2622, 9101, 2658, 6780, 8821, 6278, 6273, 4197]
+Current score(min_version): 183
+_________________
+
+Best solution updated!
+Current C (ids):  [11, 2622, 9101, 3043, 6780, 8821, 6278, 6273, 4197]
+Current score(min_version): 185
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 2622, 9101, 6780, 8821, 6273, 6278, 457, 1244]
+Current score(min_version): 196
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622, 8821, 6278, 6273, 6780, 9101, 7030, 4787]
+Current score(min_version): 199
+_________________
+
+Best solution updated!
+Current C (ids):  [808, 8821, 2622, 6278, 6273, 6780, 9101, 7030, 8105]
+Current score(min_version): 200
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 2622, 6780, 8821, 6273, 6278, 3172, 3978, 9585]
+Current score(min_version): 205
+_________________
+Final solution (ids):  [6793, 2622, 6780, 8821, 6273, 6278, 3172, 3978, 9585]
+Final solution (genes' names):  ['PTK2', 'EGFR', 'PTEN', 'TP53', 'PIK3CA', 'PIK3R1', 'FLNB', 'IDH1', 'ZHX1']
+Final solution cardinality:  205
+Elapsed time:  01:50:06
+_________________

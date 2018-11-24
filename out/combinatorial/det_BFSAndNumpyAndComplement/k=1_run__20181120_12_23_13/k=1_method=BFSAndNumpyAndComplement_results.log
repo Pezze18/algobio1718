@@ -1,0 +1,39 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndNumpyAndComplement starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1]
+Current score(min_version): 3
+_________________
+
+Best solution updated!
+Current C (ids):  [5]
+Current score(min_version): 5
+_________________
+
+Best solution updated!
+Current C (ids):  [14]
+Current score(min_version): 11
+_________________
+
+Best solution updated!
+Current C (ids):  [223]
+Current score(min_version): 13
+_________________
+
+Best solution updated!
+Current C (ids):  [225]
+Current score(min_version): 18
+_________________
+
+Best solution updated!
+Current C (ids):  [2622]
+Current score(min_version): 67
+_________________
+Final solution (ids):  [2622]
+Final solution (genes' names):  ['EGFR']
+Final solution cardinality:  67
+Elapsed time:  00:03:33
+_________________

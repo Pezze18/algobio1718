@@ -1,0 +1,44 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndNumpyAndComplement starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 6780, 8821, 9101, 2622]
+Current score(min_version): 142
+_________________
+
+Best solution updated!
+Current C (ids):  [9, 9485, 2622, 8821, 6780, 4882]
+Current score(min_version): 150
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 2622, 6780, 8821, 1244]
+Current score(min_version): 152
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 2622, 6780, 8821, 6278]
+Current score(min_version): 165
+_________________
+
+Best solution updated!
+Current C (ids):  [1244, 9101, 2622, 6780, 8821, 6278]
+Current score(min_version): 168
+_________________
+
+Best solution updated!
+Current C (ids):  [6278, 2622, 6273, 6780, 9101, 8105]
+Current score(min_version): 170
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 2622, 6780, 8821, 6273, 6278]
+Current score(min_version): 182
+_________________
+Final solution (ids):  [6793, 2622, 6780, 8821, 6273, 6278]
+Final solution (genes' names):  ['PTK2', 'EGFR', 'PTEN', 'TP53', 'PIK3CA', 'PIK3R1']
+Final solution cardinality:  182
+Elapsed time:  01:30:32
+_________________

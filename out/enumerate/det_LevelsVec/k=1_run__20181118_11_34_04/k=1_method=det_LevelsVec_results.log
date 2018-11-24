@@ -1,0 +1,46 @@
+Samples size: 393
+Number nodes: 9859
+Deterministic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1]
+Current P_C (cardinality): 3
+_________________
+
+Best solution updated!
+Current C (ids):  [5]
+Current P_C (cardinality): 5
+_________________
+
+Best solution updated!
+Current C (ids):  [14]
+Current P_C (cardinality): 11
+_________________
+
+Best solution updated!
+Current C (ids):  [223]
+Current P_C (cardinality): 13
+_________________
+
+Best solution updated!
+Current C (ids):  [225]
+Current P_C (cardinality): 18
+_________________
+
+Best solution updated!
+Current C (ids):  [2622]
+Current P_C (cardinality): 67
+Numero foglie: 
+9859
+Numero nodi interni visitati in totale: 
+0
+Numero nodi interni visitati per livello: 
+[0, 9859]
+_________________
+Final solution (ids):  [2622]
+Final solution (genes' names):  ['EGFR']
+Current P_C (cardinality)(min version): empty
+Final solution cardinality:  67
+Elapsed time:  00:00:01
+_________________

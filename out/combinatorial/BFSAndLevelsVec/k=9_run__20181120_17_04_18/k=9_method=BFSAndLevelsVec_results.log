@@ -1,0 +1,55 @@
+Samples size: 391
+Number nodes: 9859
+Combinatorial  probabilistic with method BFSAndLevelsVec starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 6780, 8821, 1632, 2622, 9101, 6278, 3177, 2592]
+Current score(min_version): 285.75635688
+_________________
+
+Best solution updated!
+Current C (ids):  [7, 6780, 9101, 2658, 8821, 2622, 6278, 6273, 4197]
+Current score(min_version): 279.047582889
+_________________
+
+Best solution updated!
+Current C (ids):  [11, 6780, 9101, 3043, 8821, 2622, 6278, 6273, 4197]
+Current score(min_version): 277.732045833
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 6780, 9101, 8821, 2622, 6273, 6278, 457, 2592]
+Current score(min_version): 272.059815359
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 6780, 9101, 8821, 2622, 6278, 6273, 4197, 8105]
+Current score(min_version): 271.216971837
+_________________
+
+Best solution updated!
+Current C (ids):  [33, 8821, 37, 2622, 6273, 6278, 6780, 9101, 7030]
+Current score(min_version): 270.700448135
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821, 2622, 6273, 6278, 6780, 9101, 7030, 3177]
+Current score(min_version): 267.406675905
+_________________
+
+Best solution updated!
+Current C (ids):  [808, 8821, 2622, 6278, 6273, 6780, 9101, 7030, 8105]
+Current score(min_version): 265.004613677
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105, 7030, 37]
+Current score(min_version): 264.894613879
+_________________
+Final solution (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105, 7030, 37]
+Final solution (genes' names):  ['PTK2', 'PTEN', 'TP53', 'EGFR', 'PIK3CA', 'PIK3R1', 'SPEN', 'RB1', 'ABL1']
+Final solution score:  264.894613879
+Final solution score(max version):  126.105386121
+Elapsed time:  01:45:42
+_________________

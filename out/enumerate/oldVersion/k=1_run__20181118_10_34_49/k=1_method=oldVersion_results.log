@@ -1,0 +1,56 @@
+Samples size: 391
+Number nodes: 9859
+Probabilistic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1]
+Current P_C (cardinality): 389.64565826330534
+_________________
+
+Best solution updated!
+Current C (ids):  [5]
+Current P_C (cardinality): 387.9315982263351
+_________________
+
+Best solution updated!
+Current C (ids):  [14]
+Current P_C (cardinality): 386.0989920101471
+_________________
+
+Best solution updated!
+Current C (ids):  [49]
+Current P_C (cardinality): 386.0188068241344
+_________________
+
+Best solution updated!
+Current C (ids):  [225]
+Current P_C (cardinality): 383.6709615128868
+_________________
+
+Best solution updated!
+Current C (ids):  [299]
+Current P_C (cardinality): 382.75743533132487
+_________________
+
+Best solution updated!
+Current C (ids):  [2622]
+Current P_C (cardinality): 366.6234436460047
+_________________
+
+Best solution updated!
+Current C (ids):  [6780]
+Current P_C (cardinality): 354.4206558861373
+Numero foglie: 
+9859
+Numero nodi interni visitati in totale: 
+0
+Numero nodi interni visitati per livello: 
+[0, 9859]
+_________________
+Final solution (ids):  [6780]
+Final solution (genes' names):  ['PTEN']
+Final solution score:  354.4206558861373
+Final solution score(max version):  36.5793441138627
+Elapsed time:  00:00:09
+_________________

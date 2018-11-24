@@ -1,0 +1,44 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method onlyBFSAndNumpy starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 8821]
+Current score(min_version): 49
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 3556, 2622]
+Current score(min_version): 72
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 2622]
+Current score(min_version): 74
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 2622]
+Current score(min_version): 76
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278, 2622]
+Current score(min_version): 93
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622, 8821]
+Current score(min_version): 105
+_________________
+
+Best solution updated!
+Current C (ids):  [6278, 2622, 6273]
+Current score(min_version): 124
+_________________
+Final solution (ids):  [6278, 2622, 6273]
+Final solution (genes' names):  ['PIK3R1', 'EGFR', 'PIK3CA']
+Final solution cardinality:  124
+Elapsed time:  00:02:46
+_________________

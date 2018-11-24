@@ -1,0 +1,86 @@
+Samples size: 391
+Number nodes: 9859
+Probabilistic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9856]
+Current P_C (cardinality): 388.9365587819286
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9410]
+Current P_C (cardinality): 388.3132603041216
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9191]
+Current P_C (cardinality): 387.35118565359545
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821]
+Current P_C (cardinality): 358.4305558451372
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 8821]
+Current P_C (cardinality): 357.6123740269554
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 9177, 8821]
+Current P_C (cardinality): 355.19933637638667
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 8821]
+Current P_C (cardinality): 354.47736014468387
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 6780]
+Current P_C (cardinality): 350.9450619541858
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 6780]
+Current P_C (cardinality): 350.8905303758144
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278, 2622]
+Current P_C (cardinality): 350.07788275147755
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821, 6780]
+Current P_C (cardinality): 327.0997324007991
+_________________
+
+Best solution updated!
+Current C (ids):  [244, 6780, 8821]
+Current P_C (cardinality): 326.5201738676989
+_________________
+
+Best solution updated!
+Current C (ids):  [771, 8821, 6780]
+Current P_C (cardinality): 324.7755741963922
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 7031]
+Current P_C (cardinality): 324.5008053241442
+Numero foglie: 
+1808307
+Numero nodi interni visitati in totale: 
+50564
+Numero nodi interni visitati per livello: 
+[0, 9859, 40705, 1808307]
+_________________
+Final solution (ids):  [6780, 8821, 7031]
+Final solution (genes' names):  ['PTEN', 'TP53', 'RB1CC1']
+Final solution score:  324.5008053241442
+Final solution score(max version):  66.49919467585579
+Elapsed time:  00:04:51
+_________________

@@ -1,6 +1,0 @@
-/home/dallepez/algobio1718/src/lib/combinatorial.py:381: RuntimeWarning: invalid value encountered in true_divide
-  vec_complementare = np.divide(self.shortestVec[s], self.shortestVec[father])
-
-real	88m28.857s
-user	88m12.251s
-sys	0m12.078s

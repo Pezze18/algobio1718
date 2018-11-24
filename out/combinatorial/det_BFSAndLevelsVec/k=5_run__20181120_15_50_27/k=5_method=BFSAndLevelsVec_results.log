@@ -1,0 +1,60 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndLevelsVec starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 6780, 8821, 1632, 771]
+Current score(min_version): 101
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 2622, 3556, 8821, 1569]
+Current score(min_version): 107
+_________________
+
+Best solution updated!
+Current C (ids):  [7, 2622, 9101, 2658, 6780]
+Current score(min_version): 112
+_________________
+
+Best solution updated!
+Current C (ids):  [9, 2622, 9485, 6780, 8821]
+Current score(min_version): 140
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 2622, 9101, 6780, 8821]
+Current score(min_version): 145
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 2622, 9101, 6780, 8821]
+Current score(min_version): 146
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622, 8821, 6278, 6273]
+Current score(min_version): 153
+_________________
+
+Best solution updated!
+Current C (ids):  [5864, 2622, 6780, 8821, 6278]
+Current score(min_version): 160
+_________________
+
+Best solution updated!
+Current C (ids):  [6780, 8821, 2622, 9101, 6278]
+Current score(min_version): 161
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 2622, 6780, 8821, 6278]
+Current score(min_version): 162
+_________________
+Final solution (ids):  [6793, 2622, 6780, 8821, 6278]
+Final solution (genes' names):  ['PTK2', 'EGFR', 'PTEN', 'TP53', 'PIK3R1']
+Final solution score: empty
+Final solution cardinality:  162
+Elapsed time:  00:40:10
+_________________

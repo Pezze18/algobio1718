@@ -1,0 +1,44 @@
+Samples size: 391
+Number nodes: 9859
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 6780, 8821, 1632, 2622, 9101, 6278, 3177]
+Current score(min_version): 289.68768828341535
+_________________
+
+Best solution updated!
+Current C (ids):  [7, 6780, 9101, 2658, 8821, 2622, 6278, 8105]
+Current score(min_version): 289.0957753176112
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 6780, 9101, 8821, 2622, 6273, 6278, 457]
+Current score(min_version): 275.99114676148434
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821, 2622, 6273, 6278, 6780, 9101, 7030]
+Current score(min_version): 271.34044813546706
+_________________
+
+Best solution updated!
+Current C (ids):  [583, 8821, 6780, 6273, 6278, 37, 2622, 7030]
+Current score(min_version): 270.9950990955194
+_________________
+
+Best solution updated!
+Current C (ids):  [808, 8821, 2622, 6278, 6273, 6780, 9101, 7030]
+Current score(min_version): 270.8580001732992
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105, 6347]
+Current score(min_version): 269.5096632840568
+_________________
+Final solution (ids):  [6793, 6780, 8821, 2622, 6273, 6278, 8105, 6347]
+Final solution (genes' names):  ['PTK2', 'PTEN', 'TP53', 'EGFR', 'PIK3CA', 'PIK3R1', 'SPEN', 'PLCG2']
+Final solution score:  269.5096632840568
+Final solution score(max version):  121.49033671594322
+Elapsed time:  17:40:57
+_________________

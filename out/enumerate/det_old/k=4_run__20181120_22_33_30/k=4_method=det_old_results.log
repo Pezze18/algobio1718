@@ -1,0 +1,141 @@
+Samples size: 393
+Number nodes: 9859
+Deterministic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9856, 9377]
+Current P_C (cardinality)(min version): 389
+Current P_C (cardinality)(max version): 4
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9856, 7316]
+Current P_C (cardinality)(min version): 383
+Current P_C (cardinality)(max version): 10
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9856, 1785]
+Current P_C (cardinality)(min version): 382
+Current P_C (cardinality)(max version): 11
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9497, 5532]
+Current P_C (cardinality)(min version): 381
+Current P_C (cardinality)(max version): 12
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9410, 8965]
+Current P_C (cardinality)(min version): 380
+Current P_C (cardinality)(max version): 13
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 9243, 7030]
+Current P_C (cardinality)(min version): 366
+Current P_C (cardinality)(max version): 27
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 9856]
+Current P_C (cardinality)(min version): 344
+Current P_C (cardinality)(max version): 49
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 9410]
+Current P_C (cardinality)(min version): 342
+Current P_C (cardinality)(max version): 51
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 9243]
+Current P_C (cardinality)(min version): 341
+Current P_C (cardinality)(max version): 52
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 9191]
+Current P_C (cardinality)(min version): 339
+Current P_C (cardinality)(max version): 54
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 8071]
+Current P_C (cardinality)(min version): 338
+Current P_C (cardinality)(max version): 55
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632, 8821, 6780]
+Current P_C (cardinality)(min version): 301
+Current P_C (cardinality)(max version): 92
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 8821, 6780]
+Current P_C (cardinality)(min version): 300
+Current P_C (cardinality)(max version): 93
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 9177, 8821, 6780]
+Current P_C (cardinality)(min version): 295
+Current P_C (cardinality)(max version): 98
+_________________
+
+Best solution updated!
+Current C (ids):  [9, 9485, 2622, 8821]
+Current P_C (cardinality)(min version): 290
+Current P_C (cardinality)(max version): 103
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 2622, 8821]
+Current P_C (cardinality)(min version): 283
+Current P_C (cardinality)(max version): 110
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 2622, 6780]
+Current P_C (cardinality)(min version): 277
+Current P_C (cardinality)(max version): 116
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 2622, 6780]
+Current P_C (cardinality)(min version): 276
+Current P_C (cardinality)(max version): 117
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278, 2622, 6273]
+Current P_C (cardinality)(min version): 269
+Current P_C (cardinality)(max version): 124
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622, 8821, 6780]
+Current P_C (cardinality)(min version): 251
+Current P_C (cardinality)(max version): 142
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6793, 6780, 8821]
+Current P_C (cardinality)(min version): 250
+Current P_C (cardinality)(max version): 143
+Numero foglie: 
+131883233
+Numero nodi interni visitati in totale: 
+1858871
+Numero nodi interni visitati per livello: 
+[0, 9859, 40705, 1808307, 131883233]
+_________________
+Final solution (ids):  [2622, 6793, 6780, 8821]
+Final solution (genes' names):  ['EGFR', 'PTK2', 'PTEN', 'TP53']
+Final solution cardinality:  143
+Elapsed time:  07:13:31
+_________________

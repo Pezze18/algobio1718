@@ -1,0 +1,54 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method oldVersion_improved starts now
+_________________
+
+Best solution updated!
+Current C (ids):  {1632, 1, 6780, 8821}
+Current score(min_version): 93
+_________________
+
+Best solution updated!
+Current C (ids):  {8, 6780, 8821, 8632}
+Current score(min_version): 96
+_________________
+
+Best solution updated!
+Current C (ids):  {9, 8821, 9485, 2622}
+Current score(min_version): 103
+_________________
+
+Best solution updated!
+Current C (ids):  {2622, 6780, 9101, 14}
+Current score(min_version): 116
+_________________
+
+Best solution updated!
+Current C (ids):  {16, 6780, 9101, 2622}
+Current score(min_version): 117
+_________________
+
+Best solution updated!
+Current C (ids):  {8821, 6278, 37, 2622}
+Current score(min_version): 129
+_________________
+
+Best solution updated!
+Current C (ids):  {6278, 6780, 9101, 2622}
+Current score(min_version): 133
+_________________
+
+Best solution updated!
+Current C (ids):  {5864, 6780, 8821, 2622}
+Current score(min_version): 141
+_________________
+
+Best solution updated!
+Current C (ids):  {6793, 6780, 8821, 2622}
+Current score(min_version): 143
+_________________
+Final solution (ids):  {6793, 6780, 8821, 2622}
+Final solution (genes' names):  ['PTK2', 'PTEN', 'TP53', 'EGFR']
+Final solution cardinality:  143
+Elapsed time:  03:35:40
+_________________

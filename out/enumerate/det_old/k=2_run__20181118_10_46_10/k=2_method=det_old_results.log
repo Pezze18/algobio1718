@@ -1,0 +1,81 @@
+Samples size: 393
+Number nodes: 9859
+Deterministic (without bound)  BDDE starts now:
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 8632]
+Current P_C (cardinality): 3
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632]
+Current P_C (cardinality): 4
+_________________
+
+Best solution updated!
+Current C (ids):  [2, 7588]
+Current P_C (cardinality): 6
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 9190]
+Current P_C (cardinality): 7
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 9177]
+Current P_C (cardinality): 8
+_________________
+
+Best solution updated!
+Current C (ids):  [5, 8965]
+Current P_C (cardinality): 13
+_________________
+
+Best solution updated!
+Current C (ids):  [12, 7030]
+Current P_C (cardinality): 22
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278]
+Current P_C (cardinality): 34
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 8821]
+Current P_C (cardinality): 49
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622]
+Current P_C (cardinality): 69
+_________________
+
+Best solution updated!
+Current C (ids):  [38, 2622]
+Current P_C (cardinality): 75
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 9281]
+Current P_C (cardinality): 76
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278]
+Current P_C (cardinality): 93
+Numero foglie: 
+40705
+Numero nodi interni visitati in totale: 
+9859
+Numero nodi interni visitati per livello: 
+[0, 9859, 40705]
+_________________
+Final solution (ids):  [2622, 6278]
+Final solution (genes' names):  ['EGFR', 'PIK3R1']
+Current P_C (cardinality)(min version): empty
+Final solution cardinality:  93
+Elapsed time:  00:00:07
+_________________

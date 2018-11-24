@@ -1,0 +1,64 @@
+Samples size: 393
+Number nodes: 9859
+Combinatorial  deterministic with method BFSAndNumpyAndComplement starts now
+_________________
+
+Best solution updated!
+Current C (ids):  [1, 1632, 6780, 8821]
+Current score(min_version): 93
+_________________
+
+Best solution updated!
+Current C (ids):  [8, 8632, 6780, 8821]
+Current score(min_version): 96
+_________________
+
+Best solution updated!
+Current C (ids):  [9, 9485, 2622, 8821]
+Current score(min_version): 103
+_________________
+
+Best solution updated!
+Current C (ids):  [14, 9101, 2622, 6780]
+Current score(min_version): 116
+_________________
+
+Best solution updated!
+Current C (ids):  [16, 9101, 2622, 6780]
+Current score(min_version): 117
+_________________
+
+Best solution updated!
+Current C (ids):  [28, 6278, 2622, 6273]
+Current score(min_version): 124
+_________________
+
+Best solution updated!
+Current C (ids):  [37, 2622, 8821, 6278]
+Current score(min_version): 129
+_________________
+
+Best solution updated!
+Current C (ids):  [808, 8821, 6278, 2622]
+Current score(min_version): 130
+_________________
+
+Best solution updated!
+Current C (ids):  [2622, 6278, 6793, 6780]
+Current score(min_version): 135
+_________________
+
+Best solution updated!
+Current C (ids):  [5864, 2622, 6780, 8821]
+Current score(min_version): 141
+_________________
+
+Best solution updated!
+Current C (ids):  [6793, 2622, 6780, 8821]
+Current score(min_version): 143
+_________________
+Final solution (ids):  [6793, 2622, 6780, 8821]
+Final solution (genes' names):  ['PTK2', 'EGFR', 'PTEN', 'TP53']
+Final solution cardinality:  143
+Elapsed time:  00:26:04
+_________________

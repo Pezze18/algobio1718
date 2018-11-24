@@ -1,8 +1,12 @@
-Base: Contiene best_vectors di base(senza iterazioni) e divisi per nodi per le distanze 1 e 2 i.e. best_vectors[v][dist]
-Iterations: best_vectors creato con le iterazioni(senza percentili) per distanze 1 e 2  best_vectors[index][v][dist]
-IterationsPercentilesDistanza7:  best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e per distanza>=4 con distanze superiori
-Se distanza 1 e 2 best_vectors[index][v][dist], per distanza 3 best_vectors[index][0][dist], per distanze >=4 best_vectors[0][cont][dist]
-IterationsPercentilesSingoloDistanza4:  best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e 4 e per distanza>4 con distanze superiori
+VERSIONI
+  -Base: Contiene best_vectors di base(senza iterazioni) e divisi per nodi per le distanze 1 e 2 i.e. best_vectors[v][dist]
+  -Iterations: best_vectors creato con le iterazioni(senza percentili) per distanze 1 e 2  best_vectors[index][v][dist]
+  -IterationsPercentilesDistanza7:  best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e per distanza>=4 con distanze superiori
+  -Se distanza 1 e 2 best_vectors[index][v][dist], per distanza 3 best_vectors[index][0][dist], per distanze >=4 best_vectors[0][cont][dist]
+  -IterationsPercentilesSingoloDistanza4:  best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e 4 e per distanza>4 con distanze superiori
+  -Advance:best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e per distanza>=4 con distanze superiori in questo caso tuttavia abbiamo aumentato il numero di soglie fino a 100 per k=1 e 2 e a 20 per k=3 e superiori, inoltre abbiamo aumentato il numero di iterazioni e quando dove cambiamo in base alla tabella/istogramma max_counts
+  -Combinatorial:best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 aumentando le soglie a 100 ma con una sola iterazione.
+
 
 parametri per eseguire bound_order 
 crea e onlyCount vanno messi false mentre il parametro si imposta il file BestVectors che si vuole eseguire mentre il metodo è bound_order_improved_iterations_percentiles
