@@ -39,6 +39,7 @@ Current score(min_version): 210
 _________________
 Final solution (ids):  [6793, 2622, 6780, 8821, 6273, 6278, 3172, 3978, 9585, 8105]
 Final solution (genes' names):  ['PTK2', 'EGFR', 'PTEN', 'TP53', 'PIK3CA', 'PIK3R1', 'FLNB', 'IDH1', 'ZHX1', 'SPEN']
+Final solution cardinality: empty
 Final solution cardinality:  210
 Elapsed time:  02:06:32
 _________________
