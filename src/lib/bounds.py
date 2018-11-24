@@ -105,19 +105,6 @@ def creaBestVectors1_iterations_percentiles(self):
     for v in self.G:
         self.best_vectors[self.index][v][0] = updateBestVector_iterations_percentiles(self,self.G, v)
 
-    # Calcolo di best vectors a distanza 1 per index > 0
-    for index in range(1,len(self.contatori)):
-        self.index=index
-        neighbors=set()
-        for v in self.sorted_vertices[self.contatori[index-1]:self.contatori[index]] :
-            neighbors.update(self.G.neighbors(v))
-
-        self.G.remove_nodes_from(self.sorted_vertices[self.contatori[index-1]:self.contatori[index]])
-        for v in self.G:
-            if v in neighbors:
-                self.best_vectors[index][v][0] = updateBestVector_iterations_percentiles(self,self.G, v)
-            else:
-                self.best_vectors[index][v][0] = self.best_vectors[index-1][v][0]
     self.G=M
 
 
@@ -311,8 +298,9 @@ def update_creaBestVectorsDistanza_iterations_percentiles_singolo(self):
     if index!=self.index:
         self.index = index
         print(self.index)
-    print(self.cont)
-    print(self.levels)
+    #print(self.cont)
+    #print(self.levels)
+    self.index=0
 
 ###############################################################################
 ###########BEST VECTORS DISTANZA 2 ITERATIONS PERCENTILES######################
@@ -479,6 +467,7 @@ def update_creaBestVectorsDistanza_iterations_percentiles(self):
     if index!=self.index:
         self.index = index
         print(self.index)
+    self.index = 0
 
 
 #####################################################################
@@ -653,6 +642,7 @@ def ordinamentoVertici_bound_order_improved(self):
     counts=counts[::-1]
     counts=np.cumsum(counts)-1
     counts=counts[0:len(counts)-1]
+    counts=[0,10000]
     print("contatori: "+str(counts))
 
     self.index=0
@@ -670,6 +660,8 @@ def pre_bound_order_improved_iterations_percentiles(self):
     f=open(filename ,"rb")
     self.best_vectors = pickle.load(f)
     f.close()
+
+    print(self.best_vectors[2])
 
     """
     self.methods=["normal", "iterations", "iterations_singolo","iterations_superiore","iterations_superiore"]
@@ -726,6 +718,7 @@ def update_bound_order_improved_iterations_percentiles(self):
     if index!=self.index:
         self.index = index
         print(self.index)
+    self.index=0
     #print(self.cont)
     #print(self.levels)
 
