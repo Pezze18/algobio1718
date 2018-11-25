@@ -77,7 +77,7 @@ for file in files:
 
 def cluster_script(parameters):
     print("Excecuting...")
-    ks = [7]
+    ks = [7,8,9,10]
 
     waitingFor=open("../out/waitingFor.txt","a")
     waitingFor.write("\n")

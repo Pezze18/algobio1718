@@ -264,6 +264,7 @@ class Combinatorial:
         if (self.prob and self.bound):
             self.bound_function=getattr(bounds,parameters["method"])
             self.pre_function=getattr(bounds,"pre_"+parameters["method"])
+            self.pre_function(self)
         if self.prob==False:
             self.comb_alg = getattr(combinatorial, "combinatorial_algorithm_det_" + parameters["method"])
 
@@ -281,7 +282,7 @@ class Combinatorial:
             return self.comb_alg(self)
         if (self.prob and self.bound):
             self.pre_function(self)
-            return combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self)
+            return combinatorial_algorithm_prob_BFSAndBound(self)
         if self.prob == False:
             return self.comb_alg(self)
         raise ValueError("Impossibile combinatorial algorithm")

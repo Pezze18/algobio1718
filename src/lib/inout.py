@@ -41,18 +41,18 @@ def check_parameters(parameters):
 matriceProb="matriceProb.csv"
 matriceBinaria="matriceBinaria.csv"
 parameters = {
-    'k':5,
+    'k':4,
     'proteins_input': "../data/hint+hi2012_index_file.txt",
     'samples_input': "../data/",
     'genes_input': "../data/hint+hi2012_edge_file.txt",
     'filter_input': '../data/mutated_expressed_genes.txt',
     'delta': 0.8,
     'prob': True,
-    'strategy': 'enumerate',  # options: enumerate,combinatorial
+    'strategy': 'combinatorial',  # options: enumerate,combinatorial
     'best_score': 100000,  # maximum for a single gene
     'bound': True,
-    'method': "bound_order_improved_iterations_percentiles",#bound_order_improved
-    'bestVectors':"../data/BestVectors/Advance/BestVectorsDistanza7"
+    'method': "bound_order_improved_iterations_percentiles_not_optimized",#bound_order_improved
+    'bestVectors':"../data/BestVectors/Combinatorial/BestVectorsDistanza8"
 }
 # options method enumerate: det, nobound, bound_min, bound_min_migliorato, bound_min_migliorato_iterations
 # bound_fast, bound_kantorovich, bound_means, bound_means_iterations

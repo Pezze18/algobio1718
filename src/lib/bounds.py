@@ -9,11 +9,71 @@ import lib.auxiliary_functions as aux
 #import tensorflow as tf
 
 
+
+####################################################################################################
+###########BOUND ORDER IMPROVED ITERATIONS(PERCENTILES) PER COMBINATORIAL##########################
+####################################################################################################
+def pre_bound_order_improved_iterations_percentiles_not_optimized(self):
+    self.matrix = toMatrix(self, self.G.nodes)
+    ordinamentoVertici_bound_order_improved(self)
+
+    import pickle
+    filename=self.parameters["bestVectors"]
+    f=open(filename ,"rb")
+    self.best_vectors = pickle.load(f)
+    f.close()
+    self.index=0
+
+def bound_order_improved_iterations_percentiles_not_optimized(self,C,vecC):
+    dist=self.k-len(C)
+    lista=which_diff(vecC)
+    dec=np.asarray(lista)
+    bests=[]
+    #print("best_score"self.best_score)
+    if (dist > 5):
+        return False
+
+    for v in C:
+        if(dist<=5):
+            if dist<=2:
+                best_vector = self.best_vectors[0][v][dist - 1]#iterations e iterations_percentiles
+            else:
+                if dist<=3:
+                    best_vector = self.best_vectors[0][0][dist - 1]#iterations_percentiles_singolo
+                else:
+                    best_vector = self.best_vectors[0][0][dist - 1]#Distanze superiori
+
+            if((len(dec)+len(best_vector) >len(self.samples))):
+                dec=np.sort(dec)
+                dec=dec[::-1]#ordino vecC(solo valori diversi da 1) in ordine decrescente
+                if(len(best_vector)>len(dec)):
+                    inters=len(dec)- ( len(self.samples)-len(best_vector) )
+                else:
+                    inters = len(best_vector) - (len(self.samples) - len(dec))
+                bestS=np.sum(best_vector[:len(best_vector)-inters])+np.sum(dec[inters:])
+                bestS+=np.dot(best_vector[len(best_vector)-inters:], dec[0:inters])
+            else:
+                bestS= np.sum(dec)+np.sum(best_vector) + (len(self.samples)-len(dec)-len(best_vector))
+            bests.append(bestS)
+    bestS=np.min(bests)
+    if(bestS > self.best_score):
+        return True
+    return False
+
+def update_bound_order_improved_iterations_percentiles_not_optimized(self):
+    return True
+
+#################################################################################
+###########OLD VERSION PROBABILISTIC BDDE########################################
+#################################################################################
+
 def pre_oldVersion(self):#prob
     self.levelsVecUse = False
     self.scoring_function = getattr(aux, "prob_cover_old")
     self.sorted_vertices = list(self.G.nodes).copy()
-
+#################################################################################
+############################DETERMINISTIC VERSION################################
+#################################################################################
 def pre_det_old(self):
     self.levelsVecUse = False
     self.scoring_function = getattr(aux, "score_cover_old")
@@ -128,6 +188,7 @@ def update_bound_order_improved_iterations_percentiles(self):
     if index!=self.index:
         self.index = index
         print(self.index)
+    #self.index=0 attivarlo quando si usa BestVector di Combinatorial
     #print(self.cont)
     #print(self.levels)
 

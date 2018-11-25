@@ -6,6 +6,7 @@ VERSIONI
   -IterationsPercentilesSingoloDistanza4:  best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e 4 e per distanza>4 con distanze superiori
   -Advance:best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 e per distanza>=4 con distanze superiori in questo caso tuttavia abbiamo aumentato il numero di soglie fino a 100 per k=1 e 2 e a 20 per k=3 e superiori, inoltre abbiamo aumentato il numero di iterazioni e quando dove cambiamo in base alla tabella/istogramma max_counts
   -Combinatorial:best_vectors creato con le iterazioni con percentili per distanze 1 e 2, per iterazioni percentili singolo per distanza 3 aumentando le soglie a 100 ma con una sola iterazione.
+                  SOstanzialmente è sempre bound_order_iterations_percentiles con configurazioni di Advance(@ di thresholds pari a 100), ma con una singola iterazione.
 
 
 parametri per eseguire bound_order 

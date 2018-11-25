@@ -737,20 +737,29 @@ def combinatorial_algorithm_prob_BFSAndLevelsVec(self):#Complementary incluso
             print("Current score(min_version):",  score_C)
     return self.best_subgraph, self.best_score
 
-def combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self):#Complementary incluso
+def combinatorial_algorithm_prob_BFSAndBound(self):#Complementary incluso
     G=self.G
     delta = self.delta
     #G = delta_removal(G, delta)
 
+    import warnings
+    warnings.filterwarnings("error")
+
     C = []
     score_C = 1000
-    for v in G.nodes():#[8821]:#
+    self.best_score = 1000
+
+    #Sfrutto Ordinamento prodotto da bound_order
+    remains=list(set(self.G.nodes()).difference(self.sorted_vertices))
+    self.sorted_vertices=self.sorted_vertices+remains
+
+    for v in self.sorted_vertices:#[8821]:#
         C_v = [v]
         vecC_v = self.matrix[v]
         score_C_v=np.sum(vecC_v)
 
-        if self.bound_function(self,C,vecC_v):
-            #print("break")
+        if self.bound_function(self, C_v, vecC_v):
+            # print("continue for vertix " + str(v) + " at length: " + str(len(C_v)))
             continue
 
         BFS_complete_node(self, v, creaLevels=True, creaPredecessori=True, creaVec=True, creaEtichetta=True,creaDepths=False,creaRami=False)
@@ -770,10 +779,12 @@ def combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self):#Complementary 
                     #print(s)
                     newC, father=findAncestor(self,v,s)
                     if len(newC)+len(C_v)<=self.k:
-                        zeros_indices=self.shortestVec[s]==0
                         if father != v:
-                            vec_complementare = np.divide(self.shortestVec[s], self.matrix[father])
-                            vec_complementare[zeros_indices]=0
+                            try:
+                                vec_complementare = np.divide(self.shortestVec[s], self.shortestVec[father])
+                            except:
+                                zeros_indices = self.shortestVec[father] == 0
+                                vec_complementare[zeros_indices]=0
                         else:
                             #in BFS_complete_nodo la radice ha vettore associato a tutti 1
                             vec_complementare = self.shortestVec[s]
@@ -796,9 +807,10 @@ def combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self):#Complementary 
                 self.labels[c]=True
             vecC_v=vec_max
 
-            if self.bound_function(self, C_v, vecC_v):
-                #print("break")
-                break
+            if(len(C_v)<self.k):
+                if self.bound_function(self, C_v, vecC_v):
+                    #print("break for vertix " + str(v) + " at length: " + str(len(C_v)))
+                    break
 
         if score_C_v < score_C:  # if we've found a better solution, update it and let us know
             C = C_v
@@ -810,6 +822,9 @@ def combinatorial_algorithm_prob_BFSAndLevelsVecAndPruning(self):#Complementary 
             self.best_score=score_C_v
             self.best_subgraph=C_v
             print("Current score(min_version):",  score_C)
+
+
+
     return self.best_subgraph, self.best_score
 
 def delta_removal(G, delta):

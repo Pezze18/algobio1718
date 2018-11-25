@@ -243,3 +243,28 @@ enumerate prob bound_order_improved_iterations_percentiles k=5_run__20181124_16:
 enumerate prob bound_order_improved_iterations_percentiles k=7_run__20181124_16:33:00 idJob: 2033294 
 
 enumerate prob bound_order_improved_iterations_percentiles k=7_run__20181124_16:36:38 idJob: 2033295 
+
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=2_run__20181124_22:36:06 idJob: 2033610 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=3_run__20181124_22:36:07 idJob: 2033611 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=4_run__20181124_22:36:08 idJob: 2033612 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=5_run__20181124_22:36:09 idJob: 2033613 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=6_run__20181124_22:36:10 idJob: 2033614 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=7_run__20181124_22:36:11 idJob: 2033615 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=8_run__20181124_22:36:11 idJob: 2033616 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=9_run__20181124_22:36:12 idJob: 2033617 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=10_run__20181124_22:36:13 idJob: 2033618 
+
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=2_run__20181124_22:56:06 idJob: 2033619 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=3_run__20181124_22:56:07 idJob: 2033620 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=4_run__20181124_22:56:08 idJob: 2033621 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=5_run__20181124_22:56:09 idJob: 2033622 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=6_run__20181124_22:56:10 idJob: 2033623 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=7_run__20181124_22:56:10 idJob: 2033624 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=8_run__20181124_22:56:11 idJob: 2033625 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=9_run__20181124_22:56:12 idJob: 2033626 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=10_run__20181124_22:56:13 idJob: 2033627 
+
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=7_run__20181124_23:30:59 idJob: 2033628 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=8_run__20181124_23:30:59 idJob: 2033629 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=9_run__20181124_23:31:00 idJob: 2033630 
+combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=10_run__20181124_23:31:01 idJob: 2033631 
