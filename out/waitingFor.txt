@@ -268,3 +268,59 @@ combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=7
 combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=8_run__20181124_23:30:59 idJob: 2033629 
 combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=9_run__20181124_23:31:00 idJob: 2033630 
 combinatorial prob bound_order_improved_iterations_percentiles_not_optimized k=10_run__20181124_23:31:01 idJob: 2033631 
+
+combinatorial prob onlyBFSAndComplement k=4_run__20181125_11:43:45 idJob: 2033942 
+combinatorial prob onlyBFSAndComplement k=5_run__20181125_11:43:45 idJob: 2033943 
+combinatorial prob onlyBFSAndComplement k=6_run__20181125_11:43:46 idJob: 2033944 
+
+combinatorial prob onlyBFSAndProbCover k=9_run__20181125_11:45:19 idJob: 2033945 
+combinatorial prob onlyBFSAndProbCover k=10_run__20181125_11:45:19 idJob: 2033946 
+
+combinatorial prob onlyBFSAndComplement k=9_run__20181125_11:47:42 idJob: 2033947 
+combinatorial prob onlyBFSAndComplement k=10_run__20181125_11:47:43 idJob: 2033948 
+
+combinatorial prob onlyBFS k=10_run__20181125_11:48:08 idJob: 2033949 
+
+combinatorial det oldVersion_improved k=9_run__20181125_11:51:12 idJob: 2033950 
+combinatorial det oldVersion_improved k=10_run__20181125_11:51:12 idJob: 2033951 
+
+enumerate prob bound_order_improved_iterations_percentiles k=6_run__20181125_14:30:18 idJob: 2033958 
+
+enumerate prob bound_order_improved_iterations_percentiles k=6_run__20181125_14:36:50 idJob: 2033959 
+
+enumerate prob bound_order_improved_iterations_percentiles k=4_run__20181125_14:49:56 idJob: 2033961 
+
+enumerate prob bound_order_improved_iterations_percentiles k=3_run__20181125_14:50:20 idJob: 2033962 
+
+enumerate prob bound_order_improved_iterations_percentiles k=2_run__20181125_14:50:48 idJob: 2033963 
+
+enumerate prob bound_order_improved_iterations_percentiles k=5_run__20181125_14:51:11 idJob: 2033964 
+
+enumerate prob bound_order_improved_iterations_percentiles k=6_run__20181125_14:51:32 idJob: 2033965 
+
+enumerate prob bound_order_improved_iterations_percentiles k=7_run__20181125_14:52:01 idJob: 2033966 
+
+combinatorial prob onlyBFSAndComplement k=9_run__20181125_14:56:36 idJob: 2033967 
+combinatorial prob onlyBFSAndComplement k=10_run__20181125_14:56:38 idJob: 2033968 
+
+combinatorial prob onlyBFSAndComplement k=5_run__20181125_14:57:50 idJob: 2033969 
+combinatorial prob onlyBFSAndComplement k=6_run__20181125_14:57:51 idJob: 2033970 
+
+combinatorial prob onlyBFSAndComplement k=5_run__20181125_15:00:08 idJob: 2033971 
+combinatorial prob onlyBFSAndComplement k=6_run__20181125_15:00:09 idJob: 2033972 
+
+combinatorial det  oldVersion_improved k=9_run__20181125_15:00:42 idJob:
+combinatorial det  oldVersion_improved k=10_run__20181125_15:00:42 idJob:
+
+combinatorial det  oldVersion_improved k=9_run__20181125_15:01:02 idJob:
+combinatorial det  oldVersion_improved k=10_run__20181125_15:01:03 idJob:
+
+combinatorial det oldVersion_improved k=9_run__20181125_15:01:17 idJob: 2033973 
+combinatorial det oldVersion_improved k=10_run__20181125_15:01:18 idJob: 2033974 
+
+combinatorial prob BFSAndProbCoverAndComplement k=9_run__20181125_16:04:06 idJob: 2034310 
+combinatorial prob BFSAndProbCoverAndComplement k=10_run__20181125_16:04:07 idJob: 2034311 
+
+combinatorial prob oldVersion k=10_run__20181127_20:08:19 idJob: 2035807 
+
+combinatorial prob oldVersion k=10_run__20181127_22:11:05 idJob: 2035841 
